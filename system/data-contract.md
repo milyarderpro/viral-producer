@@ -524,11 +524,13 @@ Reserved signatures live in the saved draft record.
 
 1. Confirm the post exists with status draft.
 2. Change status to approved and set approved_at.
-3. Regenerate output/ready-to-post.md from active drafts.
-4. Confirm the post appears exactly once in the Markdown queue.
-5. Change status to ready and set ready_at.
+3. Change status to ready and set ready_at.
+4. Regenerate output/ready-to-post.md from active drafts whose status is ready.
+5. Confirm the post appears exactly once in the Markdown queue.
 6. Increment state revision.
 7. Report success only after all writes are confirmed.
+
+active-drafts.jsonl is authoritative. If queue regeneration fails after the status becomes ready, report a partial failure and regenerate the derived Markdown queue before starting another state-changing operation.
 
 ### Revise wording
 
