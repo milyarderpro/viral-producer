@@ -46,6 +46,22 @@ Every JSON or JSONL record must include:
 
 A future incompatible structure must increment the schema version. Do not silently reinterpret an older record.
 
+### Additive editorial compatibility
+
+Stage 10.3 adds optional fields without changing the meaning of existing fields, so schema_version remains 1.
+
+Compatibility rules:
+
+- records created before editorial version 2 remain valid legacy records;
+- a missing editorial audit field in a legacy draft is not a JSON or schema corruption;
+- every newly created draft must include all editorial version 2 fields defined below;
+- a legacy draft may remain unchanged while stored as draft;
+- before a legacy draft may become approved or ready, it must be re-evaluated under the current content DNA and enriched with the complete editorial version 2 fields;
+- a substantively revised legacy draft must be upgraded during the same operation;
+- readers must tolerate unknown additive fields and writers must preserve fields they do not modify.
+
+A substantive revision includes replacing a fact, changing a canonical claim or source basis, changing fact order for editorial reasons, or rerunning the post-level quality decision. A correction limited to spelling, punctuation, or whitespace may remain legacy, but it does not make the post eligible for approval.
+
 ## 3. Repository Data Map
 
 ### Rules
@@ -259,7 +275,7 @@ Candidate facts are transient and are not written to the repository.
 
 When a draft is saved, its six accepted facts become reserved through fact snapshots stored inside the draft record. A reserved fact does not yet appear in the published fact index.
 
-Required fact snapshot:
+Required fact snapshot for a newly created or editorial-version-2-upgraded draft:
 
     {
       "fact_id": "F-000001",
@@ -272,6 +288,10 @@ Required fact snapshot:
       "country_scope": ["GLOBAL"],
       "surface_text": "A polar bear's skin is black beneath its thick, transparent-looking fur",
       "word_count": 12,
+      "surprise_operator": "visual_biology",
+      "viral_strength": 2,
+      "scope_check_passed": true,
+      "source_access_passed": true,
       "sources": [
         {
           "url": "https://example.gov/page",
@@ -288,6 +308,23 @@ Required fact snapshot:
       "tags": ["animal anatomy"]
     }
 
+Allowed surprise_operator values:
+
+- belief_reversal
+- hidden_mechanism
+- visual_biology
+- scale_number
+- historical_origin
+- geographic_quirk
+- everyday_consequence
+- record_superlative
+
+viral_strength must be the integer 0, 1, or 2 using the anchors in system/content-dna.md.
+
+scope_check_passed may be true only after comparing the canonical claim, surface text, and evidence for subject, relationship, geography, time, quantity, qualifier, and record category. A broader or stronger surface statement must set this to false and block persistence.
+
+source_access_passed may be true only when at least one persisted authoritative source was opened and its readable content directly supports the final claim. If another source is restricted by login, paywall, CAPTCHA, expired link, or unreadable format, an accessible authoritative fallback is required.
+
 Allowed risk_level values:
 
 - low
@@ -295,6 +332,8 @@ Allowed risk_level values:
 - high
 
 High-risk facts must not enter ordinary production. Medium-risk facts require stronger verification and must not contain actionable medical, survival, emergency, legal, or safety instructions.
+
+Legacy fact snapshots may omit the four editorial fields while their parent record remains an unchanged legacy draft. They must receive the fields before the parent post becomes eligible for approval.
 
 ## 12. Active Draft Record
 
@@ -304,7 +343,7 @@ Path:
 
 There must be at most one current record per post_id.
 
-Required structure:
+Required structure for a newly created or editorial-version-2-upgraded draft:
 
     {
       "schema_version": 1,
@@ -323,7 +362,40 @@ Required structure:
         "readability": 2,
         "factual_confidence": 2,
         "total": 12,
-        "hard_rules_passed": true
+        "hard_rules_passed": true,
+        "rationales": {
+          "opening_strength": "Fact 1 is strength 2, immediate, and one of the three strongest facts.",
+          "surprise_quality": "Five facts are strength 2 across five distinct operators.",
+          "concrete_detail": "Every fact contains a memorable image, number, mechanism, or consequence.",
+          "shareability": "At least four facts create a clear tell-someone reaction.",
+          "readability": "All six lines are natural, balanced, and within the word limits.",
+          "factual_confidence": "All final claims preserve scope and have directly readable authoritative support."
+        }
+      },
+      "generation_audit": {
+        "candidate_count": 20,
+        "rejected_counts": {
+          "duplicate": 2,
+          "weak": 6,
+          "scope": 1,
+          "source": 2,
+          "unsafe": 0,
+          "repetitive": 3,
+          "other": 0
+        },
+        "operator_variety": 5,
+        "weakest_fact_review": [
+          {
+            "fact_position": 2,
+            "result": "retained",
+            "reason": "Adds a familiar human connection while remaining specific and surprising."
+          },
+          {
+            "fact_position": 4,
+            "result": "replacement_passed",
+            "reason": "The original filler was replaced and the final fact passed a second review."
+          }
+        ]
       },
       "created_at": "2026-09-30T14:25:00Z",
       "updated_at": "2026-09-30T14:25:00Z",
@@ -332,6 +404,57 @@ Required structure:
     }
 
 The facts array must contain exactly six fact snapshots for a standard post.
+
+### Quality rules
+
+- every score must be the integer 0, 1, or 2;
+- total must equal the sum of the six dimension scores;
+- rationales must contain one non-empty, evidence-based sentence for each scored dimension;
+- rationales must explain why the visible script earns the score, not merely repeat the number;
+- hard_rules_passed may be true only when every formatting, safety, duplicate, operator-diversity, viral-strength, source-access, and scope rule passes.
+
+### Generation audit rules
+
+candidate_count is the number of unique plausible candidate claims actually considered before final selection. It must be at least 18 for a standard six-fact post.
+
+Every non-selected candidate receives exactly one primary rejection reason. Therefore:
+
+    sum(rejected_counts values) = candidate_count - 6
+
+Allowed rejected_counts keys are:
+
+- duplicate
+- weak
+- scope
+- source
+- unsafe
+- repetitive
+- other
+
+operator_variety must equal the number of distinct surprise_operator values across the final six facts. It must be at least 4 and no greater than 6.
+
+weakest_fact_review must:
+
+- contain exactly two entries;
+- refer to two different final fact positions from 1 through 6;
+- use result retained or replacement_passed;
+- contain a concise reason based on the current final fact;
+- never store full rejected candidate wording.
+
+generation_audit is compact evidence, not a candidate database. Do not persist rejected candidate claims, complete research notes, or unused source lists.
+
+### Legacy approval boundary
+
+Legacy drafts without complete editorial metadata may remain in status draft. They must not transition to approved or ready.
+
+To upgrade a legacy draft:
+
+1. re-read current sources and duplicate ledgers;
+2. evaluate all six facts under the current content DNA;
+3. replace weak, repetitive, inaccessible, or scope-mismatched facts when necessary;
+4. add the four editorial fields to every fact;
+5. add complete quality rationales and generation_audit;
+6. pass every current hard rule without changing existing IDs unless an underlying fact is replaced.
 
 Allowed active status values:
 
@@ -357,7 +480,7 @@ Path:
 
 Each fact_id and claim_signature may appear at most once across all fact index files.
 
-Required structure:
+Required structure for a fact produced or upgraded under editorial version 2:
 
     {
       "schema_version": 1,
@@ -371,6 +494,10 @@ Required structure:
       "topic": "animals-nature",
       "country_scope": ["GLOBAL"],
       "surface_text": "A polar bear's skin is black beneath its thick, transparent-looking fur",
+      "surprise_operator": "visual_biology",
+      "viral_strength": 2,
+      "scope_check_passed": true,
+      "source_access_passed": true,
       "sources": [],
       "verified_at": "2026-09-30T14:25:00Z",
       "valid_as_of": null,
@@ -391,6 +518,8 @@ A blocked record uses published_in and published_at as null and should include:
 
     "block_reason": "Concise reason"
 
+Editorial metadata is optional for a blocked record and for a published legacy fact. When the source active draft contains editorial metadata, copy it unchanged into the published fact record.
+
 Do not delete published or blocked fact records.
 
 ## 14. Published Post Record
@@ -401,7 +530,7 @@ Path:
 
 The YYYY-MM file is selected using the Asia/Jakarta calendar month of published_at.
 
-Required structure:
+Required structure for a post produced or upgraded under editorial version 2:
 
     {
       "schema_version": 1,
@@ -419,6 +548,39 @@ Required structure:
       ],
       "cta": "Enjoyed these facts? Like the video and follow for more!",
       "quality_total": 12,
+      "quality_rationales": {
+        "opening_strength": "Fact 1 is strength 2, immediate, and one of the three strongest facts.",
+        "surprise_quality": "Five facts are strength 2 across five distinct operators.",
+        "concrete_detail": "Every fact contains a memorable image, number, mechanism, or consequence.",
+        "shareability": "At least four facts create a clear tell-someone reaction.",
+        "readability": "All six lines are natural, balanced, and within the word limits.",
+        "factual_confidence": "All final claims preserve scope and have directly readable authoritative support."
+      },
+      "generation_audit": {
+        "candidate_count": 20,
+        "rejected_counts": {
+          "duplicate": 2,
+          "weak": 6,
+          "scope": 1,
+          "source": 2,
+          "unsafe": 0,
+          "repetitive": 3,
+          "other": 0
+        },
+        "operator_variety": 5,
+        "weakest_fact_review": [
+          {
+            "fact_position": 2,
+            "result": "retained",
+            "reason": "Adds a familiar human connection while remaining specific and surprising."
+          },
+          {
+            "fact_position": 4,
+            "result": "replacement_passed",
+            "reason": "The original filler was replaced and the final fact passed a second review."
+          }
+        ]
+      },
       "created_at": "2026-09-30T14:25:00Z",
       "approved_at": "2026-09-30T15:00:00Z",
       "published_at": "2026-10-01T02:00:00Z"
@@ -427,6 +589,8 @@ Required structure:
 The facts array must preserve the exact wording and order used in the published content.
 
 There must be at most one archive record per post_id across all monthly files.
+
+For an editorial-version-2 post, copy quality.rationales into quality_rationales and copy generation_audit unchanged into the archive. Legacy published posts may omit those additive fields.
 
 Published archive records are immutable except to correct proven data corruption. A wording change after publication must be recorded as a new post.
 
@@ -551,34 +715,42 @@ If a published post exists without corresponding fact-index records, treat it as
 1. Read current production state and its Git blob SHA.
 2. Read active drafts.
 3. Read all relevant fact index files.
-4. Research, verify, normalize, and deduplicate candidates.
-5. Allocate one post ID and six fact IDs.
-6. Add one complete draft record to active-drafts.jsonl.
-7. Increment next_post_number by one.
-8. Increment next_fact_number by six.
-9. Update topic rotation fields.
-10. Increment state revision.
-11. Report the saved post ID only after GitHub confirms both writes.
+4. Research at least 18 unique plausible candidate claims.
+5. Verify, normalize, deduplicate, label operators, and rank candidate viral strength.
+6. Select six candidates that pass operator diversity, source access, scope, safety, and quality rules.
+7. Challenge the two weakest final facts and complete generation_audit.
+8. Allocate one post ID and six fact IDs only after every hard gate passes.
+9. Add one complete editorial-version-2 draft record to active-drafts.jsonl.
+10. Increment next_post_number by one.
+11. Increment next_fact_number by six.
+12. Update topic rotation fields.
+13. Increment state revision.
+14. Report the saved post ID only after GitHub confirms both writes.
 
 Reserved signatures live in the saved draft record.
 
 ### Approve draft
 
 1. Confirm the post exists with status draft.
-2. Change status to approved and set approved_at.
-3. Change status to ready and set ready_at.
-4. Regenerate output/ready-to-post.md from active drafts whose status is ready.
-5. Confirm the post appears exactly once in the Markdown queue.
-6. Increment state revision.
-7. Report success only after all writes are confirmed.
+2. Confirm all six facts contain complete editorial metadata.
+3. Confirm quality rationales and generation_audit are complete and internally consistent.
+4. Re-run current hard validation, including source access and claim-scope checks.
+5. If the record is legacy, upgrade it before approval; do not bypass missing fields.
+6. Change status to approved and set approved_at.
+7. Change status to ready and set ready_at.
+8. Regenerate output/ready-to-post.md from active drafts whose status is ready.
+9. Confirm the post appears exactly once in the Markdown queue.
+10. Increment state revision.
+11. Report success only after all writes are confirmed.
 
 active-drafts.jsonl is authoritative. If queue regeneration fails after the status becomes ready, report a partial failure and regenerate the derived Markdown queue before starting another state-changing operation.
 
 ### Revise wording
 
 - Keep the same fact ID when only surface_text changes.
-- Recalculate word_count and quality.
+- Recalculate word_count, scope_check_passed, quality scores, and rationales.
 - Reverify that wording preserves the source claim.
+- If the revision reruns the post-level editorial decision, upgrade a legacy record completely.
 - Regenerate the ready queue if the post is ready.
 
 ### Replace a fact
@@ -587,7 +759,9 @@ active-drafts.jsonl is authoritative. If queue regeneration fails after the stat
 - Replace the complete fact snapshot.
 - Increment next_fact_number.
 - Never reuse the removed fact ID.
-- Re-run duplicate checks and quality scoring.
+- Upgrade the complete post to editorial version 2.
+- Re-run duplicate, operator-diversity, viral-strength, source-access, scope, and quality checks.
+- Rebuild generation_audit without storing rejected candidate wording.
 - Regenerate the ready queue when necessary.
 
 ### Reject draft
@@ -605,8 +779,8 @@ Because the rejected fact snapshots were never added to the published fact index
 
 1. Confirm the post exists with status ready.
 2. Record one operation-wide published_at timestamp.
-3. Upsert its six fact snapshots into the correct fact index files as published records using that timestamp.
-4. Append one immutable post record to the correct monthly archive.
+3. Upsert its six fact snapshots into the correct fact index files as published records using that timestamp, preserving editorial metadata.
+4. Append one immutable post record to the correct monthly archive, preserving quality rationales and generation_audit.
 5. Remove the post from active-drafts.jsonl.
 6. Regenerate the complete ready queue from the remaining active ready records.
 7. Update rotation state if required.
@@ -655,7 +829,7 @@ Run a consistency audit before production when:
 - state counters appear lower than existing IDs;
 - the user explicitly requests an audit.
 
-Audit checks:
+Audit checks for all records:
 
 - every JSON and JSONL record parses;
 - no duplicate post IDs;
@@ -669,6 +843,25 @@ Audit checks:
 - every archived post has six published fact records;
 - every published fact points to an existing archived post;
 - monthly file placement matches Asia/Jakarta publication month.
+
+Additional checks for a record containing editorial version 2 fields:
+
+- all six facts contain allowed surprise_operator values;
+- all viral_strength values are integers from 0 through 2;
+- scope_check_passed and source_access_passed are true;
+- at least four facts have viral_strength 2 and none has 0;
+- at least four distinct operators exist;
+- no operator occurs more than twice;
+- record_superlative occurs no more than twice;
+- Facts 1 and 6 are strength 2 and use different operators;
+- quality total equals its six scores;
+- all six quality rationales are present;
+- candidate_count is at least 18;
+- rejected_counts uses only allowed keys and sums to candidate_count minus 6;
+- operator_variety equals the computed distinct-operator count;
+- weakest_fact_review contains exactly two different valid positions.
+
+A draft missing all or part of the editorial version 2 fields is a legacy draft, not corrupt data. Report it as requires_editorial_upgrade. Do not add invented audit evidence automatically, and do not approve or ready it until a real re-evaluation supplies the fields.
 
 Repair existing records when the intended state is unambiguous. Otherwise stop and ask the user before changing data.
 
@@ -685,20 +878,42 @@ If any fact index grows beyond practical GitHub or tool limits, introduce a new 
 
 ## 23. Hard Validation Failures
 
-Do not save or publish when:
+Do not save or publish any record when:
 
 - JSON is invalid;
-- a required field is missing;
+- a universally required field is missing;
 - an ID is duplicated;
 - a claim signature is duplicated;
 - fewer or more than six facts are present in a standard post;
 - a fact lacks an acceptable source;
 - quality hard_rules_passed is false;
+- opening_strength is below 2;
 - factual_confidence is below 2;
 - readability is below 2;
 - total quality is below 10;
 - a fact uses an unknown topic or invalid country code;
 - an unsafe high-risk fact is present;
 - the current Git SHA changed during the write operation.
+
+For every newly created or editorial-version-2-upgraded draft, also do not save, approve, ready, or publish when:
+
+- any fact lacks surprise_operator, viral_strength, scope_check_passed, or source_access_passed;
+- a surprise_operator value is unknown;
+- a viral_strength value is outside 0 through 2;
+- scope_check_passed or source_access_passed is false;
+- fewer than four facts have viral_strength 2;
+- any fact has viral_strength 0;
+- fewer than four distinct operators are present;
+- any operator occurs more than twice;
+- record_superlative occurs more than twice;
+- Facts 1 and 6 use the same operator or either has viral_strength below 2;
+- any quality rationale is missing or empty;
+- candidate_count is below 18;
+- rejected_counts contains an unknown key or does not sum to candidate_count minus 6;
+- operator_variety does not match the final six facts;
+- weakest_fact_review does not contain exactly two different valid final positions;
+- generation_audit contains full rejected candidate wording.
+
+A legacy draft may remain stored as draft without the additive fields. Missing editorial version 2 fields become a hard transition failure when approval or ready status is requested.
 
 Report the failing condition clearly and leave existing valid data unchanged.
