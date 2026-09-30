@@ -215,6 +215,7 @@ Required coverage:
 Completed commit:
 
 - b05855e — Define repository data contract and lifecycle
+- ea2e172 — Fix approval transition ordering
 
 ### Stage 4 — Initial database
 
@@ -248,7 +249,7 @@ Completed commit:
 
 ### Stage 5 — Main GPT instructions
 
-Status: NEXT
+Status: COMPLETE
 
 Create:
 
@@ -283,9 +284,14 @@ Core generation flow:
     → Reserve facts
     → Save draft
 
+Completed commits:
+
+- b7c63c6 — Add main GPT production instructions
+- 020b241 — Align GPT approval flow with data contract
+
 ### Stage 6 — Command interface
 
-Status: PENDING
+Status: NEXT
 
 The GPT must recognize natural-language commands such as:
 
@@ -420,3 +426,4 @@ Do not rely on conversation history as the only record of the plan.
 - Added blocked facts for false, unsafe, or unverifiable claims.
 - Added single-writer mode, Git SHA conflict protection, idempotency, and consistency recovery.
 - Confirmed that permanent posts will be stored in monthly JSONL archives, not one file per post.
+- Corrected approval ordering so active drafts reach ready status before the derived ready queue is regenerated.
