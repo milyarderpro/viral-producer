@@ -424,7 +424,7 @@ Completed commits:
 
 ### Stage 10 — Live test and refinement
 
-Status: NEXT
+Status: IN PROGRESS
 
 Process:
 
@@ -435,6 +435,177 @@ Process:
 5. Repeat all affected tests.
 6. Open and review the implementation pull request.
 7. Merge only after all required tests pass.
+
+## 5A. Stage 10 Editorial Refinement Plan
+
+This refinement keeps the Version 1 architecture unchanged. It strengthens editorial selection, claim fidelity, scoring, and testing without adding a backend, external database, or one-file-per-post storage.
+
+Existing P-000001 through P-000003 remain preserved as pre-refinement test evidence. They must not be approved until they pass the revised rules or are explicitly revised through the normal lifecycle.
+
+### Stage 10.1 — Live-output baseline audit
+
+Status: COMPLETE
+
+Scope:
+
+- inspect the first three generated drafts and production state;
+- verify IDs, counters, JSONL structure, sources, word counts, and queue behavior;
+- compare the scripts with dataset-reference.md and content-dna.md;
+- identify editorial and claim-fidelity failures.
+
+Findings:
+
+- repository workflow and persistence are functioning correctly;
+- P-000002 is the strongest DNA match;
+- P-000001 overuses record and superlative facts and contains one geographic scope drift;
+- P-000003 is accurate but too textbook-like and low in surprise;
+- all three receiving 12/12 shows that quality scoring is too permissive;
+- the transient candidate pool cannot currently be audited from repository evidence.
+
+### Stage 10.2 — Viral DNA v2
+
+Status: PLANNED
+
+Update:
+
+    system/content-dna.md
+
+Required changes:
+
+- define a controlled surprise-operator taxonomy;
+- require at least four distinct operator families per standard post;
+- allow no more than two selected facts from the same operator family;
+- add an anti-textbook rule for definitions and ordinary classroom facts;
+- require at least four strong facts and no weak filler fact;
+- strengthen opening and closing requirements;
+- add exact claim-scope preservation for geography, time, quantity, and qualifiers;
+- add source-accessibility and fallback-source rules;
+- replace loose scoring guidance with anchored 0, 1, and 2 definitions;
+- reserve 12/12 for exceptional posts that satisfy explicit evidence-based conditions.
+
+Acceptance criteria:
+
+- a six-record post fails the diversity gate;
+- a factual but textbook-only post fails the viral gate;
+- wording cannot broaden United States into America or North America;
+- every score of 2 has an objective rubric justification.
+
+### Stage 10.3 — Additive editorial audit contract
+
+Status: PLANNED
+
+Update:
+
+    system/data-contract.md
+
+Add backward-compatible fields for newly created or substantively revised drafts:
+
+- per-fact editorial metadata: surprise_operator, viral_strength, scope_check_passed, and source_access_passed;
+- post-level generation_audit: candidate_count, rejection counts, operator variety, and weakest-fact review;
+- compact quality rationales for every scored dimension.
+
+Rules:
+
+- keep schema_version 1 because the change is additive;
+- legacy drafts may omit the new fields until revised;
+- every new draft must contain the new fields;
+- candidate_count must be at least 18 for a standard six-fact post;
+- do not persist full rejected candidate text or create a new candidate database;
+- do not modify existing production IDs, counters, or historical facts during this stage.
+
+### Stage 10.4 — Generation and self-critique guardrails
+
+Status: PLANNED
+
+Update:
+
+    system/gpt-instructions.md
+
+Required workflow:
+
+    Research at least 18 candidates
+    → verify direct source support
+    → canonicalize and deduplicate
+    → label surprise operators
+    → rank viral strength
+    → select a diverse six
+    → compare surface wording with source scope
+    → challenge the two weakest facts
+    → replace weak or repetitive facts
+    → score with written rationales
+    → persist only after every hard gate passes
+
+Additional behavior:
+
+- opening and closing must be selected from the strongest facts;
+- inaccessible or restricted sources require a second accessible authoritative source;
+- absolute and record terms receive an explicit scope check;
+- a 12/12 draft receives an additional adversarial review before saving;
+- failure to meet the editorial gate triggers candidate replacement rather than score inflation.
+
+### Stage 10.5 — Editorial regression tests
+
+Status: PLANNED
+
+Update:
+
+    tests/acceptance-tests.md
+
+Add tests for:
+
+- operator monoculture rejection;
+- geographic and temporal scope drift;
+- textbook-only candidate rejection;
+- quality-score inflation;
+- inaccessible-source fallback;
+- persisted generation audit metadata;
+- opening and closing strength;
+- backward compatibility with the three existing drafts.
+
+After these tests are added, rerun all earlier acceptance tests affected by generation, revision, approval, persistence, and recovery.
+
+### Stage 10.6 — Plugin refresh guide
+
+Status: PLANNED
+
+Update:
+
+    docs/gpt-installation.md
+
+Document:
+
+- how to update the existing private Plugin or compatible GPT;
+- which instruction and reference files must be replaced or refreshed;
+- how to start a new conversation to avoid stale instructions;
+- how to verify the installed instruction version;
+- three saved regression prompts for geography, animals, and body science;
+- how to compare the new outputs with the pre-refinement baseline.
+
+### Stage 10.7 — Controlled live validation
+
+Status: PLANNED
+
+Process:
+
+1. Refresh the private Plugin or GPT with the updated files.
+2. Run read-only state verification.
+3. Generate three new test posts covering geography-history, animals-nature, and body-science.
+4. Verify candidate audit metadata, operator diversity, scope checks, scores, and sources in GitHub.
+5. Run the new editorial regression tests.
+6. Run all affected lifecycle tests.
+7. Record evidence and commit identifiers in tests/acceptance-tests.md.
+8. Revise P-000001 and P-000003 only through normal commands if they are still intended for publication.
+9. Approve content only after it passes the revised rules.
+
+Exit criteria:
+
+- no selected script contains scope broadening;
+- every new standard post has at least four operator families and no more than two facts from one family;
+- every new post records at least 18 researched candidates in compact audit metadata;
+- weak textbook filler is absent;
+- score rationales support every value and 12/12 is exceptional rather than automatic;
+- sources are authoritative, directly supportive, and accessible or backed by an accessible fallback;
+- all required acceptance tests and the final consistency audit pass.
 
 ## 6. Definition of Done
 
@@ -482,3 +653,4 @@ Do not rely on conversation history as the only record of the plan.
 - Made ready-to-post rendering deterministic and corrected posted cleanup so the queue is always rebuilt from authoritative active records.
 - Defined acceptance tests as a reusable specification with objective repository assertions; actual execution remains reserved for the installed-GPT test stage.
 - Added a Plugin-first installation path in response to OpenAI's Custom GPT transition while retaining GPT Builder compatibility where available.
+- Recorded the first live-output audit and added the Stage 10 editorial refinement plan for DNA diversity, claim-scope fidelity, honest scoring, compact audit metadata, regression tests, and controlled revalidation.
