@@ -15,17 +15,19 @@ Build one AI content producer for English-language Facebook Reels trivia that:
 
 Version 1 uses:
 
-- one Custom GPT as the content producer;
+- one private ChatGPT Plugin with a reusable instruction skill when Plugin Creator is available;
+- an existing Custom GPT as a compatibility path when GPT Builder remains available;
 - GitHub as the permanent source of truth;
-- GitHub App for repository reads and writes;
+- a GitHub app, plugin, or workspace connection for repository reads and writes;
 - Web Search for current research and verification;
-- no external database, backend, or custom Action unless testing proves it is required.
+- no external database, backend, custom MCP server, or Action unless testing proves it is required.
 
 Fallback order:
 
-1. Custom GPT with GitHub App.
-2. Plugin or skill with GitHub App.
-3. Custom GPT Action or MCP integration only if direct GitHub writes are unavailable.
+1. Private Plugin with the available GitHub connection.
+2. Private Custom GPT with GitHub App where GPT Builder remains available.
+3. Plugin with a restricted custom MCP server.
+4. Legacy Custom GPT Action or dedicated backend only when supported and necessary.
 
 ## 3. Final Repository Structure
 
@@ -393,36 +395,40 @@ Completed commit:
 
 ### Stage 9 — Manual installation guide
 
-Status: NEXT
+Status: COMPLETE
 
-Create:
+Created:
 
     docs/gpt-installation.md
 
-The guide must cover:
+The guide covers:
 
-- connecting GitHub;
-- limiting access to viral-producer;
+- the current Custom GPT to Plugin transition;
+- a recommended private Plugin path and compatible GPT Builder path;
+- connecting GitHub with least-privilege access;
+- limiting the connected account to viral-producer;
 - verifying read and write permissions separately;
-- opening GPT Builder;
-- creating and naming the GPT;
-- copying system/gpt-instructions.md;
-- enabling Web Search;
-- adding GitHub App;
-- configuring conversation starters;
+- installing the complete system/gpt-instructions.md workflow;
+- enabling Web Search or equivalent browser research;
+- configuring conversation starters or saved prompts;
 - keeping the first version private;
-- read, write, duplicate, and lifecycle tests;
-- checking repository changes;
-- troubleshooting permissions and connection failures;
-- plugin or Action fallback when required.
+- read, write, duplicate, and lifecycle smoke tests;
+- checking repository commits and file changes;
+- troubleshooting permissions, branches, stale SHAs, and connection failures;
+- restricted MCP, Action, or backend fallback only when required.
+
+Completed commits:
+
+- cc3a2c3 — Add ChatGPT installation and setup guide
+- fc468e6 — Clarify legacy Action fallback
 
 ### Stage 10 — Live test and refinement
 
-Status: PENDING
+Status: NEXT
 
 Process:
 
-1. Install the GPT as private.
+1. Install the workflow as a private Plugin or compatible Custom GPT.
 2. Run the saved acceptance prompts.
 3. Inspect repository changes.
 4. Correct instructions or schemas when needed.
@@ -436,7 +442,7 @@ The implementation is complete when:
 
 - all planned files exist on build/viral-content-gpt;
 - all JSON and JSONL files validate;
-- the GPT can read and write the repository;
+- the installed Plugin or compatible GPT can read and write the repository;
 - research produces traceable sources;
 - exact and semantic duplicates are rejected;
 - unsafe facts are rejected;
@@ -475,3 +481,4 @@ Do not rely on conversation history as the only record of the plan.
 - Embedded the bilingual command interface in the main GPT instructions so intent handling and lifecycle rules remain synchronized.
 - Made ready-to-post rendering deterministic and corrected posted cleanup so the queue is always rebuilt from authoritative active records.
 - Defined acceptance tests as a reusable specification with objective repository assertions; actual execution remains reserved for the installed-GPT test stage.
+- Added a Plugin-first installation path in response to OpenAI's Custom GPT transition while retaining GPT Builder compatibility where available.
