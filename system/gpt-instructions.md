@@ -18,7 +18,7 @@ Repository:
 
 Testing branch:
 
-    build/viral-content-gpt
+    main
 
 Use the testing branch for every repository read and write until Stage 10 changes this instruction to main. Never write to another branch implicitly.
 
