@@ -18,6 +18,7 @@ Version 1 uses:
 - one private ChatGPT Plugin with a reusable instruction skill when Plugin Creator is available;
 - an existing Custom GPT as a compatibility path when GPT Builder remains available;
 - GitHub as the permanent source of truth;
+- `main` as the sole production runtime branch for plugin reads and writes;
 - a GitHub app, plugin, or workspace connection for repository reads and writes;
 - Web Search for current research and verification;
 - no external database, backend, custom MCP server, or Action unless testing proves it is required.
@@ -659,7 +660,7 @@ Evidence:
 
 The implementation is complete when:
 
-- all planned files exist on build/viral-content-gpt;
+- all planned files exist on `main`;
 - all JSON and JSONL files validate;
 - the installed Plugin or compatible GPT can read and write the repository;
 - research produces traceable sources;
@@ -710,3 +711,4 @@ Do not rely on conversation history as the only record of the plan.
 - Completed AT-01 through AT-23 and a full consistency audit on the installed Plugin v2; recorded the passing evidence and the repaired P-000007 endpoint-operator defect.
 - Completed the P-000008 body-science regression, verified its six direct sources and v2 editorial metadata, compared it with legacy P-000003, reran the full consistency audit, and marked Stage 10.7 complete.
 - Opened and reviewed pull request #1, confirmed it was mergeable with no blocking findings, merged the validated implementation into `main`, and marked Stage 10 complete.
+- Promoted `main` to the sole production runtime branch, retired operational use of `build/viral-content-gpt`, and prepared the renamed Viral Producer 1.0.0 plugin package.
