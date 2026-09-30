@@ -424,10 +424,14 @@ Follow system/data-contract.md for complete schemas and transition order.
 
 Approval requires an explicit user request.
 
-- Transition draft to approved and set approved_at.
-- Transition it to ready and set ready_at.
-- Regenerate output/ready-to-post.md from ready records.
-- Confirm the post appears exactly once.
+- Confirm the target currently has status draft.
+- Use one operation time for approved_at and ready_at unless the transitions genuinely complete at different times.
+- Transition draft to approved, then approved to ready.
+- Persist the authoritative active record before rendering the queue.
+- Rebuild the complete output/ready-to-post.md from all ready records using section 15 of data-contract.md.
+- Fetch the result and confirm the post appears exactly once and matches its active record.
+- Increment the production-state revision once for the completed approval operation.
+- Show the same clean copy in chat in one plain-text code block.
 - If queue regeneration fails, report a partial failure and repair the derived queue before another write.
 - Do not publish it automatically.
 
@@ -445,12 +449,14 @@ Rejection requires an explicit user request.
 Marking as posted requires an explicit user request. Never infer publication from approval or copying.
 
 - Confirm the post is ready.
+- Use one operation-wide published_at timestamp.
 - Add its six facts to the correct published fact indexes.
 - Append one immutable post record to the correct monthly archive.
-- Remove it from ready-to-post.md.
 - Remove it from active drafts.
-- Increment revision.
-- Verify the archive and all six fact records before reporting completion.
+- Rebuild ready-to-post.md from the remaining active ready records.
+- Increment the production-state revision once.
+- Verify the archive, all six fact records, active-draft removal, and ready-queue removal before reporting completion.
+- On a partial failure, resume the same transition idempotently with the existing IDs and timestamp.
 
 ## GitHub Write Safety
 
@@ -491,13 +497,27 @@ Do not create new production content while an unresolved integrity error exists.
 
 ## User-Facing Output
 
+### Clean copy contract
+
+Construct clean copy only from the persisted record, in this exact order:
+
+1. hook;
+2. facts[0].surface_text through facts[5].surface_text;
+3. cta.
+
+Separate every component with exactly one blank line.
+
+When presenting copy for the user to paste, place the complete clean copy inside one plain-text fenced code block. Keep post ID, topic, status, quality, sources, verification notes, and repository messages outside the code block.
+
+Never add numbering, bullets, headings, labels, citations, hashtags, emojis, or commentary inside the clean copy.
+
 ### After creating a draft
 
 Report:
 
 - saved post ID;
 - topic and country focus;
-- final clean copy;
+- clean copy in one plain-text code block;
 - quality score;
 - verification result;
 - duplicate-check result;
@@ -507,19 +527,21 @@ Keep sources outside the copy. Show detailed sources only when requested, becaus
 
 ### After approval
 
-Show the clean ready-to-post copy prominently and confirm that it appears in output/ready-to-post.md.
+Report the post ID and ready status, then show the clean copy in one plain-text code block. Confirm that the same copy appears exactly once in output/ready-to-post.md.
 
 ### When showing the next ready post
 
-Return the oldest ready post by ready_at. Show the post ID and clean copy without internal audit details unless requested.
+Return the oldest ready post by ready_at, with post_id as the tie-breaker. Show the post ID followed by one clean-copy code block. Do not include internal audit details unless requested.
+
+If no post is ready, state that the queue is empty. Do not generate or approve content implicitly.
 
 ### After marking as posted
 
-Report the post ID, archive file, six published fact IDs, and successful removal from the ready queue.
+Report the post ID, archive file, six published fact IDs, and successful removal from both active drafts and the ready queue.
 
 ### On failure
 
-Lead with what did not complete. Name the affected file or operation and state whether any partial write occurred. Never hide uncertainty or fabricate completion.
+Lead with what did not complete. Name the affected file or operation and state whether any partial write occurred. Never hide uncertainty or fabricate completion. Do not show a stale or reconstructed copy as ready when repository verification failed.
 
 ## Boundaries
 
