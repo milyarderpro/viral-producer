@@ -1,5 +1,7 @@
 # Viral Trivia Content DNA
 
+Editorial version: 2.0 — Stage 10.2
+
 ## 1. Purpose
 
 This document defines the editorial DNA for short Facebook Reels trivia scripts aimed primarily at audiences in the United States, with Canada, the United Kingdom, and Australia as secondary markets.
@@ -219,21 +221,44 @@ Do not force every sentence into the same grammatical opening. Maintain visual c
 
 ## 9. Surprise Operators
 
-Use one strong surprise mechanism per fact:
+Every selected fact must have one primary surprise operator. Use these controlled operator families:
 
-- only or unique distinction;
-- first documented occurrence;
-- cannot or never under a defined condition;
-- counterintuitive classification;
-- exact number or ratio;
-- surprising historical origin;
-- familiar item with an unfamiliar function;
-- scale comparison;
-- everyday mistake and consequence;
-- unusual biological feature;
-- visually strange but verified behavior.
+1. `belief_reversal` — contradicts a common assumption or reveals a counterintuitive classification.
+2. `hidden_mechanism` — explains an unseen cause, function, or process behind something familiar.
+3. `visual_biology` — presents an unusual body feature, behavior, shape, or adaptation that is easy to picture.
+4. `scale_number` — uses a number, ratio, distance, duration, or comparison that changes the viewer's sense of scale.
+5. `historical_origin` — reveals an unexpected inventor, original purpose, documented first, or past practice.
+6. `geographic_quirk` — uses an unusual border, location, local rule, place design, or spatial relationship.
+7. `everyday_consequence` — connects a familiar action or object to an unexpected but useful result.
+8. `record_superlative` — states a verified only, first, tallest, deepest, longest, largest, oldest, or similar distinction.
 
-Use absolute words carefully. Terms such as "only," "first," "never," "always," "largest," and "oldest" require direct source support and a clearly defined scope.
+Assign the operator from the reason the fact is interesting, not merely its subject. A fact may contain multiple elements, but only its primary payoff counts toward diversity.
+
+### Operator diversity gate
+
+A standard six-fact post must:
+
+- use at least four distinct operator families;
+- use no operator family more than twice;
+- contain no more than two `record_superlative` facts;
+- avoid consecutive facts with the same operator when another order is possible;
+- give Facts 1 and 6 different primary operators.
+
+A post containing six records, six definitions, six storage warnings, or six visually similar animal features fails even when every claim is accurate.
+
+### Per-fact viral strength
+
+Rate each selected fact before post-level scoring:
+
+- **0 — weak:** familiar textbook knowledge, a definition without a payoff, vague information, or a fact that needs heavy explanation to become interesting.
+- **1 — usable:** clear and accurate with some novelty, but familiar, less visual, or less likely to be repeated or shared.
+- **2 — strong:** counterintuitive, vivid, unusually specific, personally relatable, or immediately worth telling someone.
+
+A standard post must contain at least four strength-2 facts. The other two must score at least 1. Any strength-0 fact must be replaced before the post is saved.
+
+### Trigger-word discipline
+
+Words such as "actually," "only," "first," "never," "always," "largest," "deepest," and "oldest" are not surprise by themselves. Use them only when direct source evidence supports the exact scope.
 
 Limit repetitive trigger words such as "actually," "only," and "first" to approximately two or three uses per post.
 
@@ -241,28 +266,62 @@ Limit repetitive trigger words such as "actually," "only," and "first" to approx
 
 A strong post should not deliver six facts with the same emotional flavor.
 
-Aim for a balanced selection such as:
+Aim for a balanced selection containing:
 
-- two high-surprise facts;
-- one fact with a memorable number or scale;
-- one familiar everyday connection;
-- one visually strange, funny, or mildly gross fact;
-- one highly shareable closing fact.
+- wonder or disbelief;
+- a memorable number, scale, or comparison;
+- a familiar everyday connection;
+- a visually strange, funny, mildly gross, or highly imaginable detail;
+- a historical, geographic, or causal reveal when the topic supports it;
+- a final fact that viewers are likely to repeat to someone else.
+
+These are selection goals, not six mandatory one-to-one slots. Operator diversity remains the hard rule.
 
 Mild gross-out content is acceptable when non-graphic and scientifically relevant. Do not use gore, suffering, humiliation, or shock for its own sake.
+
+### Anti-textbook rule
+
+Accuracy alone is not enough. Reject or replace a fact when it reads primarily like:
+
+- a dictionary definition;
+- a basic classroom statement;
+- an obvious category description;
+- a list of body parts or functions without an unexpected consequence;
+- a general fact that most target viewers are likely to know;
+- a technical statement whose interesting meaning is not visible in the sentence.
+
+A classroom fact may survive only when the final sentence contains a concrete, counterintuitive payoff supported by the source.
+
+Weak:
+
+    Rods help people see in low light, while cones detect color.
+
+Stronger pattern:
+
+    [Familiar sensory experience] happens because [unexpected mechanism or limitation with a concrete consequence].
+
+Do not manufacture novelty with dramatic adjectives. Replace a weak claim with a stronger verified claim instead.
 
 ## 11. Fact Ordering
 
 Order facts for retention and looping:
 
-1. Strongest scroll-stopping fact.
-2. Clear counterintuitive fact.
-3. Fact with a number, scale, or concrete comparison.
-4. Familiar or practically relevant fact.
-5. Visually strange or socially shareable fact.
-6. Second-strongest fact, chosen to create a satisfying final payoff before the video loops.
+1. Start with a strength-2 fact that is immediately understandable and visually or conceptually surprising.
+2. Follow with a different operator and a clear counterintuitive payoff.
+3. Use a number, scale, mechanism, or comparison that changes the rhythm.
+4. Add a familiar or personally relevant connection.
+5. Use a socially shareable, visual, historical, or mildly strange reveal.
+6. End with a different strength-2 operator that creates the second-strongest or strongest final payoff.
 
-Do not bury the strongest facts in the middle.
+Before saving, compare Facts 1 and 6 against all six candidates selected for the post. Both must be strength 2 and rank among the three strongest facts.
+
+Do not:
+
+- bury the strongest facts in the middle;
+- open with background information needed only for later facts;
+- end with the weakest leftover candidate;
+- place more than two facts with the same sentence pattern next to each other;
+- use the same operator for Facts 1 and 6.
 
 ## 12. Topic Coherence
 
@@ -289,6 +348,7 @@ Minimum requirements:
 
 - use at least one authoritative or primary source for ordinary low-risk facts;
 - use stronger corroboration for changing, disputed, medical, safety, or record-based claims;
+- open the final source and confirm that its visible content directly supports the canonical claim;
 - record the source URL and verification date outside the final copy;
 - preserve important qualifiers from the source;
 - discard a claim when its meaning cannot be verified clearly;
@@ -301,9 +361,24 @@ Preferred source order:
 3. Official organizations responsible for the subject or record.
 4. High-quality reference works and reputable reporting for historical context.
 
-Do not use another trivia page, social post, short-form video, AI-generated answer, or unsourced listicle as the final authority.
+Do not use another trivia page, social post, short-form video, AI-generated answer, search-result snippet, or unsourced listicle as the final authority.
 
-### Time-sensitive claims
+### Source accessibility
+
+A search result title or snippet does not prove a claim. The supporting page, document, or readable extract must be opened during verification.
+
+A source passes the accessibility check when:
+
+- the relevant claim can be read directly;
+- the publisher and page identity are clear;
+- the content is not available only through a search snippet;
+- the cited URL is stable enough for later review.
+
+A source blocked by a login, paywall, CAPTCHA, expired link, or unreadable document may still guide research, but it cannot be the only persisted authority. Add a second accessible authoritative source or discard the candidate.
+
+A readable official PDF is acceptable. A PDF whose relevant passage cannot be accessed or located does not pass.
+
+### Time-sensitive and absolute claims
 
 Recheck claims involving:
 
@@ -314,22 +389,40 @@ Recheck claims involving:
 - officeholders;
 - company statistics;
 - scientific estimates that may have been updated;
-- words such as current, largest, oldest, first, or only.
+- words such as current, largest, oldest, first, only, tallest, deepest, and longest.
 
-Include a date or scope when the claim could become outdated.
+Include a date or scope when the claim could become outdated. Record and superlative claims require direct support for the exact category, geography, measurement, and time context used in the final sentence.
 
 ## 14. Accuracy-Preserving Copy Rules
 
+The final surface sentence must preserve the same claim boundaries as the canonical claim and its sources.
+
+Before selection and again after copywriting, compare:
+
+1. **Subject:** the same person, species, object, institution, or place.
+2. **Relationship:** the same property, behavior, cause, event, or distinction.
+3. **Geographic scope:** city, state, country, continent, region, or world.
+4. **Time scope:** current, historical period, measured date, or documented occurrence.
+5. **Quantity:** number, unit, estimate, threshold, and measurement method.
+6. **Qualifier:** may, can, usually, known, documented, surveyed, one of, estimated, or similar limits.
+7. **Record category:** the exact class being compared, such as natural versus man-made or United States versus North America.
+
 Never:
 
+- turn "United States" into "America" or "North America";
 - turn "may" into "does";
 - turn "one of the largest" into "the largest";
 - turn an estimate into an exact measurement;
+- turn "surveyed miles" into total physical size;
 - remove a location or historical period that defines the claim;
 - present folklore, rumor, or legend as established fact;
 - invent a cause merely because two facts are associated;
 - attach an impressive number from a different source or context;
 - use a technically true statement that creates a materially false impression.
+
+Any change in scope requires new verification. A broader or stronger surface statement than the evidence is a hard failure.
+
+For every absolute or superlative word, be able to point to direct source language supporting that exact category and scope. If the evidence uses a narrower qualifier, preserve it.
 
 If a necessary qualifier makes a line too long, replace the fact instead of deleting the qualifier.
 
@@ -379,29 +472,74 @@ A surprising fact is not worth publishing if it could reasonably cause harm or m
 
 ## 17. Quality Score
 
-Score every draft from 0 to 2 on each dimension:
+Score every draft from 0 to 2 on six dimensions. Give one concise evidence-based reason for every dimension. Score the actual six-line script, not the effort used to produce it.
 
-1. Opening strength.
-2. Surprise quality across all six facts.
-3. Concrete detail and memorability.
-4. Shareability or save value.
-5. Readability and visual balance.
-6. Factual confidence and source quality.
+### 1. Opening strength
+
+- **0:** Fact 1 is confusing, familiar, slow, or weaker than obvious alternatives in the post.
+- **1:** Fact 1 is clear and relevant but only moderately surprising.
+- **2:** Fact 1 is strength 2, immediately understandable, and one of the three strongest facts.
+
+### 2. Surprise quality
+
+- **0:** Most facts are familiar, textbook-like, repetitive, or dependent on exaggerated wording.
+- **1:** The post contains some strong surprises but also familiar material or limited operator variety.
+- **2:** At least four facts are strength 2, at least four operator families are present, and no fact is weak filler.
+
+### 3. Concrete detail and memorability
+
+- **0:** Claims are vague, abstract, or hard to visualize and remember.
+- **1:** Some facts contain useful detail, but the post has uneven specificity.
+- **2:** Most facts contain a memorable number, comparison, consequence, place, image, mechanism, or time detail.
+
+### 4. Shareability or save value
+
+- **0:** The facts are correct but offer little reason to repeat, save, or discuss them.
+- **1:** Two or three facts feel repeatable or useful.
+- **2:** At least four facts create a clear tell-someone, replay, comment, or save reaction without sensationalism.
+
+### 5. Readability and visual balance
+
+- **0:** Any line is unclear, fragmented, overloaded, or outside the allowed length without a necessary reason.
+- **1:** The copy is understandable but has stiffness, repetitive syntax, or visibly uneven lines.
+- **2:** All six lines are natural, quickly readable, structurally varied, and visually balanced within the word rules.
+
+### 6. Factual confidence and source quality
+
+- **0:** Any claim is unsupported, materially ambiguous, unsafe, inaccessible without fallback, or broader than its evidence.
+- **1:** Claims are generally supported, but a source, qualifier, freshness check, or scope detail needs improvement.
+- **2:** Every surface sentence is directly supported by accessible authoritative evidence, preserves exact scope, and passes freshness and safety checks.
 
 Maximum score: 12.
 
 Publishing threshold:
 
 - total score must be at least 10;
+- opening strength must score 2;
 - readability must score 2;
 - factual confidence must score 2;
-- every hard formatting, safety, and duplicate rule must pass.
+- every hard formatting, safety, originality, operator-diversity, viral-strength, source-access, and scope-preservation rule must pass.
 
-A high total score cannot compensate for an unverified claim, a duplicate fact, or a safety failure.
+A high total score cannot compensate for an unverified claim, duplicate fact, inaccessible sole source, scope drift, weak filler, or safety failure.
+
+### Score-calibration rule
+
+Do not assign 2 because a dimension merely lacks an obvious error. A 2 means the explicit evidence above is present. A 1 is a valid passing description for an adequate but non-exceptional dimension.
+
+A score of 12 is exceptional. Before saving 12/12, challenge the two weakest facts and confirm all of the following:
+
+- at least five facts have viral strength 2;
+- at least four operator families are present;
+- Facts 1 and 6 use different operators and are among the three strongest;
+- no line is textbook-like, familiar filler, or dependent on hype;
+- every source and surface-scope check passes;
+- every dimension has a specific rationale explaining why it deserves 2.
+
+If any condition is uncertain, lower the score or replace the weak fact. Never inflate a score to reach the publishing threshold.
 
 ## 18. Final Editorial Checklist
 
-Before a draft may be saved as ready for approval, confirm:
+Before a draft may be saved for approval, confirm:
 
 - The post has exactly six facts.
 - The hook and CTA follow the standard format.
@@ -409,11 +547,21 @@ Before a draft may be saved as ready for approval, confirm:
 - Each fact is ideally 12 to 15 words and no more than 18 words.
 - The six lines have reasonably balanced visual length.
 - The topic is coherent.
-- Fact 1 and Fact 6 are among the strongest.
-- The emotional mix is not repetitive.
-- Every claim has been independently verified.
-- Required qualifiers remain intact.
+- Every selected fact has one primary surprise operator.
+- At least four distinct operator families appear.
+- No operator appears more than twice.
+- No more than two facts use `record_superlative`.
+- At least four facts have viral strength 2 and none has strength 0.
+- Facts 1 and 6 are strength 2, use different operators, and rank among the three strongest facts.
+- The emotional mix and sentence patterns are not repetitive.
+- No fact is merely a textbook definition or familiar filler.
+- Every claim has been independently verified from opened source content.
+- An inaccessible source has an accessible authoritative fallback.
+- Subject, relationship, geography, time, quantity, qualifier, and record category match the evidence.
+- Every absolute or superlative term has direct support for its exact scope.
 - No fact is duplicated in the current batch or fact ledger.
 - No unsafe or high-risk instruction is present.
 - The final copy contains no citations, bullets, hashtags, emojis, or audit notes.
-- The quality score is at least 10 out of 12.
+- Every quality dimension has an evidence-based rationale.
+- The quality score is at least 10 out of 12 and all required dimensions score 2.
+- A 12/12 score passes the additional calibration review.
