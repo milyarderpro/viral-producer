@@ -583,7 +583,7 @@ Completed commit:
 
 ### Stage 10.6 — Plugin refresh guide
 
-Status: PLANNED
+Status: COMPLETE
 
 Update:
 
@@ -597,6 +597,10 @@ Document:
 - how to verify the installed instruction version;
 - three saved regression prompts for geography, animals, and body science;
 - how to compare the new outputs with the pre-refinement baseline.
+
+Completed commit:
+
+- d6a9e8b — Add plugin refresh and validation guide
 
 ### Stage 10.7 — Controlled live validation
 
@@ -675,3 +679,4 @@ Do not rely on conversation history as the only record of the plan.
 - Added the backward-compatible editorial audit contract with per-fact operator and validation fields, compact candidate accounting, quality rationales, legacy approval boundaries, publication preservation, and hard consistency checks.
 - Implemented runtime generation and self-critique guardrails with live candidate accounting, opened-source verification, operator and strength selection, exact scope checks, weakest-fact challenges, 12/12 adversarial review, legacy upgrades, and schema-aligned persistence.
 - Expanded the acceptance suite from 15 to 23 tests with version-2 global gates and regressions for operator monoculture, scope drift, textbook filler, score inflation, inaccessible sources, persisted audit metadata, opening and closing strength, and legacy compatibility.
+- Added the manual Editorial Version 2 refresh guide for the existing private Plugin or compatible GPT, including identity-preserving updates, read-only version checks, fresh-conversation verification, three saved content prompts, baseline comparison, and stale-instruction troubleshooting.
