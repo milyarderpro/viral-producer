@@ -558,7 +558,7 @@ Completed commits:
 
 ### Stage 10.5 — Editorial regression tests
 
-Status: PLANNED
+Status: COMPLETE
 
 Update:
 
@@ -576,6 +576,10 @@ Add tests for:
 - backward compatibility with the three existing drafts.
 
 After these tests are added, rerun all earlier acceptance tests affected by generation, revision, approval, persistence, and recovery.
+
+Completed commit:
+
+- e33efce — Add editorial regression test suite
 
 ### Stage 10.6 — Plugin refresh guide
 
@@ -670,3 +674,4 @@ Do not rely on conversation history as the only record of the plan.
 - Implemented Viral DNA v2 with eight controlled surprise operators, hard diversity and viral-strength gates, anti-textbook filtering, source-access checks, exact scope preservation, and anchored quality scoring.
 - Added the backward-compatible editorial audit contract with per-fact operator and validation fields, compact candidate accounting, quality rationales, legacy approval boundaries, publication preservation, and hard consistency checks.
 - Implemented runtime generation and self-critique guardrails with live candidate accounting, opened-source verification, operator and strength selection, exact scope checks, weakest-fact challenges, 12/12 adversarial review, legacy upgrades, and schema-aligned persistence.
+- Expanded the acceptance suite from 15 to 23 tests with version-2 global gates and regressions for operator monoculture, scope drift, textbook filler, score inflation, inaccessible sources, persisted audit metadata, opening and closing strength, and legacy compatibility.
