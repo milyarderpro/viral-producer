@@ -12,7 +12,7 @@ Repository produksi:
 
 Branch pengujian:
 
-    build/viral-content-gpt
+    main
 
 Jangan mengubah branch menjadi main sebelum seluruh acceptance test lulus dan pull request disetujui.
 
@@ -44,7 +44,7 @@ Siapkan:
 
 - akun ChatGPT atau workspace yang mengizinkan pembuatan workflow;
 - akses ke repository milyarderpro/viral-producer;
-- izin baca dan tulis pada branch build/viral-content-gpt;
+- izin baca dan tulis pada branch main;
 - GitHub connector, app, atau plugin yang tersedia pada workspace;
 - Web Search atau browser research yang tersedia pada pengalaman tersebut;
 - browser desktop untuk konfigurasi awal;
@@ -77,7 +77,7 @@ Jika koneksi berbasis user account tidak menyediakan pembatasan per repository, 
 
 Izin repository tidak selalu dapat dibatasi per branch. Perlindungan branch dan instruksi GPT menjadi lapisan tambahan:
 
-- seluruh pengujian menulis ke build/viral-content-gpt;
+- seluruh pengujian menulis ke main;
 - main tidak boleh ditulis selama instalasi dan acceptance test;
 - pertimbangkan branch protection pada main;
 - gunakan satu writer aktif sesuai data contract.
@@ -122,7 +122,7 @@ Gunakan jalur ini jika Plugin Creator tersedia.
 
 Kirim prompt berikut:
 
-    Buat plugin privat bernama Viral Producer untuk memproduksi naskah trivia Facebook Reels berbahasa Inggris. Gunakan file system/gpt-instructions.md dari repository milyarderpro/viral-producer sebagai instruksi workflow utama. Sertakan koneksi GitHub untuk membaca dan menulis repository tersebut pada branch build/viral-content-gpt, serta kemampuan web research untuk memverifikasi fakta. Repository adalah sumber kebenaran; jangan mengandalkan memory percakapan. Jangan publikasikan atau bagikan plugin sebelum acceptance test lulus.
+    Buat plugin privat bernama Viral Producer untuk memproduksi naskah trivia Facebook Reels berbahasa Inggris. Gunakan file system/gpt-instructions.md dari repository milyarderpro/viral-producer sebagai instruksi workflow utama. Sertakan koneksi GitHub untuk membaca dan menulis repository tersebut pada branch main, serta kemampuan web research untuk memverifikasi fakta. Repository adalah sumber kebenaran; jangan mengandalkan memory percakapan. Jangan publikasikan atau bagikan plugin sebelum acceptance test lulus.
 
 Jika Plugin Creator meminta file instruksi, unduh atau lampirkan:
 
@@ -181,10 +181,10 @@ Description:
 
 ### 7.3 Instructions
 
-1. Buka file system/gpt-instructions.md dari branch build/viral-content-gpt.
+1. Buka file system/gpt-instructions.md dari branch main.
 2. Salin seluruh isinya.
 3. Tempelkan tanpa diringkas ke kolom Instructions.
-4. Pastikan bagian Runtime Configuration masih menunjuk ke build/viral-content-gpt.
+4. Pastikan bagian Runtime Configuration masih menunjuk ke main.
 5. Jangan mengganti branch menjadi main.
 
 Jika builder menolak panjang instruksi, jangan memangkas aturan data, deduplikasi, verifikasi, atau write safety. Gunakan Jalur A agar instruksi dapat menjadi skill yang lengkap.
@@ -218,7 +218,7 @@ Mulai percakapan baru dengan Viral Producer.
 
 Prompt:
 
-    Read plan.md and data/production-state.json from milyarderpro/viral-producer on branch build/viral-content-gpt. Report the current implementation stage, revision, next post number, and next fact number. Do not modify anything.
+    Read plan.md and data/production-state.json from milyarderpro/viral-producer on branch main. Report the current implementation stage, revision, next post number, and next fact number. Do not modify anything.
 
 Lulus jika:
 
@@ -245,7 +245,7 @@ Lulus jika:
 - production-state.json diperbarui;
 - revision bertambah satu;
 - GPT menampilkan commit-backed save status;
-- penulisan terjadi pada build/viral-content-gpt;
+- penulisan terjadi pada main;
 - main tetap tidak berubah.
 
 Jika write meminta persetujuan, periksa target repository, branch, dan file sebelum menyetujui.
@@ -307,7 +307,7 @@ Setelah smoke test lulus, jalankan seluruh AT-01 sampai AT-23 dan final consiste
 Setelah setiap operasi tulis:
 
 1. Buka repository milyarderpro/viral-producer.
-2. Pilih branch build/viral-content-gpt.
+2. Pilih branch main.
 3. Periksa commit terbaru.
 4. Pastikan file yang berubah sesuai operasi.
 5. Buka file dan validasi hasilnya.
@@ -367,7 +367,7 @@ Periksa:
 - apakah GitHub connection mengizinkan write actions;
 - apakah workspace meminta approval untuk tindakan tulis;
 - permission akun GitHub pada repository;
-- branch protection pada build/viral-content-gpt;
+- branch protection pada main;
 - apakah GPT mencoba menulis main;
 - apakah file telah berubah dan SHA menjadi stale.
 
@@ -450,7 +450,7 @@ Instalasi atau refresh siap untuk controlled live validation jika semua jawaban 
 - [ ] Editorial version adalah 2.0 — Stage 10.2.
 - [ ] Test specification version adalah 2.0 — Stage 10.5.
 - [ ] Repository adalah milyarderpro/viral-producer.
-- [ ] Runtime branch adalah build/viral-content-gpt.
+- [ ] Runtime branch adalah main.
 - [ ] GitHub memakai akun dengan akses minimum.
 - [ ] Akses read berhasil.
 - [ ] Akses write tetap tersedia tetapi belum dipakai sebelum read-only checks lulus.
@@ -468,10 +468,10 @@ Gunakan bagian ini untuk memperbarui Viral Producer yang sudah terpasang. Jangan
 
 ### 16.1 Sebelum memperbarui
 
-1. Pastikan seluruh perubahan berada pada branch build/viral-content-gpt.
+1. Pastikan seluruh perubahan berada pada branch main.
 2. Catat nama plugin, visibility, GitHub connection, dan permission saat ini.
 3. Pastikan plugin masih private.
-4. Jangan mengubah branch ke main.
+4. Jangan mengubah branch dari main.
 5. Jangan menjalankan produksi atau acceptance test selama proses refresh.
 
 File sumber terbaru:
@@ -501,7 +501,7 @@ Data tersebut harus tetap dibaca langsung dari GitHub.
 5. Pertahankan nama, description, visibility, GitHub connection, dan Web Search.
 6. Kirim prompt update berikut kepada Plugin Creator:
 
-    Perbarui plugin privat Viral Producer yang sedang saya edit. Pertahankan identitas plugin, nama, visibility, GitHub connection, permission, dan audience saat ini. Ganti instruksi workflow dengan isi lengkap terbaru dari system/gpt-instructions.md pada repository milyarderpro/viral-producer branch build/viral-content-gpt. Refresh reference system/content-dna.md dan system/data-contract.md dari branch yang sama. Gunakan tests/acceptance-tests.md sebagai test specification terbaru. Jangan mengubah branch ke main, jangan mengubah permission, jangan membuat plugin baru, dan jangan menyentuh data produksi. Setelah selesai, sebutkan file yang diperbarui dan biarkan plugin tetap private.
+    Perbarui plugin privat Viral Producer yang sedang saya edit. Pertahankan identitas plugin, nama, visibility, GitHub connection, permission, dan audience saat ini. Ganti instruksi workflow dengan isi lengkap terbaru dari system/gpt-instructions.md pada repository milyarderpro/viral-producer branch main. Refresh reference system/content-dna.md dan system/data-contract.md dari branch yang sama. Gunakan tests/acceptance-tests.md sebagai test specification terbaru. Jangan mengubah branch dari main, jangan mengubah permission, jangan membuat plugin baru, dan jangan menyentuh data produksi. Setelah selesai, sebutkan file yang diperbarui dan biarkan plugin tetap private.
 
 7. Jika Plugin Creator meminta attachment, unduh file terbaru dari branch pengujian dan lampirkan file dengan nama yang sama.
 8. Pastikan file lama diganti, bukan ditambahkan sebagai salinan bernama berbeda.
@@ -514,7 +514,7 @@ Jika plugin dikelola melalui sinkronisasi GitHub, gunakan mekanisme update dari 
 
 1. Buka My GPTs lalu pilih Viral Producer yang sama.
 2. Pilih Edit.
-3. Buka system/gpt-instructions.md terbaru dari branch build/viral-content-gpt.
+3. Buka system/gpt-instructions.md terbaru dari branch main.
 4. Ganti seluruh kolom Instructions dengan isi file lengkap tanpa diringkas.
 5. Ganti knowledge/reference lama dengan versi terbaru dari:
    - system/content-dna.md;
@@ -542,7 +542,7 @@ Percakapan lama dapat membawa konteks atau perilaku sebelum update. Hasil valida
 
 Kirim prompt:
 
-    Read system/gpt-instructions.md, system/content-dna.md, system/data-contract.md, and tests/acceptance-tests.md from milyarderpro/viral-producer on branch build/viral-content-gpt. Report the instruction version, editorial version, test specification version, configured repository, configured branch, and whether generation_audit is required for new drafts. Do not modify anything.
+    Read system/gpt-instructions.md, system/content-dna.md, system/data-contract.md, and tests/acceptance-tests.md from milyarderpro/viral-producer on branch main. Report the instruction version, editorial version, test specification version, configured repository, configured branch, and whether generation_audit is required for new drafts. Do not modify anything.
 
 Hasil yang benar:
 
@@ -550,7 +550,7 @@ Hasil yang benar:
     Editorial version: 2.0 — Stage 10.2
     Test specification version: 2.0 — Stage 10.5
     Repository: milyarderpro/viral-producer
-    Branch: build/viral-content-gpt
+    Branch: main
     generation_audit required for new drafts: yes
 
 Periksa GitHub setelah prompt. Lulus hanya jika:
