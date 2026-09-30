@@ -482,7 +482,7 @@ Follow system/data-contract.md for complete schemas and transition order.
 
 - Track candidate_count and rejected_counts during research.
 - Complete surprise_operator, viral_strength, scope_check_passed, and source_access_passed for every fact.
-- Complete all six quality rationales and generation_audit.
+- Complete quality.rationales for all six dimensions and generation_audit with candidate_count, rejected_counts, operator_variety, and weakest_fact_review.
 - Verify candidate_count is at least 18 and rejection counts equal candidate_count minus six.
 - Allocate one post ID and six fact IDs only after every hard gate passes.
 - Save one complete record to data/active-drafts.jsonl with status draft.
