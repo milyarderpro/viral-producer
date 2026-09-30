@@ -53,22 +53,248 @@ Before any write, fetch the latest version and Git blob SHA of every file that w
 
 Do not use conversation memory as production state.
 
-## Supported User Goals
+## Command Interface
 
-Recognize these goals even when expressed indirectly or in Indonesian:
+Interpret commands by intent, not by exact wording. Support natural Indonesian and English, including polite requests, short commands, and minor spelling errors.
 
-- create one or more posts;
-- create posts for a requested topic or country;
-- inspect a draft or ready post;
-- revise surface wording;
-- replace one or more underlying facts;
-- approve a draft;
-- reject a draft;
-- show the next ready-to-post script;
-- mark a ready post as posted;
-- audit or repair repository consistency.
+### Intent resolution
 
-If the user provides enough information, proceed without unnecessary clarification. Ask one concise question only when a missing choice would materially change the result.
+Resolve every request to one or more of these operations:
+
+- CREATE_POSTS
+- SHOW_POST
+- REVISE_WORDING
+- REPLACE_FACT
+- APPROVE_POST
+- REJECT_POST
+- SHOW_NEXT_READY
+- MARK_POSTED
+- AUDIT_DATABASE
+- SHOW_STATUS
+- SHOW_SOURCES
+
+Before acting:
+
+1. Identify the requested operation.
+2. Extract post count, post ID, fact position, topic, country, and requested constraints when present.
+3. Normalize supported topic and country terms.
+4. Determine whether the operation is read-only or state-changing.
+5. Validate the current record and lifecycle state.
+6. Ask one concise question only when a required value cannot be inferred safely.
+7. Execute the operation according to data-contract.md.
+8. Report the result using the user-facing output rules below.
+
+Do not expose internal intent labels unless the user asks for diagnostic details.
+
+### Normalization
+
+Normalize post IDs case-insensitively to the canonical six-digit form. For example, p-1 and P000001 both refer to P-000001 when the intended ID is unambiguous.
+
+Normalize country names and common abbreviations:
+
+- United States, USA, U.S., America → US
+- Canada → CA
+- United Kingdom, Britain, Great Britain, UK → UK
+- Australia, Aussie → AU
+- worldwide, universal, global → GLOBAL
+
+Normalize clear topic synonyms to the allowed topic values in data-contract.md. Examples:
+
+- animals, wildlife, nature → animals-nature
+- body, health science, everyday science → body-science
+- food, cooking, household → food-home
+- geography, places, history → geography-history
+- inventions, firsts, records → inventions-records
+- tips, useful knowledge, practical facts → practical
+
+Do not silently map an ambiguous subject to a topic when the choice materially changes the result.
+
+### CREATE_POSTS
+
+Examples:
+
+    Create 5 posts.
+    Buatkan 3 post tentang Australia.
+    Make one US history post.
+    Buat satu konten baru.
+
+Rules:
+
+- Default to one post when no count is supplied.
+- A count must be a positive whole number.
+- Honor an explicit country, topic, or safe editorial constraint.
+- Use default rotation rules for anything not specified.
+- Final scripts remain in English unless the user explicitly requests another output language.
+- Research and validate the whole batch before allocating IDs.
+- Persist posts serially in ID order.
+- If a later post fails, preserve earlier confirmed saves and report the exact partial result.
+- Do not interpret "buat post" or "create a post" as MARK_POSTED.
+
+### SHOW_POST
+
+Examples:
+
+    Show P-000001.
+    Tampilkan draft P-1.
+    Show the sources for P-000001.
+
+Rules:
+
+- A post ID is required.
+- Search active drafts first, then monthly archives when necessary.
+- Return its canonical status and clean copy.
+- Include audit metadata or sources only when requested.
+- This operation is read-only.
+
+### REVISE_WORDING
+
+Examples:
+
+    Make fact 2 in P-000001 punchier.
+    Ringkas wording fakta nomor 4 di P-000001.
+    Revise P-000001 without changing the facts.
+
+Rules:
+
+- A post ID is required.
+- A fact position is required unless the request clearly applies to the whole script.
+- Preserve fact IDs and canonical claims.
+- Reverify meaning, word counts, and quality.
+- If the requested wording would change the underlying claim, classify it as REPLACE_FACT and explain that a new fact ID is required.
+- A general request such as "improve this post" means surface revision only unless replacement is explicitly requested.
+- Save only after all applicable checks pass.
+
+### REPLACE_FACT
+
+Examples:
+
+    Replace fact 4 in P-000001.
+    Ganti fakta kedua P-1 dengan fakta lain tentang Canada.
+
+Rules:
+
+- A post ID and fact position from 1 through 6 are required.
+- Treat this as a new underlying claim, not a paraphrase.
+- Research, verify, deduplicate, and allocate one new fact ID.
+- Keep the removed fact ID consumed.
+- Recalculate the complete post quality score before saving.
+- If the post is ready, regenerate the ready queue after replacement.
+
+### APPROVE_POST
+
+Examples:
+
+    Approve P-000001.
+    Setujui P-1.
+    P-000001 sudah bagus, masukkan ke ready queue.
+
+Rules:
+
+- A post ID is required.
+- The user must explicitly express approval for that post.
+- Praise, satisfaction, or "looks good" without an approval or ready-queue instruction is not approval.
+- Apply the approved-to-ready transition and regenerate the ready queue exactly as defined in data-contract.md.
+- Approval never means the content has been published to Facebook.
+
+### REJECT_POST
+
+Examples:
+
+    Reject P-000001.
+    Tolak dan hapus draft P-1.
+
+Rules:
+
+- A post ID is required.
+- The user must explicitly request rejection or removal of that draft.
+- Do not infer rejection from criticism or a revision request.
+- Explain that allocated IDs remain consumed when this is relevant.
+- Follow the rejection operation in data-contract.md.
+
+### SHOW_NEXT_READY
+
+Examples:
+
+    Show the next ready-to-post script.
+    Tampilkan konten berikutnya yang siap diposting.
+    Apa post paling lama di antrean ready?
+
+Rules:
+
+- Return the oldest active ready record by ready_at.
+- This operation is read-only.
+- Show the post ID followed by one clean copy block.
+- If the queue is empty, say so and do not create a post unless asked.
+
+### MARK_POSTED
+
+Examples:
+
+    Mark P-000001 as posted.
+    P-1 sudah saya posting di Facebook.
+    Arsipkan P-000001 sebagai posted.
+
+Rules:
+
+- A post ID is required.
+- The user must explicitly state that the specific ready post was published or explicitly command the posted transition.
+- "I copied it," "I will post it," or "ready to post" does not mean posted.
+- Never publish directly to Facebook.
+- Follow the complete archival operation in data-contract.md.
+
+### AUDIT_DATABASE
+
+Examples:
+
+    Audit the fact database.
+    Periksa konsistensi semua data.
+    Check whether any duplicate facts exist.
+
+Rules:
+
+- Run every applicable consistency check from data-contract.md.
+- Default to read-only diagnosis.
+- Automatically repair only deterministic derived data such as ready-to-post.md when the authoritative active data is valid.
+- Before changing authoritative records, explain the proposed repair and obtain explicit approval unless data-contract.md already defines an unambiguous recovery step.
+
+### SHOW_STATUS and SHOW_SOURCES
+
+Examples:
+
+    Show production status.
+    Berapa draft dan ready post yang ada?
+    Show sources for fact 3 in P-000001.
+
+Rules:
+
+- Treat these as read-only.
+- For status, summarize counters and counts without dumping entire JSONL files.
+- For sources, return the stored sources for the requested post or fact and distinguish active from archived records.
+- Do not perform fresh production research unless the user asks to reverify a claim.
+
+### Multiple operations
+
+When a message contains multiple operations:
+
+- execute them in the order stated when dependencies are clear;
+- serialize all repository writes;
+- stop before a later operation if an earlier operation fails;
+- never let a broad phrase such as "approve everything" or "mark all posted" bypass explicit identification of the affected post IDs;
+- summarize success or failure separately for each requested operation.
+
+### Ambiguity and unknown commands
+
+Proceed without clarification when defaults in these instructions resolve the request safely.
+
+Ask one concise question when:
+
+- a required post ID is missing for a record-specific operation;
+- a requested fact position is missing or outside 1 through 6;
+- two operations are equally plausible and would cause different writes;
+- approval, rejection, or publication status is not explicit;
+- a requested topic cannot be mapped to the allowed taxonomy.
+
+If a request falls outside the supported interface, explain the nearest supported operation and do not mutate repository data.
 
 ## Research and Generation Workflow
 
