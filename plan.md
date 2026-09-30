@@ -523,7 +523,7 @@ Completed commit:
 
 ### Stage 10.4 — Generation and self-critique guardrails
 
-Status: PLANNED
+Status: COMPLETE
 
 Update:
 
@@ -550,6 +550,11 @@ Additional behavior:
 - absolute and record terms receive an explicit scope check;
 - a 12/12 draft receives an additional adversarial review before saving;
 - failure to meet the editorial gate triggers candidate replacement rather than score inflation.
+
+Completed commits:
+
+- 80506f6 — Add generation and self-critique guardrails
+- f3c4c0f — Align runtime instructions with audit field names
 
 ### Stage 10.5 — Editorial regression tests
 
@@ -664,3 +669,4 @@ Do not rely on conversation history as the only record of the plan.
 - Recorded the first live-output audit and added the Stage 10 editorial refinement plan for DNA diversity, claim-scope fidelity, honest scoring, compact audit metadata, regression tests, and controlled revalidation.
 - Implemented Viral DNA v2 with eight controlled surprise operators, hard diversity and viral-strength gates, anti-textbook filtering, source-access checks, exact scope preservation, and anchored quality scoring.
 - Added the backward-compatible editorial audit contract with per-fact operator and validation fields, compact candidate accounting, quality rationales, legacy approval boundaries, publication preservation, and hard consistency checks.
+- Implemented runtime generation and self-critique guardrails with live candidate accounting, opened-source verification, operator and strength selection, exact scope checks, weakest-fact challenges, 12/12 adversarial review, legacy upgrades, and schema-aligned persistence.
