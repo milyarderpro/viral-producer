@@ -1,25 +1,27 @@
 {
   "schema_version": 1,
-  "revision": 9,
-  "next_post_number": 6,
-  "next_fact_number": 32,
+  "revision": 10,
+  "next_post_number": 7,
+  "next_fact_number": 38,
   "operational_timezone": "Asia/Jakarta",
   "single_writer_mode": true,
-  "last_topic": "geography-history",
-  "last_country_focus": "AU",
+  "last_topic": "animals-nature",
+  "last_country_focus": "GLOBAL",
   "recent_topics": [
     "geography-history",
     "animals-nature",
     "body-science",
     "food-home",
-    "geography-history"
+    "geography-history",
+    "animals-nature"
   ],
   "recent_country_focuses": [
     "US",
     "GLOBAL",
     "GLOBAL",
     "GLOBAL",
-    "AU"
+    "AU",
+    "GLOBAL"
   ],
-  "updated_at": "2026-09-30T12:09:00Z"
+  "updated_at": "2026-09-30T12:40:00Z"
 }
