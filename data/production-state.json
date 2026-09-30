@@ -1,17 +1,19 @@
 {
   "schema_version": 1,
-  "revision": 1,
-  "next_post_number": 2,
-  "next_fact_number": 7,
+  "revision": 2,
+  "next_post_number": 3,
+  "next_fact_number": 13,
   "operational_timezone": "Asia/Jakarta",
   "single_writer_mode": true,
-  "last_topic": "geography-history",
-  "last_country_focus": "US",
+  "last_topic": "animals-nature",
+  "last_country_focus": "GLOBAL",
   "recent_topics": [
-    "geography-history"
+    "geography-history",
+    "animals-nature"
   ],
   "recent_country_focuses": [
-    "US"
+    "US",
+    "GLOBAL"
   ],
-  "updated_at": "2026-09-30T07:46:00Z"
+  "updated_at": "2026-09-30T07:47:00Z"
 }
