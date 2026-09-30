@@ -356,28 +356,44 @@ Completed commits:
 
 ### Stage 8 — Acceptance tests
 
-Status: NEXT
+Status: COMPLETE
 
-Create:
+Specification status: COMPLETE
+
+Execution status: NOT RUN — scheduled for Stage 10 after private GPT installation.
+
+Created:
 
     tests/acceptance-tests.md
 
-Minimum test coverage:
+Test coverage:
 
 1. Read-only state inspection.
 2. Default post generation.
 3. Country-specific generation.
-4. Exact duplicate rejection.
-5. Paraphrase duplicate rejection.
-6. Unsafe fact rejection.
-7. Full draft-to-posted lifecycle.
-8. Persistence across a new conversation.
-9. Git SHA conflict handling.
-10. Partial-write consistency recovery.
+4. Command and ID normalization.
+5. Exact duplicate rejection.
+6. Paraphrase duplicate rejection.
+7. Unsafe fact rejection.
+8. Surface wording revision.
+9. Underlying fact replacement.
+10. Approval and ready-queue parity.
+11. Persistence across a new conversation.
+12. Full ready-to-posted lifecycle.
+13. Idempotent posted retry.
+14. Git SHA conflict handling.
+15. Partial-write consistency recovery.
+16. Final full-database consistency audit.
+
+Every test defines its prompt, expected chat behavior, repository assertions, and pass condition. Results remain NOT RUN until executed and evidenced during Stage 10.
+
+Completed commit:
+
+- ab866bd — Add Viral Producer acceptance test suite
 
 ### Stage 9 — Manual installation guide
 
-Status: PENDING
+Status: NEXT
 
 Create:
 
@@ -458,3 +474,4 @@ Do not rely on conversation history as the only record of the plan.
 - Corrected approval ordering so active drafts reach ready status before the derived ready queue is regenerated.
 - Embedded the bilingual command interface in the main GPT instructions so intent handling and lifecycle rules remain synchronized.
 - Made ready-to-post rendering deterministic and corrected posted cleanup so the queue is always rebuilt from authoritative active records.
+- Defined acceptance tests as a reusable specification with objective repository assertions; actual execution remains reserved for the installed-GPT test stage.
