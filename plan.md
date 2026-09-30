@@ -323,7 +323,7 @@ Completed commit:
 
 ### Stage 7 — Ready-to-post output
 
-Status: NEXT
+Status: COMPLETE
 
 Approval must:
 
@@ -335,13 +335,28 @@ Marking a post as posted must:
 
 - add its facts to the published fact indexes;
 - add the post to data/posts/YYYY-MM.jsonl;
-- remove it from the ready queue;
 - remove it from active drafts;
+- regenerate the ready queue from the remaining active records;
 - update production state.
+
+Implementation requirements:
+
+- rebuild the complete Markdown queue deterministically instead of patching individual blocks;
+- order ready posts by ready_at and then post_id;
+- use fixed human-readable topic headings;
+- keep metadata outside the clean Facebook copy;
+- display paste-ready copy in one plain-text code block;
+- verify exact parity between chat copy, the active record, and the queue;
+- make partial posted transitions resume with the existing IDs and operation timestamp.
+
+Completed commits:
+
+- d9a7659 — Define deterministic ready-to-post rendering
+- ef210c1 — Specify ready-to-post output behavior
 
 ### Stage 8 — Acceptance tests
 
-Status: PENDING
+Status: NEXT
 
 Create:
 
@@ -442,3 +457,4 @@ Do not rely on conversation history as the only record of the plan.
 - Confirmed that permanent posts will be stored in monthly JSONL archives, not one file per post.
 - Corrected approval ordering so active drafts reach ready status before the derived ready queue is regenerated.
 - Embedded the bilingual command interface in the main GPT instructions so intent handling and lifecycle rules remain synchronized.
+- Made ready-to-post rendering deterministic and corrected posted cleanup so the queue is always rebuilt from authoritative active records.
