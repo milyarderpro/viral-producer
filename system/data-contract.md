@@ -436,11 +436,30 @@ Path:
 
     output/ready-to-post.md
 
-Required header:
+This file is a copy-friendly derived view. data/active-drafts.jsonl remains authoritative.
+
+### Empty queue
+
+When no active records have status ready, the complete file must be:
 
     # READY TO POST
 
-Render one block for every active draft whose status is ready, ordered by ready_at from oldest to newest.
+    No approved posts are waiting to be published.
+
+### Topic display names
+
+Render topic values in headings using this fixed mapping:
+
+- animals-nature → Animals and Nature
+- body-science → Body and Everyday Science
+- food-home → Food and Household Knowledge
+- geography-history → Geography and History
+- inventions-records → Inventions, Firsts, and Records
+- practical → Safe Practical Knowledge
+
+### Ready block
+
+Render one block for every active record whose status is ready.
 
 Required block:
 
@@ -464,13 +483,36 @@ Required block:
 
     ---
 
-Do not include sources, quality scores, internal status, or audit notes in this file.
+The heading identifies the post but is not part of the Facebook copy.
 
-If no posts are ready, keep only:
+The clean copy consists only of hook, six surface_text values in stored order, and CTA. Separate each component with exactly one blank line.
 
-    # READY TO POST
+Do not include sources, fact IDs, numbering, bullets, quality scores, internal status, audit notes, hashtags, or production guidance in the clean copy.
 
-    No approved posts are waiting to be published.
+hook, every surface_text value, and cta must each be a single line without embedded carriage returns or line feeds.
+
+### Deterministic rendering
+
+Every queue-changing operation must rebuild the complete file rather than append, remove, or patch an individual Markdown block.
+
+Rendering procedure:
+
+1. Read the latest active-drafts.jsonl and its Git blob SHA.
+2. Select only records whose status is ready.
+3. Validate that each selected record has a non-null ready_at, exactly six facts, and all required copy fields.
+4. Sort by ready_at ascending, then post_id ascending as the tie-breaker.
+5. Render the required header, all ready blocks, and separators.
+6. Use UTF-8, LF line endings, and exactly one final newline.
+7. Replace output/ready-to-post.md using its latest Git blob SHA.
+8. Fetch the result and confirm every ready post appears exactly once and no other post appears.
+
+If validation fails, do not replace a currently valid queue. Report the inconsistent record and repair the authoritative active data first.
+
+### Chat parity
+
+After approval or a SHOW_NEXT_READY request, reconstruct the clean copy from the authoritative active record. The hook, six facts, ordering, punctuation, and CTA shown in chat must exactly match the clean-copy portion of the corresponding queue block.
+
+Place the clean copy in one plain-text code block for convenient copying. Keep the post ID, status, and repository confirmation outside that code block.
 
 ## 16. Word Count Rule
 
@@ -562,15 +604,16 @@ Because the rejected fact snapshots were never added to the published fact index
 ### Mark as posted
 
 1. Confirm the post exists with status ready.
-2. Upsert its six fact snapshots into the correct fact index files as published records.
-3. Append one immutable post record to the correct monthly archive.
-4. Regenerate the ready queue without the post.
+2. Record one operation-wide published_at timestamp.
+3. Upsert its six fact snapshots into the correct fact index files as published records using that timestamp.
+4. Append one immutable post record to the correct monthly archive.
 5. Remove the post from active-drafts.jsonl.
-6. Update rotation state if required.
-7. Increment state revision.
-8. Confirm the archive and six fact records exist before reporting success.
+6. Regenerate the complete ready queue from the remaining active ready records.
+7. Update rotation state if required.
+8. Increment state revision.
+9. Fetch and confirm the archive record, all six published fact records, absence from active drafts, and absence from the ready queue before reporting success.
 
-This order favors duplicate prevention. If an operation stops midway, published fact locks may exist before the archive is complete; the recovery procedure must finish the transaction rather than create new IDs.
+This order favors duplicate prevention and keeps the queue derived from active drafts. If an operation stops midway, published fact locks or an archive record may exist before cleanup is complete; the recovery procedure must finish the same transaction with the existing IDs and published_at timestamp rather than create new records or timestamps.
 
 ## 19. Idempotency Rules
 
