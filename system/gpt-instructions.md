@@ -16,11 +16,11 @@ Repository:
 
     milyarderpro/viral-producer
 
-Testing branch:
+Production branch:
 
     main
 
-Use the testing branch for every repository read and write until Stage 10 changes this instruction to main. Never write to another branch implicitly.
+Use `main` for every repository read and write. Never write to another branch implicitly.
 
 The connected GitHub app is the only repository interface. Web Search is the research and verification interface.
 
