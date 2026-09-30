@@ -1,5 +1,7 @@
 # Instalasi Viral Producer di ChatGPT
 
+Documentation version: 2.0 — Stage 10.6
+
 ## 1. Tujuan
 
 Panduan ini menjelaskan cara memasang Viral Producer secara privat, menghubungkannya ke GitHub, memverifikasi akses baca dan tulis, lalu menyiapkannya untuk acceptance test.
@@ -252,7 +254,7 @@ Setelah test, jangan menghapus record secara manual atau menurunkan counter. Gun
 
 ## 10. Smoke Test Sebelum Acceptance Suite
 
-Jalankan berurutan:
+Jalankan berurutan setelah version check pada bagian 16 lulus.
 
 ### 10.1 Read-only
 
@@ -260,13 +262,32 @@ Gunakan AT-01. Pastikan tidak ada commit.
 
 ### 10.2 Write
 
-Gunakan AT-02. Catat post ID yang dihasilkan.
+Gunakan AT-02. Catat post ID yang dihasilkan. Periksa bahwa draft menyimpan:
+
+- minimal 18 kandidat pada generation_audit;
+- rejected_counts yang konsisten;
+- minimal empat operator;
+- per-fact viral strength, scope check, dan source-access check;
+- enam quality rationales;
+- dua weakest-fact reviews.
 
 ### 10.3 Duplicate
 
 Gunakan AT-05 dan AT-06. Pastikan duplicate exact dan paraphrase ditolak tanpa write.
 
-### 10.4 Lifecycle
+### 10.4 Editorial regression
+
+Jalankan AT-16 sampai AT-20. Kelimanya harus selesai tanpa write:
+
+- operator monoculture;
+- scope drift;
+- textbook-only facts;
+- score inflation;
+- inaccessible source.
+
+Jalankan AT-23 untuk memastikan tiga draft lama tetap dapat dibaca tetapi tidak melewati approval boundary.
+
+### 10.5 Lifecycle
 
 Gunakan post hasil AT-02:
 
@@ -276,8 +297,10 @@ Gunakan post hasil AT-02:
 4. AT-11 untuk ready queue dan percakapan baru.
 5. AT-12 untuk menandai posted.
 6. AT-13 untuk retry idempotent.
+7. AT-21 untuk memeriksa audit metadata setelah publikasi.
+8. AT-22 untuk memeriksa opening dan closing setelah publikasi.
 
-Setelah smoke test lulus, jalankan seluruh tests/acceptance-tests.md pada Stage 10.
+Setelah smoke test lulus, jalankan seluruh AT-01 sampai AT-23 dan final consistency audit.
 
 ## 11. Memeriksa Perubahan di GitHub
 
@@ -418,37 +441,209 @@ Jangan membangun fallback sebelum test membuktikan koneksi bawaan tidak cukup.
 
 ## 15. Checklist Instalasi
 
-Instalasi siap untuk Stage 10 jika semua jawaban adalah ya:
+Instalasi atau refresh siap untuk controlled live validation jika semua jawaban adalah ya:
 
-- [ ] Workflow dibuat sebagai Plugin atau GPT privat.
-- [ ] Instruksi lengkap terpasang.
-- [ ] Repository benar.
+- [ ] Workflow tetap menggunakan Plugin atau GPT privat yang sama.
+- [ ] Nama, visibility, GitHub connection, dan permission tidak berubah tanpa alasan.
+- [ ] system/gpt-instructions.md terpasang lengkap.
+- [ ] Instruction version adalah 2.0 — Stage 10.4.
+- [ ] Editorial version adalah 2.0 — Stage 10.2.
+- [ ] Test specification version adalah 2.0 — Stage 10.5.
+- [ ] Repository adalah milyarderpro/viral-producer.
 - [ ] Runtime branch adalah build/viral-content-gpt.
 - [ ] GitHub memakai akun dengan akses minimum.
 - [ ] Akses read berhasil.
-- [ ] Akses write berhasil.
+- [ ] Akses write tetap tersedia tetapi belum dipakai sebelum read-only checks lulus.
 - [ ] Web research tersedia.
+- [ ] generation_audit dan empat field editorial per fakta dikenali.
 - [ ] Main tidak berubah.
-- [ ] Conversation starters atau saved prompts tersedia.
+- [ ] Tiga saved regression prompts tersedia.
 - [ ] tests/acceptance-tests.md dapat dibuka.
-- [ ] Hasil smoke test dicatat.
+- [ ] Plugin masih Private atau Only me.
 - [ ] Tidak ada integrity error yang belum selesai.
 
-## 16. Handoff ke Stage 10
+## 16. Memperbarui Plugin ke Editorial Version 2
 
-Setelah instalasi, jangan langsung mengubah runtime branch ke main.
+Gunakan bagian ini untuk memperbarui Viral Producer yang sudah terpasang. Jangan membuat plugin kedua dengan nama yang sama.
 
-Mulai Stage 10 dengan:
+### 16.1 Sebelum memperbarui
+
+1. Pastikan seluruh perubahan berada pada branch build/viral-content-gpt.
+2. Catat nama plugin, visibility, GitHub connection, dan permission saat ini.
+3. Pastikan plugin masih private.
+4. Jangan mengubah branch ke main.
+5. Jangan menjalankan produksi atau acceptance test selama proses refresh.
+
+File sumber terbaru:
+
+    system/gpt-instructions.md
+    system/content-dna.md
+    system/data-contract.md
+    tests/acceptance-tests.md
+    docs/gpt-installation.md
+
+Jangan mengganti file data aktif dengan snapshot:
+
+    data/production-state.json
+    data/active-drafts.jsonl
+    data/facts/*.jsonl
+    data/posts/*.jsonl
+    output/ready-to-post.md
+
+Data tersebut harus tetap dibaca langsung dari GitHub.
+
+### 16.2 Jalur A — Memperbarui Plugin yang sudah ada
+
+1. Buka Plugins.
+2. Pilih Viral Producer yang sudah dibuat.
+3. Pilih Edit Plugin.
+4. Pastikan Anda mengedit plugin yang sama, bukan membuat salinan baru.
+5. Pertahankan nama, description, visibility, GitHub connection, dan Web Search.
+6. Kirim prompt update berikut kepada Plugin Creator:
+
+    Perbarui plugin privat Viral Producer yang sedang saya edit. Pertahankan identitas plugin, nama, visibility, GitHub connection, permission, dan audience saat ini. Ganti instruksi workflow dengan isi lengkap terbaru dari system/gpt-instructions.md pada repository milyarderpro/viral-producer branch build/viral-content-gpt. Refresh reference system/content-dna.md dan system/data-contract.md dari branch yang sama. Gunakan tests/acceptance-tests.md sebagai test specification terbaru. Jangan mengubah branch ke main, jangan mengubah permission, jangan membuat plugin baru, dan jangan menyentuh data produksi. Setelah selesai, sebutkan file yang diperbarui dan biarkan plugin tetap private.
+
+7. Jika Plugin Creator meminta attachment, unduh file terbaru dari branch pengujian dan lampirkan file dengan nama yang sama.
+8. Pastikan file lama diganti, bukan ditambahkan sebagai salinan bernama berbeda.
+9. Review ringkasan perubahan sebelum menyelesaikan update.
+10. Simpan plugin tetap private.
+
+Jika plugin dikelola melalui sinkronisasi GitHub, gunakan mekanisme update dari source GitHub yang sama. Jangan mengunggah archive manual di atas plugin yang source-of-truth-nya sudah dikelola GitHub.
+
+### 16.3 Jalur B — Memperbarui GPT Builder yang masih tersedia
+
+1. Buka My GPTs lalu pilih Viral Producer yang sama.
+2. Pilih Edit.
+3. Buka system/gpt-instructions.md terbaru dari branch build/viral-content-gpt.
+4. Ganti seluruh kolom Instructions dengan isi file lengkap tanpa diringkas.
+5. Ganti knowledge/reference lama dengan versi terbaru dari:
+   - system/content-dna.md;
+   - system/data-contract.md;
+   - tests/acceptance-tests.md.
+6. Pertahankan GitHub App, Web Search, nama, description, dan visibility.
+7. Jangan mengunggah data aktif sebagai knowledge.
+8. Simpan sebagai Private atau Only me.
+
+Jika kolom Instructions memotong isi file, hentikan dan gunakan Jalur A. Jangan menghapus aturan audit, deduplikasi, verification, lifecycle, atau write safety agar muat.
+
+### 16.4 Mulai percakapan baru
+
+Setelah update selesai:
+
+1. Tutup percakapan lama yang digunakan untuk produksi.
+2. Mulai percakapan baru.
+3. Pilih atau mention Viral Producer secara eksplisit.
+4. Jangan langsung meminta pembuatan post.
+5. Jalankan version check read-only terlebih dahulu.
+
+Percakapan lama dapat membawa konteks atau perilaku sebelum update. Hasil validasi resmi harus berasal dari percakapan baru.
+
+### 16.5 Version check read-only
+
+Kirim prompt:
+
+    Read system/gpt-instructions.md, system/content-dna.md, system/data-contract.md, and tests/acceptance-tests.md from milyarderpro/viral-producer on branch build/viral-content-gpt. Report the instruction version, editorial version, test specification version, configured repository, configured branch, and whether generation_audit is required for new drafts. Do not modify anything.
+
+Hasil yang benar:
+
+    Instruction version: 2.0 — Stage 10.4
+    Editorial version: 2.0 — Stage 10.2
+    Test specification version: 2.0 — Stage 10.5
+    Repository: milyarderpro/viral-producer
+    Branch: build/viral-content-gpt
+    generation_audit required for new drafts: yes
+
+Periksa GitHub setelah prompt. Lulus hanya jika:
+
+- tidak ada commit baru;
+- production-state.json tidak berubah;
+- active-drafts.jsonl tidak berubah;
+- ready-to-post.md tidak berubah.
+
+Jika satu versi salah atau tidak dapat disebutkan, anggap plugin belum ter-refresh dan jangan menjalankan test tulis.
+
+### 16.6 Saved regression prompts
+
+Simpan tiga prompt berikut. Jangan menjalankannya sampai Stage 10.7.
+
+#### Geography-history
+
+    Create one United States geography-history post under editorial version 2. Use at least four surprise operators, no more than two record or superlative facts, exact geographic scope, and complete generation_audit. Save it only if every hard gate passes.
+
+#### Animals-nature
+
+    Create one global animals-nature post under editorial version 2. Favor vivid and counterintuitive facts, use at least four surprise operators, avoid familiar internet filler, and persist complete generation_audit. Save it only if every hard gate passes.
+
+#### Body-science
+
+    Create one global body-science post under editorial version 2. Reject basic textbook definitions, favor visual or everyday counterintuitive payoffs, use at least four surprise operators, and persist complete generation_audit. Save it only if every hard gate passes.
+
+Catat post ID yang dihasilkan nanti sebagai geography v2, animals v2, dan body-science v2.
+
+### 16.7 Membandingkan dengan baseline
+
+Gunakan baseline tanpa mengubahnya:
+
+| Baseline | Masalah lama | Target output baru |
+|---|---|---|
+| P-000001 | Terlalu banyak record dan satu geographic scope drift | Maksimal dua record_superlative, minimal empat operator, scope persis |
+| P-000002 | DNA terbaik tetapi beberapa fakta cukup umum | Visuality tetap kuat, novelty meningkat, audit metadata lengkap |
+| P-000003 | Terlalu textbook-like dan skor 12/12 terlalu longgar | Tidak ada filler textbook, opening/closing kuat, skor dan rationale realistis |
+
+Jangan membandingkan hanya total skor. Bandingkan:
+
+- operator variety;
+- viral-strength distribution;
+- kekuatan Facts 1 dan 6;
+- scope fidelity;
+- source accessibility;
+- candidate accounting;
+- quality rationales;
+- overall tell-someone reaction.
+
+### 16.8 Troubleshooting refresh
+
+Jika version check masih menunjukkan instruksi lama:
+
+- pastikan Anda mengedit plugin yang benar;
+- pastikan file lama benar-benar diganti;
+- simpan ulang update;
+- mulai percakapan baru;
+- panggil plugin secara eksplisit;
+- ulangi version check tanpa write.
+
+Jika draft baru tidak memiliki generation_audit atau empat field editorial per fakta:
+
+- hentikan test lanjutan;
+- jangan approve draft tersebut;
+- periksa apakah gpt-instructions.md terpotong;
+- periksa apakah content-dna.md dan data-contract.md terbaru tersedia;
+- refresh plugin lalu mulai percakapan baru.
+
+Jika plugin meminta permission GitHub yang lebih luas:
+
+- jangan memperluas akses secara otomatis;
+- periksa apakah koneksi lama masih tersedia;
+- pertahankan akses hanya ke repository yang diperlukan;
+- ulangi read-only version check setelah koneksi benar.
+
+## 17. Handoff ke Stage 10.7
+
+Setelah checklist dan version check lulus, jangan mengubah runtime branch ke main.
+
+Mulai controlled live validation dengan:
 
     Run AT-01 from tests/acceptance-tests.md and report the evidence. Do not run later tests yet.
 
-Jalankan test satu per satu, periksa GitHub setelah setiap write, lalu isi Results Table pada tests/acceptance-tests.md.
+Kemudian:
 
-Jika satu test gagal:
-
-1. hentikan test yang bergantung padanya;
-2. dokumentasikan perilaku aktual dan commit;
-3. perbaiki instruksi atau kontrak pada branch pengujian;
-4. pasang ulang versi terbaru;
-5. ulangi test yang terdampak;
-6. lanjutkan hanya setelah hasilnya lulus.
+1. Jalankan test satu per satu.
+2. Periksa GitHub setelah setiap operasi tulis.
+3. Isi Results Table pada tests/acceptance-tests.md.
+4. Jalankan tiga saved regression prompts pada percakapan terpisah bila memungkinkan.
+5. Bandingkan hasil baru dengan baseline P-000001 sampai P-000003.
+6. Hentikan test yang bergantung pada test sebelumnya jika terjadi kegagalan.
+7. Perbaiki instruksi, kontrak, atau content DNA pada branch pengujian.
+8. Refresh plugin lagi setelah perubahan.
+9. Ulangi seluruh test yang terdampak.
+10. Pindahkan runtime branch hanya setelah AT-01 sampai AT-23 dan final consistency audit lulus.
