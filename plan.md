@@ -464,7 +464,7 @@ Findings:
 
 ### Stage 10.2 — Viral DNA v2
 
-Status: PLANNED
+Status: COMPLETE
 
 Update:
 
@@ -489,6 +489,10 @@ Acceptance criteria:
 - a factual but textbook-only post fails the viral gate;
 - wording cannot broaden United States into America or North America;
 - every score of 2 has an objective rubric justification.
+
+Completed commit:
+
+- ed91651 — Strengthen viral trivia editorial DNA
 
 ### Stage 10.3 — Additive editorial audit contract
 
@@ -654,3 +658,4 @@ Do not rely on conversation history as the only record of the plan.
 - Defined acceptance tests as a reusable specification with objective repository assertions; actual execution remains reserved for the installed-GPT test stage.
 - Added a Plugin-first installation path in response to OpenAI's Custom GPT transition while retaining GPT Builder compatibility where available.
 - Recorded the first live-output audit and added the Stage 10 editorial refinement plan for DNA diversity, claim-scope fidelity, honest scoring, compact audit metadata, regression tests, and controlled revalidation.
+- Implemented Viral DNA v2 with eight controlled surprise operators, hard diversity and viral-strength gates, anti-textbook filtering, source-access checks, exact scope preservation, and anchored quality scoring.
