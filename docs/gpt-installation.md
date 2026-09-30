@@ -400,7 +400,7 @@ Urutan fallback:
 
 1. Plugin dengan GitHub app yang tersedia.
 2. Plugin dengan MCP server GitHub yang dibatasi.
-3. Legacy Custom GPT Action hanya jika builder masih mendukungnya dan app tidak digunakan.
+3. Legacy Custom GPT Action hanya jika builder masih mendukungnya dan kompatibilitasnya dengan konfigurasi yang dipilih sudah diverifikasi.
 4. Backend khusus sebagai pilihan terakhir.
 
 MCP atau backend khusus harus mengimplementasikan data-contract.md, bukan memberi akses GitHub mentah tanpa guardrail.
