@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "revision": 15,
+  "next_post_number": 9,
+  "next_fact_number": 51,
+  "operational_timezone": "Asia/Jakarta",
+  "single_writer_mode": true,
+  "last_topic": "body-science",
+  "last_country_focus": "GLOBAL",
+  "recent_topics": [
+    "geography-history",
+    "animals-nature",
+    "body-science",
+    "food-home",
+    "geography-history",
+    "animals-nature",
+    "inventions-records",
+    "body-science"
+  ],
+  "recent_country_focuses": [
+    "US",
+    "GLOBAL",
+    "GLOBAL",
+    "GLOBAL",
+    "AU",
+    "GLOBAL",
+    "GLOBAL",
+    "GLOBAL"
+  ],
+  "updated_at": "2026-09-30T15:32:42Z"
+}
