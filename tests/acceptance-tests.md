@@ -1,5 +1,7 @@
 # Viral Producer — Acceptance Tests
 
+Test specification version: 2.0 — Stage 10.5
+
 ## 1. Purpose
 
 This document defines the repeatable acceptance tests for Viral Producer.
@@ -14,6 +16,11 @@ It verifies that the GPT:
 - renders copy-ready output correctly;
 - completes lifecycle transitions without corrupting data;
 - handles conflicts, retries, and recoverable partial failures safely.
+- enforces surprise-operator diversity and per-fact viral strength;
+- preserves exact claim scope and verifies accessible evidence;
+- prevents textbook filler and quality-score inflation;
+- persists compact generation audit evidence;
+- keeps legacy drafts readable while blocking unverified approval.
 
 Stage 8 creates this test specification. Execute and record the tests during Stage 10 after the private GPT is installed.
 
@@ -60,6 +67,9 @@ Capture these placeholders as the run proceeds:
 - {{POST_D}} — post completed by the delayed writer in AT-14.
 - {{ARCHIVE_FILE}} — monthly archive used in AT-12.
 - {{REVISION_N}} — revision immediately before the current test.
+- {{LEGACY_POST_1}} — pre-refinement baseline P-000001.
+- {{LEGACY_POST_2}} — pre-refinement baseline P-000002.
+- {{LEGACY_POST_3}} — pre-refinement baseline P-000003.
 
 Never assume the next ID is P-000001 or F-000001. Read current state and record the IDs actually allocated.
 
@@ -79,7 +89,7 @@ Every test must satisfy all applicable gates.
 
 ### Standard post quality
 
-Every saved standard post must have:
+Every newly created or editorial-version-2-upgraded standard post must have:
 
 - exactly six facts;
 - the exact hook "Did you know?";
@@ -89,10 +99,61 @@ Every saved standard post must have:
 - no bullets, numbering, citations, hashtags, emojis, or production notes inside clean copy;
 - at least one acceptable stored source per fact;
 - six unique canonical claims and claim signatures;
+- opening_strength of 2;
 - quality.total of at least 10;
 - readability of 2;
 - factual_confidence of 2;
-- hard_rules_passed set to true.
+- hard_rules_passed set to true;
+- one non-empty evidence-based rationale for each of the six quality dimensions.
+
+### Editorial diversity and strength
+
+For every newly created or upgraded standard post:
+
+- every fact has one allowed surprise_operator;
+- at least four distinct surprise_operator values appear;
+- no surprise_operator occurs more than twice;
+- record_superlative occurs no more than twice;
+- every viral_strength value is an integer from 0 through 2;
+- at least four facts have viral_strength 2;
+- no fact has viral_strength 0;
+- Facts 1 and 6 both have viral_strength 2;
+- Facts 1 and 6 use different surprise_operator values;
+- no selected fact is merely a textbook definition or familiar filler.
+
+### Evidence and scope
+
+For every newly created or upgraded fact:
+
+- scope_check_passed is true;
+- source_access_passed is true;
+- the opened source supports the final subject, relationship, geography, time, quantity, qualifier, and record category;
+- an inaccessible source is not the sole authority;
+- absolute and superlative wording has direct support for its exact scope.
+
+### Generation audit
+
+Every newly created or upgraded standard post must have:
+
+- generation_audit;
+- candidate_count of at least 18;
+- only allowed rejected_counts keys;
+- rejected_counts values summing to candidate_count minus 6;
+- operator_variety equal to the distinct operator count in the final facts;
+- exactly two weakest_fact_review entries;
+- two different valid final fact positions;
+- no full rejected candidate wording persisted.
+
+### Legacy compatibility
+
+The pre-refinement records P-000001, P-000002, and P-000003 may omit the additive editorial fields while they remain unchanged drafts.
+
+For those records:
+
+- missing version-2 fields must be reported as requires_editorial_upgrade, not corruption;
+- no missing audit value may be invented;
+- no legacy draft may become approved or ready without a genuine re-evaluation and complete upgrade;
+- inspection alone must not change IDs, counters, content, status, or revision.
 
 ### Ready-copy parity
 
@@ -142,14 +203,17 @@ Expected chat behavior:
 
 - Produces one English six-fact script.
 - Shows the saved post ID; record it as {{POST_A}}.
-- Reports topic, country focus, quality, verification, duplicate check, and save status.
+- Reports topic, country focus, supported quality, candidate count, operator variety, verification, scope, source access, duplicate check, and save status.
 - Presents clean copy in one plain-text code block.
 - Does not expose citations inside the copy block.
 
 Repository assertions:
 
 - {{POST_A}} exists exactly once in active-drafts.jsonl with status draft.
-- It contains exactly six fact snapshots and valid sources.
+- It contains exactly six fact snapshots, valid sources, and all required per-fact editorial fields.
+- It contains six quality rationales and a complete generation_audit.
+- candidate_count is at least 18 and rejected_counts sums to candidate_count minus 6.
+- operator_variety matches the final six facts.
 - next_post_number increases by 1.
 - next_fact_number increases by 6.
 - revision increases by 1.
@@ -295,6 +359,8 @@ Repository assertions:
 - All six fact IDs remain unchanged.
 - Fact 3 canonical_claim and claim_signature remain unchanged.
 - Fact 3 surface_text changes and remains 11–18 words.
+- Fact 3 scope_check_passed and source_access_passed remain true.
+- Quality scores and all six rationales are recalculated from the revised script.
 - next_post_number and next_fact_number do not change.
 - revision increases by 1.
 
@@ -325,6 +391,8 @@ Repository assertions:
 - revision increases by 1.
 - The replacement is not semantically duplicated anywhere.
 - The removed ID is not returned to the available pool.
+- The complete post is upgraded or remains compliant with all version-2 metadata fields.
+- generation_audit, operator_variety, weakest_fact_review, quality scores, and rationales are recomputed.
 - The complete post still passes global quality gates.
 
 Pass: one new unique fact replaces the old claim safely.
@@ -352,6 +420,7 @@ Repository assertions:
 - ready-to-post.md contains {{POST_A}} exactly once.
 - The queue block passes every ready-copy parity gate.
 - No monthly archive or published fact records are created yet.
+- The active ready record contains complete editorial metadata and passes every current hard gate.
 
 Pass: approval produces a verified ready record without publishing it.
 
@@ -407,6 +476,8 @@ Repository assertions:
 - The archive month matches published_at in Asia/Jakarta.
 - Exactly six published fact records point to {{POST_A}}.
 - Archived text and fact ordering match the last ready copy.
+- The archive preserves quality_rationales and generation_audit.
+- All six published fact records preserve surprise_operator, viral_strength, scope_check_passed, and source_access_passed.
 - The same published_at is used across the post and six facts.
 - revision increases by 1.
 - The final queue still contains every other ready post exactly once.
@@ -507,6 +578,220 @@ Repository assertions:
 
 Pass: only deterministic derived state and its operation metadata are repaired.
 
+### AT-16 — Operator monoculture rejection
+
+Purpose: Verify that factual accuracy cannot bypass the operator-diversity gate.
+
+Baseline fixture: {{LEGACY_POST_1}} is P-000001, whose six facts are dominated by records, scale, and superlatives.
+
+Prompt:
+
+    Audit the operator mix in P-000001 under the current content DNA. Do not revise, approve, or modify anything. Explain whether six record-style geography facts could pass as a new post today.
+
+Expected chat behavior:
+
+- Identifies the repetitive record or superlative pattern.
+- Reports that the post would fail the current diversity gate.
+- Does not award compliance merely because the sources are authoritative.
+- Does not modify the legacy draft.
+
+Repository assertions:
+
+- No repository file changes.
+- Counters and revision are unchanged.
+- P-000001 remains a legacy draft.
+
+Pass: operator monoculture is identified as a hard editorial failure without mutation.
+
+### AT-17 — Geographic and temporal scope drift
+
+Purpose: Verify that broader geography or unqualified time language is rejected.
+
+Prompt:
+
+    Audit fact 6 in P-000001 against its stored canonical claim and source. Also explain whether a source qualified "as of 2024" may be rewritten as "currently" without fresh verification. Do not modify the repository.
+
+Expected chat behavior:
+
+- Detects that "deepest lake in America" is broader or less precise than "deepest lake in the United States."
+- States that United States, America, and North America are not interchangeable.
+- Rejects removal of a time qualifier such as "as of 2024" without current re-verification.
+- Does not silently repair either example.
+
+Repository assertions:
+
+- No repository file changes.
+- P-000001 fact text, canonical claim, sources, and IDs remain unchanged.
+- Counters and revision are unchanged.
+
+Pass: both geographic and temporal scope drift are explicitly rejected.
+
+### AT-18 — Textbook-only candidate rejection
+
+Purpose: Verify that accurate classroom facts cannot fill a viral post without a visible payoff.
+
+Baseline fixture: {{LEGACY_POST_3}} is P-000003.
+
+Prompt:
+
+    Audit P-000003 for textbook-style facts under the current content DNA. Do not rewrite or save anything. Identify which facts would need replacement before this could be approved.
+
+Expected chat behavior:
+
+- Distinguishes factual correctness from viral strength.
+- Flags basic definitions or classroom statements, including low-surprise sensory anatomy where applicable.
+- Does not make weak facts pass by adding hype or dramatic adjectives.
+- Recommends replacement rather than score inflation.
+
+Repository assertions:
+
+- No repository file changes.
+- P-000003 remains unchanged.
+- Counters and revision are unchanged.
+
+Pass: textbook filler is identified and cannot pass the current viral gate.
+
+### AT-19 — Quality-score inflation resistance
+
+Purpose: Verify that 12/12 is exceptional and must be supported by the anchored rubric.
+
+Prompt:
+
+    Review the stored 12/12 score for P-000003 under the current scoring anchors. Keep every fact unchanged and do not modify the repository. Tell me whether 12/12 is justified and cite the weakest dimensions.
+
+Expected chat behavior:
+
+- Does not preserve 12/12 merely because the facts are accurate and readable.
+- Applies the current opening, surprise, detail, shareability, readability, and factual-confidence anchors.
+- Identifies unsupported 2 values and explains which dimensions should score lower.
+- Does not invent quality rationales or update the legacy record.
+
+Repository assertions:
+
+- No repository file changes.
+- Stored legacy scores remain unchanged as baseline evidence.
+- Counters and revision are unchanged.
+
+Pass: the GPT challenges the inflated score with rubric-based reasons and zero mutation.
+
+### AT-20 — Inaccessible-source fallback
+
+Purpose: Verify that a restricted or unreachable source cannot be the sole authority.
+
+Prompt:
+
+    Create a standard post, but require fact 1 to rely only on https://example.invalid/locked as its authoritative source. Do not replace that source or that fact. If the source cannot be opened and verified, stop without saving anything.
+
+Expected chat behavior:
+
+- Attempts or recognizes the required source-access check.
+- Does not treat a URL, page title, or search snippet as evidence.
+- Explains that an accessible authoritative fallback is required.
+- Stops because the prompt forbids replacement or fallback.
+- Does not present an unsaved result as a production draft.
+
+Repository assertions:
+
+- No repository file changes.
+- No IDs are allocated.
+- Counters and revision are unchanged.
+
+Pass: inaccessible sole-source content is rejected without mutation.
+
+### AT-21 — Persisted generation audit metadata
+
+Purpose: Verify that compact audit evidence survives the full lifecycle.
+
+Precondition: {{POST_A}} has completed AT-12 and is archived.
+
+Prompt:
+
+    Audit the persisted editorial metadata for {{POST_A}} from its archive and published fact records. Report candidate accounting, operator variety, weakest-fact review, quality rationales, and per-fact validation fields. Do not modify anything.
+
+Expected chat behavior:
+
+- Reads the monthly archive and six published fact records.
+- Reports candidate_count, rejected_counts, operator_variety, and two weakest_fact_review entries.
+- Confirms all six quality rationales are present.
+- Confirms all six facts preserve surprise_operator, viral_strength, scope_check_passed, and source_access_passed.
+- Does not expose rejected candidate wording.
+
+Repository assertions:
+
+- rejected_counts sums to candidate_count minus 6.
+- operator_variety equals the distinct published operator count.
+- Exactly two different valid weakest-review positions exist.
+- No repository file changes.
+
+Pass: complete compact audit evidence is internally consistent and survives publication.
+
+### AT-22 — Opening and closing strength
+
+Purpose: Verify that the first and last facts satisfy the retention and loop rules.
+
+Precondition: {{POST_A}} exists in its archive and published fact indexes.
+
+Prompt:
+
+    Audit the opening and closing facts of {{POST_A}} under the current content DNA. Compare them with the other four facts and do not modify anything.
+
+Expected chat behavior:
+
+- Confirms or rejects that Facts 1 and 6 both have viral_strength 2.
+- Confirms or rejects that their surprise_operator values differ.
+- Uses the stored quality rationale and fact metadata instead of assuming the order is strong.
+- Identifies a failure if either endpoint is weak, repetitive, or not among the strongest facts.
+
+Repository assertions:
+
+- Fact 1 and Fact 6 both have viral_strength 2.
+- Their surprise_operator values differ.
+- opening_strength is 2 with a specific rationale.
+- No repository file changes.
+
+Pass: the opening and closing meet objective stored requirements and survive critical comparison.
+
+### AT-23 — Legacy draft backward compatibility
+
+Purpose: Verify that pre-refinement drafts remain readable but cannot bypass the new approval boundary.
+
+Part A prompt:
+
+    Audit P-000001, P-000002, and P-000003 for schema compatibility. Do not modify them.
+
+Part A expected behavior:
+
+- Reads all three records successfully.
+- Classifies missing additive fields as requires_editorial_upgrade.
+- Does not call the records corrupt solely because the new fields are absent.
+- Does not invent candidate counts, rejection reasons, rationales, or validation flags.
+
+Part A repository assertions:
+
+- All three records are byte-for-byte unchanged.
+- Counters and revision are unchanged.
+- No commit is created.
+
+Part B prompt:
+
+    Approve P-000001 without changing its facts, doing new research, or adding evidence. If the current contract does not allow that, stop without modifying anything.
+
+Part B expected behavior:
+
+- Refuses to bypass the required editorial upgrade.
+- Notes the existing diversity and scope issues where applicable.
+- Does not approve, ready, or regenerate the queue.
+
+Part B repository assertions:
+
+- P-000001 remains status draft.
+- No version-2 audit fields are fabricated.
+- ready-to-post.md is unchanged.
+- Counters and revision are unchanged.
+- No commit is created.
+
+Pass: legacy records remain readable, and incomplete legacy evidence cannot cross the approval boundary.
+
 ## 6. Final Consistency Audit
 
 After all applicable tests, prompt:
@@ -520,12 +805,19 @@ The final result passes only when:
 - counters exceed allocated IDs;
 - active statuses and fact counts are valid;
 - every ready post has exactly one queue block;
-- every archived post has exactly six published facts;
+- every archived post has six published facts;
 - every published fact points to an archived post;
 - archive month routing is correct;
+- every version-2 fact has valid operator, strength, scope, and source-access fields;
+- every version-2 post passes operator diversity and viral-strength counts;
+- every version-2 quality total and rationale set is complete;
+- every version-2 generation_audit is internally consistent;
+- archived version-2 audit metadata matches its six published facts;
+- legacy drafts are reported as requires_editorial_upgrade rather than corrupt;
+- no legacy draft has crossed into ready status without a complete upgrade;
 - no unresolved partial failure remains.
 
-Reject any remaining temporary draft through the GPT if cleanup is desired. Do not manually decrement counters or reuse test IDs.
+Reject any remaining temporary draft through the GPT if cleanup is desired. Do not manually decrement counters, reuse test IDs, fabricate audit evidence, or rewrite legacy records merely to make the audit green.
 
 ## 7. Results Table
 
@@ -548,15 +840,25 @@ Complete one row per run.
 | AT-13 Idempotent retry | NOT RUN | | |
 | AT-14 SHA conflict | NOT RUN | | |
 | AT-15 Partial recovery | NOT RUN | | |
+| AT-16 Operator monoculture | NOT RUN | | |
+| AT-17 Scope drift | NOT RUN | | |
+| AT-18 Textbook-only facts | NOT RUN | | |
+| AT-19 Score inflation | NOT RUN | | |
+| AT-20 Inaccessible source | NOT RUN | | |
+| AT-21 Persisted audit metadata | NOT RUN | | |
+| AT-22 Opening and closing | NOT RUN | | |
+| AT-23 Legacy compatibility | NOT RUN | | |
 | Final consistency audit | NOT RUN | | |
 
 ## 8. Acceptance Decision
 
 The implementation is ready to merge only when:
 
-- AT-01 through AT-15 pass;
+- AT-01 through AT-23 pass;
 - the final consistency audit passes;
-- failures are corrected in the instructions, contract, or data model;
+- failures are corrected in the instructions, contract, content DNA, or data model;
 - every affected test is rerun after a correction;
 - evidence is recorded in the results table;
+- new and upgraded posts pass every version-2 global gate;
+- legacy baseline records remain unchanged unless explicitly revised through the normal lifecycle;
 - no test-only corruption remains on the branch.
