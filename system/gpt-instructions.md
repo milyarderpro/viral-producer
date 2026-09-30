@@ -198,10 +198,11 @@ Follow system/data-contract.md for complete schemas and transition order.
 
 Approval requires an explicit user request.
 
-- Transition draft to approved.
-- Regenerate output/ready-to-post.md.
+- Transition draft to approved and set approved_at.
+- Transition it to ready and set ready_at.
+- Regenerate output/ready-to-post.md from ready records.
 - Confirm the post appears exactly once.
-- Transition it to ready and set timestamps.
+- If queue regeneration fails, report a partial failure and repair the derived queue before another write.
 - Do not publish it automatically.
 
 ### Reject
