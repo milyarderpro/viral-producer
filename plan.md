@@ -291,7 +291,7 @@ Completed commits:
 
 ### Stage 6 — Command interface
 
-Status: NEXT
+Status: COMPLETE
 
 The GPT must recognize natural-language commands such as:
 
@@ -307,9 +307,23 @@ The GPT must recognize natural-language commands such as:
 
 Indonesian production requests must still produce final English scripts unless explicitly requested otherwise.
 
+Implementation requirements:
+
+- resolve natural Indonesian and English by intent rather than exact wording;
+- normalize post IDs, supported countries, and topic synonyms;
+- distinguish read-only inspection from state-changing commands;
+- preserve explicit confirmation boundaries for approval, rejection, and posted status;
+- serialize multiple repository mutations;
+- ask one concise question only for material ambiguity;
+- keep the interface inside system/gpt-instructions.md to avoid duplicated behavioral rules.
+
+Completed commit:
+
+- 7bb8773 — Define natural-language command interface
+
 ### Stage 7 — Ready-to-post output
 
-Status: PENDING
+Status: NEXT
 
 Approval must:
 
@@ -427,3 +441,4 @@ Do not rely on conversation history as the only record of the plan.
 - Added single-writer mode, Git SHA conflict protection, idempotency, and consistency recovery.
 - Confirmed that permanent posts will be stored in monthly JSONL archives, not one file per post.
 - Corrected approval ordering so active drafts reach ready status before the derived ready queue is regenerated.
+- Embedded the bilingual command interface in the main GPT instructions so intent handling and lifecycle rules remain synchronized.
