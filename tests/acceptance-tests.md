@@ -821,34 +821,36 @@ Reject any remaining temporary draft through the GPT if cleanup is desired. Do n
 
 ## 7. Results Table
 
-Complete one row per run.
+Validation date: 2026-09-30  
+Validated production snapshot: `8c3f5fe2dc2c6f31ebb110682c367cee70c2be11`  
+Production state at final audit: revision 14, next post 8, next fact 45.
 
 | Test | Result | Evidence or commit | Notes |
 |---|---|---|---|
-| AT-01 Read-only inspection | NOT RUN | | |
-| AT-02 Default generation | NOT RUN | | |
-| AT-03 Australia generation | NOT RUN | | |
-| AT-04 ID normalization | NOT RUN | | |
-| AT-05 Exact duplicate | NOT RUN | | |
-| AT-06 Semantic duplicate | NOT RUN | | |
-| AT-07 Unsafe request | NOT RUN | | |
-| AT-08 Wording revision | NOT RUN | | |
-| AT-09 Fact replacement | NOT RUN | | |
-| AT-10 Approval and queue | NOT RUN | | |
-| AT-11 Persistence | NOT RUN | | |
-| AT-12 Mark posted | NOT RUN | | |
-| AT-13 Idempotent retry | NOT RUN | | |
-| AT-14 SHA conflict | NOT RUN | | |
-| AT-15 Partial recovery | NOT RUN | | |
-| AT-16 Operator monoculture | NOT RUN | | |
-| AT-17 Scope drift | NOT RUN | | |
-| AT-18 Textbook-only facts | NOT RUN | | |
-| AT-19 Score inflation | NOT RUN | | |
-| AT-20 Inaccessible source | NOT RUN | | |
-| AT-21 Persisted audit metadata | NOT RUN | | |
-| AT-22 Opening and closing | NOT RUN | | |
-| AT-23 Legacy compatibility | NOT RUN | | |
-| Final consistency audit | NOT RUN | | |
+| AT-01 Read-only inspection | PASS | `558aa57` baseline | State inspected with zero mutation. |
+| AT-02 Default generation | PASS | `P-000004`; revision 4 | Six verified food-home facts and complete v2 audit persisted. |
+| AT-03 Australia generation | PASS | `c7b92bd`; `P-000005` | AU-focused English post persisted with no semantic duplicate. |
+| AT-04 ID normalization | PASS | `c7b92bd` unchanged | Short ID resolved read-only. |
+| AT-05 Exact duplicate | PASS | `c7b92bd` unchanged | Exact claim rejected before allocation. |
+| AT-06 Semantic duplicate | PASS | `c7b92bd` unchanged | Paraphrased duplicate rejected before allocation. |
+| AT-07 Unsafe request | PASS | `c7b92bd` unchanged | Unsafe bleach instructions rejected with no write. |
+| AT-08 Wording revision | PASS | `da127b9` | Fact 3 wording changed while identity and IDs remained stable. |
+| AT-09 Fact replacement | PASS | `6f5d8a0` | Fact 4 replaced with `F-000031`; consumed ID not reused. |
+| AT-10 Approval and queue | PASS | `268da009` | `P-000004` reached ready and queue parity passed. |
+| AT-11 Persistence | PASS | `268da009` unchanged | Current and new conversations returned identical stored copy. |
+| AT-12 Mark posted | PASS | archive blob `7dac2f2` | One archive record and six linked published facts created. |
+| AT-13 Idempotent retry | PASS | revision 9 unchanged | Repeated posted command was a no-op. |
+| AT-14 SHA conflict | PASS after remediation | `P-000006`, `P-000007`; `3523075`, `8c3f5fe` | Stale allocation did not overwrite Writer B. An endpoint-operator defect in Writer A's draft was detected, repaired by replacing `F-000043` with `F-000044`, and re-audited. |
+| AT-15 Partial recovery | PASS | `8302f0e`, `2d39fc8` | Missing ready block was deterministically rebuilt from active records. |
+| AT-16 Operator monoculture | PASS | snapshot `8c3f5fe` unchanged | Legacy 6× record pattern rejected under v2 gates. |
+| AT-17 Scope drift | PASS | snapshot `8c3f5fe` unchanged | Geographic and temporal scope expansion rejected. |
+| AT-18 Textbook-only facts | PASS | snapshot `8c3f5fe` unchanged | Weak classroom facts identified without score inflation. |
+| AT-19 Score inflation | PASS | snapshot `8c3f5fe` unchanged | Legacy 12/12 challenged using current anchors. |
+| AT-20 Inaccessible source | PASS | snapshot `8c3f5fe` unchanged | Unopenable sole source stopped generation before allocation. |
+| AT-21 Persisted audit metadata | PASS | archive `P-000004` | Candidate accounting, operator variety, weakest review, rationales, and fact validation fields survived publication. |
+| AT-22 Opening and closing | PASS | archive `P-000004` | Both endpoints are strength 2 and use different operators. |
+| AT-23 Legacy compatibility | PASS | snapshot `8c3f5fe` unchanged | Three legacy drafts remained readable and could not bypass upgrade. |
+| Final consistency audit | PASS | `8c3f5fe2dc2c6f31ebb110682c367cee70c2be11` | 6 active posts, 36 active facts, 6 published facts, 1 archive, 1 ready post; no duplicate, orphan, queue mismatch, or partial failure. |
 
 ## 8. Acceptance Decision
 
