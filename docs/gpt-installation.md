@@ -10,11 +10,11 @@ Repository produksi:
 
     milyarderpro/viral-producer
 
-Branch pengujian:
+Branch produksi:
 
     main
 
-Jangan mengubah branch menjadi main sebelum seluruh acceptance test lulus dan pull request disetujui.
+Acceptance suite dan pull request implementasi telah lulus. Gunakan `main` sebagai satu-satunya runtime branch produksi.
 
 ## 2. Catatan Produk Terkini
 
@@ -77,9 +77,9 @@ Jika koneksi berbasis user account tidak menyediakan pembatasan per repository, 
 
 Izin repository tidak selalu dapat dibatasi per branch. Perlindungan branch dan instruksi GPT menjadi lapisan tambahan:
 
-- seluruh pengujian menulis ke main;
-- main tidak boleh ditulis selama instalasi dan acceptance test;
-- pertimbangkan branch protection pada main;
+- smoke test read-only boleh membaca `main` tanpa membuat commit;
+- jangan mengulang acceptance test yang mutatif pada `main`; gunakan branch test terisolasi bila diperlukan;
+- pertimbangkan branch protection yang tetap mengizinkan workflow produksi terotorisasi pada `main`;
 - gunakan satu writer aktif sesuai data contract.
 
 Dokumentasi resmi menyarankan pengujian akses baca dan aksi tulis secara terpisah serta memeriksa akun GitHub yang benar-benar dipakai oleh koneksi.
@@ -185,7 +185,7 @@ Description:
 2. Salin seluruh isinya.
 3. Tempelkan tanpa diringkas ke kolom Instructions.
 4. Pastikan bagian Runtime Configuration masih menunjuk ke main.
-5. Jangan mengganti branch menjadi main.
+5. Jangan mengganti runtime branch dari `main`.
 
 Jika builder menolak panjang instruksi, jangan memangkas aturan data, deduplikasi, verifikasi, atau write safety. Gunakan Jalur A agar instruksi dapat menjadi skill yang lengkap.
 
@@ -228,7 +228,7 @@ Lulus jika:
 - tidak ada file yang berubah;
 - tidak ada commit baru.
 
-Gagal jika GPT menjawab dari memory, membaca main, atau tidak dapat menyebutkan state aktual.
+Gagal jika GPT menjawab dari memory, membaca branch selain `main`, atau tidak dapat menyebutkan state aktual.
 
 ## 9. Verifikasi Akses Tulis
 
@@ -245,8 +245,8 @@ Lulus jika:
 - production-state.json diperbarui;
 - revision bertambah satu;
 - GPT menampilkan commit-backed save status;
-- penulisan terjadi pada main;
-- main tetap tidak berubah.
+- penulisan terjadi pada `main`;
+- hanya file dan state yang diharapkan berubah.
 
 Jika write meminta persetujuan, periksa target repository, branch, dan file sebelum menyetujui.
 
@@ -341,7 +341,7 @@ Sebelum Stage 10 selesai:
 - jangan publikasikan ke workspace directory;
 - jangan bagikan link ke pengguna lain;
 - jangan menghubungkan akun GitHub yang memiliki akses berlebihan;
-- jangan pindahkan runtime branch ke main;
+- jangan pindahkan runtime branch dari `main`;
 - jangan menjalankan beberapa writer bersamaan kecuali saat test konflik terkontrol.
 
 Setelah seluruh test lulus, review permission kembali sebelum sharing.
@@ -368,14 +368,14 @@ Periksa:
 - apakah workspace meminta approval untuk tindakan tulis;
 - permission akun GitHub pada repository;
 - branch protection pada main;
-- apakah GPT mencoba menulis main;
+- apakah GPT mencoba menulis branch selain `main`;
 - apakah file telah berubah dan SHA menjadi stale.
 
 Uji read dan write secara terpisah. Keberhasilan read tidak membuktikan write permission.
 
-### Menulis ke main
+### Menulis ke branch selain main
 
-Hentikan pengujian. Jangan lanjutkan lifecycle.
+Hentikan operasi. Jangan lanjutkan lifecycle.
 
 Periksa Runtime Configuration pada gpt-instructions.md dan konfigurasi plugin/GPT. Dokumentasikan commit yang salah, lalu pulihkan melalui proses GitHub yang dapat diaudit. Jangan memakai perintah destruktif atau menimpa history.
 
@@ -629,7 +629,7 @@ Jika plugin meminta permission GitHub yang lebih luas:
 
 ## 17. Handoff ke Stage 10.7
 
-Setelah checklist dan version check lulus, jangan mengubah runtime branch ke main.
+Setelah checklist dan version check lulus, pertahankan runtime branch pada `main`.
 
 Mulai controlled live validation dengan:
 
@@ -643,7 +643,7 @@ Kemudian:
 4. Jalankan tiga saved regression prompts pada percakapan terpisah bila memungkinkan.
 5. Bandingkan hasil baru dengan baseline P-000001 sampai P-000003.
 6. Hentikan test yang bergantung pada test sebelumnya jika terjadi kegagalan.
-7. Perbaiki instruksi, kontrak, atau content DNA pada branch pengujian.
+7. Perbaiki instruksi, kontrak, atau content DNA pada branch perubahan terisolasi, lalu review sebelum merge ke `main`.
 8. Refresh plugin lagi setelah perubahan.
 9. Ulangi seluruh test yang terdampak.
-10. Pindahkan runtime branch hanya setelah AT-01 sampai AT-23 dan final consistency audit lulus.
+10. Runtime branch produksi tetap `main`; jangan menjalankan ulang test mutatif di sana tanpa branch test terisolasi.
