@@ -218,7 +218,7 @@ Completed commit:
 
 ### Stage 4 — Initial database
 
-Status: NEXT
+Status: COMPLETE
 
 Create:
 
@@ -242,9 +242,13 @@ Acceptance criteria:
 - the ready queue contains no post;
 - every fact category is ready for use.
 
+Completed commit:
+
+- bbdd604 — Initialize production data stores
+
 ### Stage 5 — Main GPT instructions
 
-Status: PENDING
+Status: NEXT
 
 Create:
 
