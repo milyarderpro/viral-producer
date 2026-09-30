@@ -822,8 +822,8 @@ Reject any remaining temporary draft through the GPT if cleanup is desired. Do n
 ## 7. Results Table
 
 Validation date: 2026-09-30  
-Validated production snapshot: `8c3f5fe2dc2c6f31ebb110682c367cee70c2be11`  
-Production state at final audit: revision 14, next post 8, next fact 45.
+Validated production snapshot: `bbb08d718c89162515ffc09a86d8a47b22c8b289`  
+Production state at final audit: revision 15, next post 9, next fact 51.
 
 | Test | Result | Evidence or commit | Notes |
 |---|---|---|---|
@@ -850,7 +850,8 @@ Production state at final audit: revision 14, next post 8, next fact 45.
 | AT-21 Persisted audit metadata | PASS | archive `P-000004` | Candidate accounting, operator variety, weakest review, rationales, and fact validation fields survived publication. |
 | AT-22 Opening and closing | PASS | archive `P-000004` | Both endpoints are strength 2 and use different operators. |
 | AT-23 Legacy compatibility | PASS | snapshot `8c3f5fe` unchanged | Three legacy drafts remained readable and could not bypass upgrade. |
-| Final consistency audit | PASS | `8c3f5fe2dc2c6f31ebb110682c367cee70c2be11` | 6 active posts, 36 active facts, 6 published facts, 1 archive, 1 ready post; no duplicate, orphan, queue mismatch, or partial failure. |
+| Body-science v2 regression | PASS | `P-000008`; `bbb08d7` | 24 candidates, 18 rejected, five operator families, six strength-2 facts, complete rationales, and directly supportive sources; materially stronger than legacy P-000003. |
+| Final consistency audit | PASS | `bbb08d718c89162515ffc09a86d8a47b22c8b289` | 7 active posts, 42 active fact snapshots, 6 published facts, 1 archive, and 1 ready post; counters, rotation, global uniqueness, publication linkage, v2 gates, and deterministic ready-queue parity all passed. |
 
 ## 8. Acceptance Decision
 
@@ -864,3 +865,5 @@ The implementation is ready to merge only when:
 - new and upgraded posts pass every version-2 global gate;
 - legacy baseline records remain unchanged unless explicitly revised through the normal lifecycle;
 - no test-only corruption remains on the branch.
+
+Current result: AT-01 through AT-23, the body-science v2 regression, and the final consistency audit all pass on the validated snapshot above. The implementation is acceptance-ready for pull-request review.
