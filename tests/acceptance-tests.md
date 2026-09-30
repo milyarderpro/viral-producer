@@ -29,7 +29,7 @@ Stage 8 creates this test specification. Execute and record the tests during Sta
 Run these tests only against:
 
     Repository: milyarderpro/viral-producer
-    Branch: build/viral-content-gpt
+    Branch: main
 
 Do not run lifecycle or failure-recovery tests against main.
 
@@ -84,7 +84,7 @@ Every test must satisfy all applicable gates.
 - No duplicate post_id, fact_id, or claim_signature exists.
 - next_post_number and next_fact_number remain greater than every allocated ID.
 - revision never decreases.
-- The GPT writes only to build/viral-content-gpt during testing.
+- The GPT writes only to main during testing.
 - A reported success is backed by a confirmed GitHub write.
 
 ### Standard post quality
@@ -178,7 +178,7 @@ Prompt:
 Expected chat behavior:
 
 - Reports milyarderpro/viral-producer.
-- Reports build/viral-content-gpt.
+- Reports main.
 - Summarizes state without dumping whole JSONL files.
 - Does not claim to create, approve, or repair anything.
 
@@ -551,7 +551,7 @@ Purpose: Verify deterministic repair when the derived queue is missing a ready b
 
 Precondition: Create and approve one temporary test post if no ready post exists. Record it as {{READY_RECOVERY_POST}}.
 
-Using GitHub's editor on build/viral-content-gpt only, replace output/ready-to-post.md with the valid empty-queue template while leaving the ready record in active-drafts.jsonl unchanged. This intentionally simulates a queue write that failed after the authoritative status changed.
+Using GitHub's editor on main only, replace output/ready-to-post.md with the valid empty-queue template while leaving the ready record in active-drafts.jsonl unchanged. This intentionally simulates a queue write that failed after the authoritative status changed.
 
 Start a NEW CONVERSATION.
 
