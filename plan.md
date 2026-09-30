@@ -496,7 +496,7 @@ Completed commit:
 
 ### Stage 10.3 — Additive editorial audit contract
 
-Status: PLANNED
+Status: COMPLETE
 
 Update:
 
@@ -516,6 +516,10 @@ Rules:
 - candidate_count must be at least 18 for a standard six-fact post;
 - do not persist full rejected candidate text or create a new candidate database;
 - do not modify existing production IDs, counters, or historical facts during this stage.
+
+Completed commit:
+
+- 5c35c0f — Add editorial audit metadata contract
 
 ### Stage 10.4 — Generation and self-critique guardrails
 
@@ -659,3 +663,4 @@ Do not rely on conversation history as the only record of the plan.
 - Added a Plugin-first installation path in response to OpenAI's Custom GPT transition while retaining GPT Builder compatibility where available.
 - Recorded the first live-output audit and added the Stage 10 editorial refinement plan for DNA diversity, claim-scope fidelity, honest scoring, compact audit metadata, regression tests, and controlled revalidation.
 - Implemented Viral DNA v2 with eight controlled surprise operators, hard diversity and viral-strength gates, anti-textbook filtering, source-access checks, exact scope preservation, and anchored quality scoring.
+- Added the backward-compatible editorial audit contract with per-fact operator and validation fields, compact candidate accounting, quality rationales, legacy approval boundaries, publication preservation, and hard consistency checks.
