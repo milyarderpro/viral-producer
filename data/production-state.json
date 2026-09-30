@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "revision": 0,
+  "next_post_number": 1,
+  "next_fact_number": 1,
+  "operational_timezone": "Asia/Jakarta",
+  "single_writer_mode": true,
+  "last_topic": null,
+  "last_country_focus": null,
+  "recent_topics": [],
+  "recent_country_focuses": [],
+  "updated_at": null
+}
