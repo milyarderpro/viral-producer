@@ -604,7 +604,7 @@ Completed commit:
 
 ### Stage 10.7 — Controlled live validation
 
-Status: IN PROGRESS — acceptance suite complete; body-science regression pending
+Status: COMPLETE
 
 Process:
 
@@ -628,21 +628,25 @@ Exit criteria:
 - sources are authoritative, directly supportive, and accessible or backed by an accessible fallback;
 - all required acceptance tests and the final consistency audit pass.
 
-Validation progress:
+Validation results:
 
 - AT-01 through AT-23 passed and are recorded in tests/acceptance-tests.md.
-- The final consistency audit passed on production snapshot `8c3f5fe2dc2c6f31ebb110682c367cee70c2be11`.
-- The validated snapshot contains 6 active posts, 36 active fact snapshots, 6 published facts, 1 archived post, and 1 ready post.
+- Geography-history, animals-nature, and body-science v2 outputs were produced as P-000005, P-000006, and P-000008.
+- P-000008 completed the body-science regression with 24 candidates, 18 documented rejections, five operator families, six strength-2 facts, complete audit metadata, and a calibrated 12/12 score.
+- Compared with legacy P-000003, P-000008 removes textbook filler, strengthens opener and closer selection, adds diverse surprise mechanisms, and stores direct source/scope evidence.
 - AT-14 preserved concurrent state correctly. Its Writer A draft later exposed an endpoint-operator collision; Fact 6 was replaced through the normal lifecycle, and the repaired record passed all v2 gates.
 - AT-15 proved deterministic recovery of a missing ready-queue block without changing authoritative post or fact content.
-- Geography-history and animals-nature v2 outputs were produced as P-000005 and P-000006.
-- One new body-science v2 regression post and its comparison with legacy P-000003 remain required before Stage 10.7 can be marked complete.
-- After that final content regression, rerun the final consistency audit and record the resulting snapshot.
+- The final consistency audit passed on production snapshot `bbb08d718c89162515ffc09a86d8a47b22c8b289`.
+- The validated snapshot contains 7 active posts, 42 active fact snapshots, 6 published facts, 1 archived post, and 1 ready post.
+- Counters, rotation history, global fact/signature uniqueness, archive linkage, version-2 gates, and deterministic ready-queue parity all passed.
+- All Stage 10.7 exit criteria are satisfied.
 
 Evidence:
 
-- `ab13fbfc58b24eb9011192bb3d6eea19c2217d3f` — Record AT-01 through AT-23 and final consistency results.
-- `8c3f5fe2dc2c6f31ebb110682c367cee70c2be11` — Final validated production snapshot before documentation-only updates.
+- `ab13fbfc58b24eb9011192bb3d6eea19c2217d3f` — Record AT-01 through AT-23 and the earlier full consistency audit.
+- `ab360da3a906cea8e33b3dc869b31fee1e650d3a` — Persist the P-000008 body-science regression draft.
+- `bbb08d718c89162515ffc09a86d8a47b22c8b289` — Complete P-000008 state recovery and final validated production snapshot.
+- `af3c09b6a69ebb3926aaf8ce529a39b096baf1eb` — Record body-science regression and final consistency evidence in the acceptance results.
 
 ## 6. Definition of Done
 
@@ -696,4 +700,5 @@ Do not rely on conversation history as the only record of the plan.
 - Implemented runtime generation and self-critique guardrails with live candidate accounting, opened-source verification, operator and strength selection, exact scope checks, weakest-fact challenges, 12/12 adversarial review, legacy upgrades, and schema-aligned persistence.
 - Expanded the acceptance suite from 15 to 23 tests with version-2 global gates and regressions for operator monoculture, scope drift, textbook filler, score inflation, inaccessible sources, persisted audit metadata, opening and closing strength, and legacy compatibility.
 - Added the manual Editorial Version 2 refresh guide for the existing private Plugin or compatible GPT, including identity-preserving updates, read-only version checks, fresh-conversation verification, three saved content prompts, baseline comparison, and stale-instruction troubleshooting.
-- Completed AT-01 through AT-23 and a full consistency audit on the installed Plugin v2; recorded the passing evidence, the repaired P-000007 endpoint-operator defect, and the remaining body-science regression required before Stage 10.7 completion.
+- Completed AT-01 through AT-23 and a full consistency audit on the installed Plugin v2; recorded the passing evidence and the repaired P-000007 endpoint-operator defect.
+- Completed the P-000008 body-science regression, verified its six direct sources and v2 editorial metadata, compared it with legacy P-000003, reran the full consistency audit, and marked Stage 10.7 complete.
