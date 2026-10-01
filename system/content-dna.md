@@ -590,3 +590,19 @@ Before a draft may be saved for approval, confirm:
 - Every quality dimension has an evidence-based rationale.
 - The quality score is at least 10 out of 12 and all required dimensions score 2.
 - A 12/12 score passes the additional calibration review.
+
+## 19. Performance Feedback Guardrails
+
+Performance data may refine selection only after factual and editorial eligibility is established.
+
+Rules:
+
+- Performance never weakens accuracy, source accessibility, scope, safety, originality, word-count, operator-diversity, viral-strength, opening-and-closing, audit, or quality gates.
+- Performance never changes an archived post, published fact, stored score, or historical Content DNA decision.
+- Fewer than 15 measured posts supports descriptive reporting only.
+- A sample of 15 to 19 measured posts may support cautious directional observations, but it must not change default selection.
+- At least 20 measured posts is required before performance may act as a tie-breaker between otherwise equally eligible choices.
+- Topic, country, post-format, and operator comparisons must show their post counts and must not present a tiny bucket as a reliable winner.
+- Multiple snapshots for one post do not turn that post into multiple independent samples; the deterministic summary uses the latest snapshot per post.
+- A strong result from one post is anecdotal evidence, not a new rule.
+- Content DNA is never rewritten automatically from performance data. Any editorial-policy change requires an explicit reviewed update.
