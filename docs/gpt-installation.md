@@ -564,7 +564,7 @@ Jika satu versi salah atau tidak dapat disebutkan, anggap plugin belum ter-refre
 
 ### 16.6 Saved regression prompts
 
-Simpan tiga prompt berikut. Jangan menjalankannya sampai Stage 10.7.
+Prompt berikut hanya untuk regression testing oleh administrator. Jangan jalankan pada `main` produksi; gunakan branch test terisolasi.
 
 #### Geography-history
 
@@ -627,23 +627,12 @@ Jika plugin meminta permission GitHub yang lebih luas:
 - pertahankan akses hanya ke repository yang diperlukan;
 - ulangi read-only version check setelah koneksi benar.
 
-## 17. Handoff ke Stage 10.7
+## 17. Pemeliharaan Setelah Go-Live
 
-Setelah checklist dan version check lulus, pertahankan runtime branch pada `main`.
+Runtime produksi menggunakan `main`.
 
-Mulai controlled live validation dengan:
-
-    Run AT-01 from tests/acceptance-tests.md and report the evidence. Do not run later tests yet.
-
-Kemudian:
-
-1. Jalankan test satu per satu.
-2. Periksa GitHub setelah setiap operasi tulis.
-3. Isi Results Table pada tests/acceptance-tests.md.
-4. Jalankan tiga saved regression prompts pada percakapan terpisah bila memungkinkan.
-5. Bandingkan hasil baru dengan baseline P-000001 sampai P-000003.
-6. Hentikan test yang bergantung pada test sebelumnya jika terjadi kegagalan.
-7. Perbaiki instruksi, kontrak, atau content DNA pada branch perubahan terisolasi, lalu review sebelum merge ke `main`.
-8. Refresh plugin lagi setelah perubahan.
-9. Ulangi seluruh test yang terdampak.
-10. Runtime branch produksi tetap `main`; jangan menjalankan ulang test mutatif di sana tanpa branch test terisolasi.
+- Gunakan plugin Viral Producer untuk operasi harian.
+- Jalankan acceptance test mutatif hanya pada branch test terisolasi.
+- Buat perubahan sistem pada feature branch, review melalui pull request, lalu merge.
+- Setelah perubahan sistem, refresh plugin dan jalankan version check read-only.
+- Jangan mengubah data produksi secara manual.
