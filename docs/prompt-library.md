@@ -2,6 +2,8 @@
 
 Gunakan prompt berikut di chat yang memakai plugin **Viral Producer**.
 
+Belum memahami alurnya? Baca [Panduan Pengguna](user-guide.md).
+
 - `READ-ONLY`: hanya membaca repository.
 - `WRITE`: dapat mengubah repository.
 - Ganti contoh `P-000009`, nomor fakta, topik, atau negara sesuai kebutuhan.
