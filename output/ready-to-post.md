@@ -239,3 +239,23 @@ Georges Island is home to one of Canada’s first fully automated lighthouses
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000014 — Animals and Nature
+
+Did you know?
+
+Opah are the only known fish that circulate heated blood throughout their entire bodies
+
+Bat-eared foxes can hear beetles and termites burrowing underground with ears up to five inches long
+
+A ruby-throated hummingbird’s heart can beat more than 1,200 times per minute while flying
+
+Alligator snapping turtles use worm-like tongues as lures, then ambush prey that swims closer
+
+Threatened vampire squid release sticky bioluminescent mucus instead of the ink used by many cephalopods
+
+Some egg-laying caecilian babies peel off their mother’s skin and drink her milk-like fluid
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
