@@ -48,11 +48,12 @@ A future incompatible structure must increment the schema version. Do not silent
 
 ### Additive editorial compatibility
 
-Stage 10.3 adds optional fields without changing the meaning of existing fields, so schema_version remains 1.
+Stage 10.3 and Stage 12.4 add optional fields without changing the meaning of existing fields, so schema_version remains 1.
 
 Compatibility rules:
 
 - records created before editorial version 2 remain valid legacy records;
+- a missing `post_format` means `themed` for every existing record and must not trigger a bulk rewrite;
 - a missing editorial audit field in a legacy draft is not a JSON or schema corruption;
 - every newly created draft must include all editorial version 2 fields defined below;
 - a legacy draft may remain unchanged while stored as draft;
@@ -188,15 +189,33 @@ Required structure:
 - revision increases by exactly one after every completed state-changing operation.
 - next_post_number points to the next unused post number.
 - next_fact_number points to the next unused fact number.
-- recent_topics stores no more than the 10 most recently created post topics.
+- recent_topics stores no more than the 10 most recently created post topics and may contain `mixed` for a mixed post.
 - recent_country_focuses stores no more than the 10 most recent country focuses.
+- No new state field is required for post format; derive the default 75% themed and 25% mixed rotation from recent post topics and active/archive records when a longer window is needed.
 - Use null for no previous value.
 - Do not decrease counters or revision.
 - single_writer_mode remains true in version 1.
 
-## 7. Topic Values and File Routing
+## 7. Post Format, Topic Values, and File Routing
 
-Allowed topic values:
+Allowed `post_format` values:
+
+- themed
+- mixed
+
+For compatibility, a missing `post_format` means `themed`. Every newly created post must persist the field.
+
+Allowed post-level `topic` values:
+
+- animals-nature
+- body-science
+- food-home
+- geography-history
+- inventions-records
+- practical
+- mixed
+
+Allowed fact-level `topic` values remain only the six non-mixed topics:
 
 - animals-nature
 - body-science
@@ -205,11 +224,13 @@ Allowed topic values:
 - inventions-records
 - practical
 
-Route facts to the file whose name matches the topic.
+A themed post uses one non-mixed post topic and all six facts use that same topic. A mixed post uses post topic `mixed`, contains at least four distinct fact topics, and contains no more than two facts from any one topic.
+
+Route every published fact to the file whose own fact-level topic matches its name. Never create or read `data/facts/mixed.jsonl`.
 
 A fact belongs to one primary topic only. Secondary themes may be stored in tags, but they do not change file routing.
 
-If a fact genuinely does not fit an allowed topic, do not invent a new topic during production. Stop and request a schema update.
+If a fact genuinely does not fit an allowed fact topic, do not invent a new topic during production. Stop and request a schema update.
 
 ## 8. Country Scope
 
@@ -231,6 +252,8 @@ Examples:
     ["GLOBAL"]
 
 Use OTHER only when a country-specific fact falls outside the four target markets. Record the country name in tags or canonical_claim.
+
+A mixed post defaults to country_focus `GLOBAL`. When the user explicitly requests a country-specific mixed post, every selected fact must include that requested country code in country_scope. A GLOBAL-only fact does not satisfy this country-specific mixed requirement.
 
 ## 9. Claim Signature
 
@@ -371,6 +394,7 @@ Required structure for a newly created or editorial-version-2-upgraded draft:
       "schema_version": 1,
       "post_id": "P-000001",
       "status": "draft",
+      "post_format": "themed",
       "topic": "animals-nature",
       "country_focus": "GLOBAL",
       "hook": "Did you know?",
@@ -426,6 +450,16 @@ Required structure for a newly created or editorial-version-2-upgraded draft:
     }
 
 The facts array must contain exactly six fact snapshots for a standard post.
+
+Format invariants:
+
+- effective `post_format` is the stored value, or `themed` when the field is absent;
+- a newly created record always stores `post_format`;
+- a themed record has one non-mixed post topic and every fact topic equals it;
+- a mixed record has post topic `mixed`, at least four distinct fact topics, and at most two facts per topic;
+- every mixed fact uses one allowed non-mixed fact topic;
+- a mixed record defaults to country_focus `GLOBAL`;
+- for a country-specific mixed record, every fact country_scope explicitly includes country_focus.
 
 ### Quality rules
 
@@ -488,6 +522,7 @@ The target is eligible only when all of these conditions pass:
 
 - the user explicitly approves one canonical Post ID;
 - the latest record has status draft, exactly six facts, and null approved_at and ready_at;
+- its effective post format and post/fact topic relationship satisfy every format invariant above;
 - every fact has complete required snapshot fields, at least one stored source object, an allowed surprise_operator, a viral_strength integer from 0 through 2, scope_check_passed true, and source_access_passed true;
 - quality contains all six integer scores, a total equal to their sum, hard_rules_passed true, and six non-empty rationales;
 - opening_strength, readability, and factual_confidence are 2 and total is at least 10;
@@ -530,6 +565,8 @@ Posted records do not remain in active-drafts.jsonl.
 Path:
 
     data/facts/{topic}.jsonl
+
+`{topic}` is always the fact's own non-mixed topic. There is no mixed fact ledger.
 
 Each fact_id and claim_signature may appear at most once across all fact index files.
 
@@ -589,6 +626,7 @@ Required structure for a post produced or upgraded under editorial version 2:
       "schema_version": 1,
       "post_id": "P-000001",
       "status": "posted",
+      "post_format": "themed",
       "topic": "animals-nature",
       "country_focus": "GLOBAL",
       "hook": "Did you know?",
@@ -643,7 +681,7 @@ The facts array must preserve the exact wording and order used in the published 
 
 There must be at most one archive record per post_id across all monthly files.
 
-For an editorial-version-2 post, copy quality.rationales into quality_rationales and copy generation_audit unchanged into the archive. Legacy published posts may omit those additive fields.
+For an editorial-version-2 post, copy quality.rationales into quality_rationales and copy generation_audit unchanged into the archive. Preserve `post_format` when present; a missing legacy value remains implicitly themed. Legacy published posts may omit those additive fields.
 
 Published archive records are immutable except to correct proven data corruption. A wording change after publication must be recorded as a new post.
 
@@ -673,6 +711,7 @@ Render topic values in headings using this fixed mapping:
 - geography-history → Geography and History
 - inventions-records → Inventions, Firsts, and Records
 - practical → Safe Practical Knowledge
+- mixed → Mixed Trivia
 
 ### Ready block
 
@@ -770,17 +809,18 @@ All lifecycle reads, preflight checks, writes, verification reads, and recovery 
 1. Read current production state and its Git blob SHA.
 2. Read active drafts.
 3. Read all relevant fact index files.
-4. Research at least 18 unique plausible candidate claims.
-5. Verify, normalize, deduplicate, label operators, and rank candidate viral strength.
-6. Select six candidates that pass operator diversity, source access, scope, safety, and quality rules.
-7. Challenge the two weakest final facts and complete generation_audit.
-8. Allocate one post ID and six fact IDs only after every hard gate passes.
-9. Add one complete editorial-version-2 draft record to active-drafts.jsonl.
-10. Increment next_post_number by one.
-11. Increment next_fact_number by six.
-12. Update topic rotation fields.
-13. Increment state revision.
-14. Report the saved post ID only after GitHub confirms both writes.
+4. Select effective post format and post topic, using the 75% themed and 25% mixed default rotation unless the user explicitly requested them.
+5. Research at least 18 unique plausible candidate claims.
+6. Verify, normalize, deduplicate, label operators, and rank candidate viral strength.
+7. Select six candidates that pass format/topic constraints, operator diversity, source access, scope, safety, and quality rules.
+8. Challenge the two weakest final facts and complete generation_audit.
+9. Allocate one post ID and six fact IDs only after every hard gate passes.
+10. Add one complete current-format draft record to active-drafts.jsonl, including `post_format`.
+11. Increment next_post_number by one.
+12. Increment next_fact_number by six.
+13. Update topic and country rotation fields; store `mixed` in recent_topics for a mixed post.
+14. Increment state revision.
+15. Report the saved post ID only after GitHub confirms both writes.
 
 Reserved signatures live in the saved draft record.
 
@@ -835,8 +875,8 @@ Because the rejected fact snapshots were never added to the published fact index
 
 1. Confirm the post exists with status ready.
 2. Record one operation-wide published_at timestamp.
-3. Upsert its six fact snapshots into the correct fact index files as published records using that timestamp, preserving editorial metadata.
-4. Append one immutable post record to the correct monthly archive, preserving quality rationales and generation_audit.
+3. Upsert its six fact snapshots into fact indexes selected independently by each fact's own non-mixed topic, using that timestamp and preserving editorial metadata. Never route a fact to a mixed ledger.
+4. Append one immutable post record to the correct monthly archive, preserving post_format when present, quality rationales, and generation_audit.
 5. Remove the post from active-drafts.jsonl.
 6. Regenerate the complete ready queue from the remaining active ready records.
 7. Update rotation state if required.
@@ -902,6 +942,11 @@ Audit checks for all records:
 - counters exceed every allocated ID;
 - active posts use allowed statuses;
 - active standard posts contain exactly six fact snapshots;
+- every record has a valid effective post format, treating missing post_format as themed;
+- every themed record has one non-mixed topic shared by all facts;
+- every mixed record has post topic mixed, at least four fact topics, no topic more than twice, and no fact topic mixed;
+- every country-specific mixed record has its country_focus explicitly present in every fact country_scope;
+- no data/facts/mixed.jsonl file exists;
 - every ready post appears exactly once in ready-to-post.md;
 - no non-ready post appears in ready-to-post.md;
 - every archived post has six published fact records;
@@ -955,7 +1000,12 @@ Do not save or publish any record when:
 - factual_confidence is below 2;
 - readability is below 2;
 - total quality is below 10;
-- a fact uses an unknown topic or invalid country code;
+- a post uses an unknown post_format or post-level topic;
+- a fact uses an unknown fact-level topic or invalid country code;
+- a themed post has a mixed post topic or any fact topic differs from its post topic;
+- a mixed post lacks post topic mixed, has fewer than four fact topics, uses one topic more than twice, or contains a mixed fact topic;
+- a country-specific mixed post has any fact whose country_scope does not explicitly include country_focus;
+- a write would create or use data/facts/mixed.jsonl;
 - an unsafe high-risk fact is present;
 - the current Git SHA changed during the write operation.
 
