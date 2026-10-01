@@ -658,7 +658,7 @@ Evidence:
 
 ## 5B. Stage 11 — User Documentation
 
-Status: COMPLETE — READY FOR INTEGRATION
+Status: COMPLETE
 
 Branch boundary:
 
@@ -696,6 +696,7 @@ Evidence:
 - `c933a4c688b6f61504bf1942cdcce4a008352e33` — Replace the obsolete Stage 10.7 handoff with post-launch maintenance guidance.
 - `a15b1bcb9dbf730b0ecec3e662a98ba1da98c565` — Align installation and smoke-test guidance with the live `main` workflow.
 - 2026-10-01 — User reviewed and accepted the documentation; Stage 11.6 passed without production writes.
+- `7084c30a654d5ad94b582c9477214103b37d6167` — Merge pull request #3 and publish the Stage 11 documentation to `main`.
 
 ## 6. Definition of Done
 
@@ -758,3 +759,4 @@ Do not rely on conversation history as the only record of the plan.
 - Completed Stage 11.4 with concise README navigation and two-way links between the user guide and prompt library.
 - Completed Stage 11.5 documentation QA: verified navigation, links, prompt intent coverage, Markdown structure, branch references, and production isolation; removed obsolete Stage 10.7 instructions and restricted mutative acceptance tests to isolated test branches.
 - Completed Stage 11.6 after the user reviewed and accepted the concise Indonesian documentation; no production test or data mutation was required.
+- Merged pull request #3, published the documentation on `main`, and verified that production state and active drafts were unchanged.
