@@ -97,6 +97,7 @@ Repository files may describe profiles for documentation, but they cannot change
 
     data/production-state.json
     data/active-drafts.jsonl
+    data/publishing-plan.json
 
 ### Published and blocked fact indexes
 
@@ -118,9 +119,10 @@ Repository files may describe profiles for documentation, but they cannot change
 
 The monthly performance directory and file are created only on the first actual metrics write.
 
-### Human copy queue
+### Derived human views
 
     output/ready-to-post.md
+    output/content-calendar.md
 
 ## 4. Source-of-Truth Rules
 
@@ -135,9 +137,13 @@ Each type of information has exactly one authoritative location.
 - Posted scripts: data/posts/YYYY-MM.jsonl
 - Raw performance snapshots: data/performance/YYYY-MM.jsonl
 - Deterministic performance summary: data/performance-summary.json
+- Publishing schedule: data/publishing-plan.json
 - Copy-friendly queue: output/ready-to-post.md
+- Human-readable calendar: output/content-calendar.md
 
 The Markdown ready queue is a derived view, not a database. If it disagrees with active-drafts.jsonl, regenerate it from active drafts.
+
+The content calendar is also derived. If it disagrees with publishing-plan.json, regenerate it from the publishing plan after validating that every planned post is still ready.
 
 Do not use conversation memory as a source of truth.
 
@@ -196,7 +202,8 @@ Required structure:
 ### Field rules
 
 - revision increases by exactly one after every completed content-lifecycle or production-state operation.
-- Performance capture and derived-summary rebuild do not modify production-state.json, its revision, ID counters, or rotation fields.
+- Performance capture, publishing-plan mutations, and derived-view rebuilds do not modify production-state.json, its revision, ID counters, or rotation fields.
+- Marking a post as posted remains one content-lifecycle operation: production revision increases once even when the same operation completes a publishing-plan slot.
 - next_post_number points to the next unused post number.
 - next_fact_number points to the next unused fact number.
 - recent_topics stores no more than the 10 most recently created post topics and may contain `mixed` for a mixed post.
@@ -887,11 +894,13 @@ Because the rejected fact snapshots were never added to the published fact index
 2. Record one operation-wide published_at timestamp.
 3. Upsert its six fact snapshots into fact indexes selected independently by each fact's own non-mixed topic, using that timestamp and preserving editorial metadata. Never route a fact to a mixed ledger.
 4. Append one immutable post record to the correct monthly archive, preserving post_format when present, quality rationales, and generation_audit.
-5. Remove the post from active-drafts.jsonl.
-6. Regenerate the complete ready queue from the remaining active ready records.
-7. Update rotation state if required.
-8. Increment state revision.
-9. Fetch and confirm the archive record, all six published fact records, absence from active drafts, and absence from the ready queue before reporting success.
+5. If the post has one planned publishing slot, change it to completed with completed_at equal to published_at, update updated_at, and increment publishing-plan revision once. A missing slot is allowed.
+6. Remove the post from active-drafts.jsonl.
+7. Regenerate the complete ready queue from the remaining active ready records.
+8. If the publishing plan changed, rebuild the complete content calendar from its remaining planned slots.
+9. Update rotation state if required.
+10. Increment production-state revision once.
+11. Fetch and confirm the archive record, all six published fact records, active-draft and ready-queue removal, and any schedule completion and calendar removal before reporting success.
 
 This order favors duplicate prevention and keeps the queue derived from active drafts. If an operation stops midway, published fact locks or an archive record may exist before cleanup is complete; the recovery procedure must finish the same transaction with the existing IDs and published_at timestamp rather than create new records or timestamps.
 
@@ -904,7 +913,9 @@ Every state-changing command must be safe to retry.
 - If a claim_signature exists under another fact_id, stop and report a duplicate conflict.
 - If a monthly post record already exists with identical content, do not append it again.
 - If a ready block already exists, replace or preserve it; never duplicate it.
-- If Mark as posted is repeated for an archived post, report that it is already posted.
+- If Mark as posted is repeated for an archived post, report that it is already posted and deterministically finish any still-planned slot before reporting complete.
+- Repeating an identical schedule or move is a no-op when the authoritative plan and derived calendar already match.
+- Scheduling the same post twice or reusing an occupied planned timestamp is a conflict, not an append.
 - For performance data, post_id plus captured_at is the idempotency key.
 - An identical canonical performance retry is a no-op success with no append and no summary rewrite.
 - A different canonical payload with the same performance key is a conflict and must not modify any file.
@@ -933,6 +944,8 @@ Never use a SHA from another branch, retry through an implicit default branch, o
 Do not run two write operations against the same path in parallel.
 
 Performance writes are serialized. Append or create the authoritative monthly raw file first, verify it, then rebuild and replace the derived summary. A partial raw-only success is recoverable only by rebuilding the summary from all authoritative raw files; never delete the confirmed raw record to simulate rollback.
+
+Scheduling writes are serialized. Replace publishing-plan.json first, verify it, then rebuild and replace content-calendar.md. A plan-only partial success is recovered by rebuilding the calendar from the authoritative plan; never roll back a confirmed plan mutation by guessing its previous content.
 
 Read-only research and fact collection may run in parallel, but final allocation and persistence must be serialized.
 
@@ -972,7 +985,13 @@ Audit checks for all records:
 - no duplicate performance idempotency key has conflicting payloads;
 - every monthly performance file matches the Asia/Jakarta month of captured_at;
 - performance-summary.json exactly matches a deterministic rebuild from all raw performance files and current immutable archive metadata;
-- performance sample_size equals the number of unique measured posts, using only the latest snapshot per post.
+- performance sample_size equals the number of unique measured posts, using only the latest snapshot per post;
+- publishing-plan timezone is exactly Asia/Jakarta and revision is a non-negative integer;
+- every planned slot points to exactly one active ready post;
+- every completed slot points to exactly one archived posted post;
+- no post has more than one slot and no scheduled_for timestamp is duplicated;
+- planned scheduled_for values are valid UTC timestamps and were future times when created or moved;
+- content-calendar.md exactly matches deterministic rendering of planned slots.
 
 Additional checks for a record containing editorial version 2 fields:
 
@@ -1003,6 +1022,7 @@ Repair existing records when the intended state is unambiguous. Otherwise stop a
 - Published facts are partitioned by topic.
 - Raw performance snapshots are partitioned by the Asia/Jakarta month of captured_at.
 - Performance summary remains one small derived file and must be rebuilt rather than patched incrementally.
+- Publishing plan retains compact planned and completed slot records; content calendar renders only planned slots.
 - Do not create one permanent file per post.
 - Do not merge all historical records into one global file.
 
@@ -1056,6 +1076,8 @@ A legacy draft may remain stored as draft without the additive fields. Missing e
 Fast Approval must also fail before any write when stored evidence is incomplete or internally inconsistent. It must not repair, research, rescore, upgrade, or otherwise manufacture eligibility inside the approval operation.
 
 Performance capture must also fail before any write when the post is not archived and posted, captured_at is invalid or before publication, post_age_hours cannot be derived, every metric is null, a metric is outside its allowed range, the idempotency key conflicts, month routing is wrong, or required archive evidence is unavailable.
+
+Scheduling must fail before every write when a target is not ready, a post already has a slot, a planned timestamp is occupied, a scheduled time is not in the future, the timezone or timestamp is invalid, requested capacity exceeds available unscheduled ready posts without explicit partial-schedule permission, plan revision or slot structure is invalid, or the current calendar disagrees with otherwise valid authoritative plan data and the operation did not first recover it.
 
 Report the failing condition clearly and leave existing valid data unchanged.
 
@@ -1184,3 +1206,135 @@ Interpret sample size conservatively:
 - 20 or more unique posts: performance may break ties between otherwise equally eligible choices.
 
 Always show post_count for compared buckets. Performance never weakens factual, safety, originality, scope, source, format, cooldown, or editorial gates and never rewrites Content DNA automatically.
+
+## 25. Publishing Plan and Content Calendar
+
+### Publishing plan schema
+
+Path:
+
+    data/publishing-plan.json
+
+Required structure:
+
+    {
+      "schema_version": 1,
+      "timezone": "Asia/Jakarta",
+      "revision": 0,
+      "slots": []
+    }
+
+A slot created under Stage 12.6 uses:
+
+    {
+      "scheduled_for": "2026-10-02T12:00:00Z",
+      "post_id": "P-000020",
+      "status": "planned",
+      "created_at": "2026-10-01T10:00:00Z",
+      "updated_at": "2026-10-01T10:00:00Z",
+      "completed_at": null
+    }
+
+Rules:
+
+- timezone is always Asia/Jakarta;
+- revision is a non-negative integer and increases exactly once for each completed scheduling, move, or slot-completion operation, including a multi-slot batch;
+- allowed status values are planned and completed;
+- scheduled_for, created_at, updated_at, and non-null completed_at are UTC ISO-8601 timestamps with trailing Z;
+- a newly created or moved planned slot must be strictly in the future at operation time;
+- a planned slot references exactly one current active record with status ready;
+- a completed slot references exactly one immutable archive record with status posted and has non-null completed_at;
+- one post_id may appear in at most one slot across the complete plan;
+- one scheduled_for value may appear at most once across the complete plan;
+- scheduling, moving, or recommending never changes a post lifecycle status;
+- completed slots are retained as compact schedule history but are omitted from the content calendar;
+- slots are stored in scheduled_for ascending order, then post_id ascending.
+
+### Content calendar
+
+Path:
+
+    output/content-calendar.md
+
+This file is a deterministic human-readable view of planned slots. publishing-plan.json is authoritative.
+
+Empty calendar:
+
+    # CONTENT CALENDAR
+
+    No posts are scheduled.
+
+For a non-empty calendar, group planned slots by their Asia/Jakarta calendar date:
+
+    # CONTENT CALENDAR
+
+    ## 2026-10-02
+
+    - 19:00 WIB — P-000020 — Mixed Trivia — GLOBAL
+
+Use the fixed topic display mapping from ready-to-post.md. Convert scheduled_for from UTC to Asia/Jakarta, render date as YYYY-MM-DD and time as HH:mm WIB, sort dates and slots ascending, use UTF-8 and LF, and end with exactly one newline.
+
+Do not include completed slots, script copy, captions, hashtags, sources, audit data, or internal quality details.
+
+Rendering procedure:
+
+1. Read the complete publishing plan and active drafts from explicit RUNTIME_BRANCH.
+2. Validate every planned slot against one current ready post.
+3. Sort planned slots by scheduled_for, then post_id.
+4. Render the fixed header, grouped dates, and one line per planned slot.
+5. Replace the complete file using its latest branch-bound SHA.
+6. Reread and confirm byte-exact parity.
+
+If plan validation fails, do not replace a currently valid calendar.
+
+### Read-only next-post recommendation
+
+The command to recommend the best post to publish next never writes.
+
+1. Read active drafts, ready queue, publishing plan, content calendar, production rotation, recent archives, required fact metadata, and performance summary from one explicit runtime ref.
+2. Validate ready-queue and calendar parity before ranking.
+3. If one or more planned slots exist, recommend the ready post in the earliest scheduled slot, using post_id as the tie-breaker.
+4. Otherwise rank unscheduled ready posts by the ordered principles in content-dna.md: rotation fit; subject-cooldown fit using current fields and legacy fallbacks; lower recent operator overlap; higher supported quality; older ready_at; eligible performance tie-break; then post_id.
+5. Explain the compact evidence for the recommendation without exposing private reasoning or changing any file.
+
+A planned post that is missing or no longer ready is an integrity failure. Stop and report it rather than silently recommending a different post.
+
+### Schedule a batch
+
+For a request such as seven days at two posts per day:
+
+1. Resolve the Asia/Jakarta date range and requested daily count.
+2. When no start date or times are supplied, use the next full Asia/Jakarta calendar day and default times 12:00 and 19:00 WIB.
+3. Count existing planned slots inside each requested day toward the requested daily total.
+4. Build only the missing timestamps and reject any timestamp collision.
+5. Confirm enough unscheduled ready posts exist to fill every missing slot. With insufficient capacity, perform zero writes unless the user explicitly authorizes a partial schedule.
+6. Select posts one slot at a time using the read-only recommendation rules and update rotation context virtually so the batch remains balanced.
+7. Prepare every slot before the first write, using one operation timestamp for created_at and updated_at.
+8. Replace publishing-plan.json exactly once, incrementing its revision once for the entire batch.
+9. Rebuild and replace content-calendar.md exactly once.
+10. Reread both files and verify plan/calendar parity. Leave active drafts, ready queue, production state, archives, facts, and performance data unchanged.
+
+Explicit user dates, times, and safe selection constraints override the defaults after normalization.
+
+### Move a scheduled post
+
+1. Require one Post ID with exactly one planned slot and one unambiguous destination time.
+2. Interpret natural dates and times in Asia/Jakarta unless the user supplies an explicit timezone.
+3. Normalize the destination to UTC and require it to be in the future and unoccupied.
+4. An identical destination is a no-op when calendar parity already holds.
+5. Update only scheduled_for and updated_at for that slot.
+6. Increment publishing-plan revision once, replace the plan once, rebuild the calendar once, and verify both.
+7. Do not change post status, ready_at, queue order, production revision, IDs, or content.
+
+### Complete a slot during Mark as posted
+
+When a ready post is marked posted:
+
+- no planned slot is required;
+- if one planned slot exists, change status to completed, set completed_at and updated_at to the operation-wide published_at timestamp, and increment publishing-plan revision once;
+- preserve scheduled_for and created_at;
+- rebuild the content calendar so the completed slot disappears;
+- verify the completed slot points to the archived post;
+- on retry, finish an incomplete slot/calendar cleanup idempotently without duplicating publication data.
+
+Publishing-plan completion is part of the posted transition recovery surface, but it never causes a second production-state revision increment.
