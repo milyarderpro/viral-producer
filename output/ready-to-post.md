@@ -139,3 +139,23 @@ E Ink Carta displays use electric fields to move black and white particles insid
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000008 — Body and Everyday Science
+
+Did you know?
+
+Your body emits ultraweak light, but it is about 1,000 times too dim to see
+
+Water-soaked fingers wrinkle because blood vessels constrict, an active response controlled by sympathetic nerves
+
+Your nostrils trade airflow dominance as erectile tissue alternately swells inside each side
+
+Crying can make your nose run because tears drain through ducts into the nasal cavity
+
+A single human cell can contain enough DNA to stretch into a six-foot strand
+
+A knuckle crack happens as a cavity forms inside the joint, not from a bubble collapsing
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
