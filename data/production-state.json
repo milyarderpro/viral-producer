@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "revision": 18,
+  "revision": 19,
   "next_post_number": 10,
-  "next_fact_number": 62,
+  "next_fact_number": 66,
   "operational_timezone": "Asia/Jakarta",
   "single_writer_mode": true,
   "last_topic": "geography-history",
