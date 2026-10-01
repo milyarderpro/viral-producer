@@ -203,6 +203,21 @@ Every newly created or upgraded standard post must have:
 - two different valid final fact positions;
 - no full rejected candidate wording persisted.
 
+### Smart queue and content calendar
+
+For every recommendation or scheduling operation:
+
+- recommendations are read-only and select only ready posts;
+- an existing earliest planned slot takes precedence;
+- unscheduled recommendations apply deterministic rotation, cooldown, operator, quality, ready-age, eligible-performance, and post-ID ordering;
+- publishing-plan timezone is Asia/Jakarta and its revision changes only on plan mutation;
+- planned slots reference ready posts; completed slots reference archived posted posts;
+- one post has at most one slot and one scheduled_for timestamp has at most one post;
+- persisted scheduled_for values are UTC and user-facing calendar values are WIB;
+- scheduling or moving never changes lifecycle, queue order, production revision, IDs, counters, or content;
+- content-calendar.md exactly renders planned slots and omits completed slots;
+- marking a scheduled post as posted completes its slot and removes it from the derived calendar.
+
 ### Performance feedback
 
 For every performance operation:
@@ -1291,6 +1306,163 @@ Repository assertions:
 
 Pass: performance influence remains proportional to sample size and subordinate to all production gates.
 
+### AT-39 — Read-only smart recommendation
+
+Purpose: Verify deterministic next-post selection without repository mutation.
+
+Setup: On the isolated test branch, prepare at least three valid ready posts with different topics, countries, formats, operators, quality totals, and ready_at values. Test once with no planned slots and once with at least two valid planned slots.
+
+Prompt:
+
+    Rekomendasikan post terbaik untuk diposting berikutnya.
+
+Expected behavior:
+
+- Validates active/queue and plan/calendar parity.
+- With planned slots, recommends the ready post in the earliest scheduled slot.
+- Without planned slots, ranks only unscheduled ready posts using the documented ordered criteria.
+- Uses performance only when sample_size is at least 20 and only as a late tie-breaker.
+- Reports concise evidence and explicitly states that the operation is read-only.
+
+Repository assertions:
+
+- No repository file, timestamp, revision, counter, queue order, or lifecycle status changes.
+- A planned post that is missing or no longer ready produces an integrity failure rather than a fallback recommendation.
+- Repeating the request on unchanged data returns the same Post ID.
+
+Pass: recommendation is valid, deterministic, and mutation-free.
+
+### AT-40 — Seven-day schedule and deterministic calendar
+
+Purpose: Verify a complete multi-slot schedule using default Asia/Jakarta times.
+
+Precondition: At least 14 unscheduled ready posts exist on the isolated test branch and the publishing plan has enough capacity.
+
+Prompt:
+
+    Susun jadwal posting tujuh hari, dua post per hari.
+
+Expected behavior:
+
+- Starts on the next full Asia/Jakarta calendar day.
+- Uses 12:00 and 19:00 WIB because no times were supplied.
+- Selects posts iteratively using smart recommendation with virtual rotation updates.
+- Reports all 14 assignments and the new plan revision.
+
+Repository assertions:
+
+- Exactly 14 planned slots cover seven consecutive local dates with two slots per date.
+- scheduled_for values are correct UTC conversions, unique, sorted, and future at creation time.
+- Every slot references one current ready post and every post appears once.
+- publishing-plan revision increases exactly once for the batch.
+- content-calendar.md matches the deterministic date grouping and WIB rendering byte-for-byte.
+- Active records, statuses, ready_at values, ready queue, production state, archives, facts, and performance files are unchanged.
+
+Pass: the batch schedule is atomic at plan level, deterministic, and lifecycle-neutral.
+
+### AT-41 — Ready-only scheduling enforcement
+
+Purpose: Reject scheduling for a non-ready post or insufficient ready capacity.
+
+Prompts:
+
+    Schedule {{DRAFT_OR_POSTED_POST}} for tomorrow at 19:00 WIB.
+    Schedule more slots than the available unscheduled ready posts.
+
+Expected behavior:
+
+- Identifies the exact eligibility or capacity failure.
+- Performs zero writes unless explicit partial scheduling was separately authorized.
+- Does not approve, generate, revive, or otherwise change a post to make it schedulable.
+
+Repository assertions:
+
+- publishing-plan.json and content-calendar.md are unchanged.
+- Active drafts, ready queue, production state, archives, facts, and performance data are unchanged.
+- Zero write calls occur and no commit is created.
+
+Pass: only ready posts enter a complete authorized schedule.
+
+### AT-42 — Duplicate schedule, collision, and retry safety
+
+Purpose: Verify post uniqueness, timestamp uniqueness, and schedule idempotency.
+
+Precondition: {{SCHEDULED_POST}} has one planned slot and another planned slot occupies {{OCCUPIED_TIME}}.
+
+Prompts:
+
+    Schedule {{SCHEDULED_POST}} again at a different time.
+    Schedule another ready post at {{OCCUPIED_TIME}}.
+    Repeat an already completed identical schedule request.
+
+Expected behavior:
+
+- Rejects the duplicate post and occupied timestamp before every write.
+- Treats the identical request as a no-op when authoritative plan and calendar already match.
+- Does not append duplicate slots or churn the plan revision.
+
+Repository assertions:
+
+- Each post_id and scheduled_for appears at most once.
+- Plan and calendar are byte-for-byte unchanged for all three prompts.
+- No lifecycle or production-state file changes.
+- Zero write calls occur and no commit is created.
+
+Pass: conflicts are rejected and exact retries are idempotent.
+
+### AT-43 — Move scheduled post with WIB normalization
+
+Purpose: Verify a safe move without lifecycle mutation.
+
+Prompt:
+
+    Pindahkan {{SCHEDULED_POST}} ke jadwal besok pukul 19.00 WIB.
+
+Expected behavior:
+
+- Resolves tomorrow in Asia/Jakarta and reports the normalized local and UTC times.
+- Confirms the destination is future and unoccupied.
+- Reports one updated slot and one plan revision increment.
+
+Repository assertions:
+
+- The same slot preserves post_id, status, created_at, and completed_at.
+- Only scheduled_for and updated_at change inside the slot.
+- publishing-plan revision increases exactly once.
+- content-calendar.md removes the old line and renders the new WIB line exactly once.
+- Active post content, status, ready_at, queue position, production state, IDs, counters, archives, facts, and performance data are unchanged.
+- Repeating the same move is a no-op.
+
+Pass: moving a slot changes only authoritative and derived schedule data.
+
+### AT-44 — Scheduled post publication cleanup
+
+Purpose: Verify that Mark as posted completes a planned slot and removes it from the active calendar.
+
+Precondition: {{SCHEDULED_POST}} is ready with exactly one planned slot and exact ready-queue/calendar parity.
+
+Prompt:
+
+    Mark {{SCHEDULED_POST}} as posted.
+
+Expected behavior:
+
+- Performs the normal publication lifecycle.
+- Uses one published_at timestamp for publication and schedule completion.
+- Reports archive, fact-ledger routing, completed slot, and calendar removal.
+
+Repository assertions:
+
+- The post and facts are archived and indexed exactly once under the ordinary publication rules.
+- The publishing slot has status completed; scheduled_for and created_at are preserved.
+- completed_at and updated_at equal published_at.
+- publishing-plan revision increases once and production-state revision increases once.
+- The completed slot is absent from content-calendar.md.
+- The post is absent from active drafts and ready-to-post.md.
+- Retrying the posted command duplicates nothing and finishes any incomplete plan/calendar cleanup idempotently.
+
+Pass: publication and schedule cleanup reach one consistent recoverable state.
+
 ## 6. Final Consistency Audit
 
 After all applicable tests, prompt:
@@ -1329,6 +1501,11 @@ The final result passes only when:
 - performance-summary.json is byte-exact from deterministic reconstruction;
 - performance sample_size counts unique posts using their latest snapshots;
 - performance writes did not mutate content lifecycle data or production state;
+- publishing-plan timezone, revision, slot schema, uniqueness, linkage, status, and ordering are valid;
+- every planned slot points to a ready post and every completed slot points to an archived posted post;
+- content-calendar.md is byte-exact from planned slots in Asia/Jakarta;
+- recommendation traces show zero writes;
+- scheduling and moving did not mutate lifecycle content or production state;
 - no unresolved partial failure remains.
 
 Reject any remaining temporary draft through the GPT if cleanup is desired. Do not manually decrement counters, reuse test IDs, fabricate audit evidence, or rewrite legacy records merely to make the audit green.
@@ -1379,6 +1556,12 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-36 Performance conflict | PENDING | Stage 12.10 | Different payload on the same compound key must fail before write. |
 | AT-37 Deterministic performance summary | PENDING | Stage 12.10 | Latest snapshot per post and all aggregate buckets must rebuild byte-identically. |
 | AT-38 Small-sample restraint | PENDING | Stage 12.10 | Performance influence must respect the 15/20-post thresholds and remain read-only. |
+| AT-39 Read-only smart recommendation | PENDING | Stage 12.10 | Must deterministically recommend only ready content with zero writes. |
+| AT-40 Seven-day schedule | PENDING | Stage 12.10 | Must create 14 valid WIB slots and exact calendar parity without lifecycle mutation. |
+| AT-41 Ready-only scheduling | PENDING | Stage 12.10 | Non-ready posts and insufficient capacity must fail before write. |
+| AT-42 Schedule conflicts and retry | PENDING | Stage 12.10 | Duplicate posts, occupied times, and identical retries must preserve exact state. |
+| AT-43 Move scheduled post | PENDING | Stage 12.10 | Must normalize WIB and change only plan/calendar state. |
+| AT-44 Scheduled publication cleanup | PENDING | Stage 12.10 | Posting must complete the slot and remove it from the active calendar exactly once. |
 | Body-science v2 regression | PASS | `P-000008`; `bbb08d7` | 24 candidates, 18 rejected, five operator families, six strength-2 facts, complete rationales, and directly supportive sources; materially stronger than legacy P-000003. |
 | Final consistency audit | PASS | `bbb08d718c89162515ffc09a86d8a47b22c8b289` | 7 active posts, 42 active fact snapshots, 6 published facts, 1 archive, and 1 ready post; counters, rotation, global uniqueness, publication linkage, v2 gates, and deterministic ready-queue parity all passed. |
 
@@ -1387,7 +1570,7 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 The version-3 implementation is ready to merge only when:
 
 - historical AT-01 through AT-23 remain valid or are rerun when affected;
-- AT-24 through AT-38 pass;
+- AT-24 through AT-44 pass;
 - all later Stage 12 feature and regression tests pass;
 - the final consistency audit passes;
 - failures are corrected in the instructions, contract, content DNA, or data model;
@@ -1397,4 +1580,4 @@ The version-3 implementation is ready to merge only when:
 - legacy baseline records remain unchanged unless explicitly revised through the normal lifecycle;
 - no test-only corruption remains on the branch.
 
-Current result: AT-01 through AT-23, the body-science v2 regression, and the version-2 final consistency audit remain historical passing evidence. AT-24 through AT-38 are specified but not yet executed; the Stage 12 implementation is not acceptance-ready until Stage 12.10 completes.
+Current result: AT-01 through AT-23, the body-science v2 regression, and the version-2 final consistency audit remain historical passing evidence. AT-24 through AT-44 are specified but not yet executed; the Stage 12 implementation is not acceptance-ready until Stage 12.10 completes.
