@@ -59,3 +59,23 @@ Badwater Basin sits 282 feet below sea level, North America’s lowest point
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000002 — Animals and Nature
+
+Did you know?
+
+A narwhal's unicorn-like tusk is actually an upper-jaw tooth that can grow nearly ten feet
+
+Cephalopods like octopuses have three hearts, and copper-based hemocyanin makes their blood blue
+
+Male short-snouted seahorses carry developing embryos in a pouch and give birth after about two weeks
+
+Southern sea otters use rocks as tools to crack open hard-shelled prey
+
+Sharks have skeletons made of cartilage, the flexible material in human noses and ears
+
+Spinner dolphins can sleep with half their brain while the other half stays alert
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
