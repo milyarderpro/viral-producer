@@ -479,3 +479,23 @@ Great Salt Lake has no outlet, so evaporation leaves dissolved salts behind
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000026 — Food and Household Knowledge
+
+Did you know?
+
+A strawberry's visible 'seeds' are actually tiny fruits, while the red flesh isn't a true berry
+
+Crushing garlic creates allicin within seconds; intact cloves contain none of it
+
+Cutting onions crushes cells and starts the chemical reaction that makes your eyes sting
+
+Baking soda needs an acid to release the carbon dioxide bubbles that lift batter
+
+Refrigeration can dull ripe tomato flavor and give the flesh a mealy texture
+
+Most food 'use-by' dates signal best quality, not safety; infant formula is an exception
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
