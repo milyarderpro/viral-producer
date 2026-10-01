@@ -48,12 +48,13 @@ A future incompatible structure must increment the schema version. Do not silent
 
 ### Additive editorial compatibility
 
-Stage 10.3, Stage 12.4, and Stage 12.5 add compatible records and derived data without changing the meaning of existing records, so schema_version remains 1.
+Stage 10.3 and Stages 12.4 through 12.7 add compatible fields, records, and derived data without changing the meaning of existing records, so schema_version remains 1.
 
 Compatibility rules:
 
 - records created before editorial version 2 remain valid legacy records;
 - a missing `post_format` means `themed` for every existing record and must not trigger a bulk rewrite;
+- a missing `subject_key` on a legacy fact uses the cooldown fallback defined below and must not trigger a bulk rewrite;
 - a missing editorial audit field in a legacy draft is not a JSON or schema corruption;
 - every newly created draft must include all editorial version 2 fields defined below;
 - a legacy draft may remain unchanged while stored as draft;
@@ -344,6 +345,7 @@ Required fact snapshot for a newly created or editorial-version-2-upgraded draft
       "claim_signature": "polar_bear|skin_color|black|species",
       "canonical_claim": "Polar bears have black skin beneath their fur.",
       "subject": "polar bear",
+      "subject_key": "polar_bear",
       "relationship": "skin color",
       "object_or_result": "black",
       "topic": "animals-nature",
@@ -383,6 +385,15 @@ Allowed surprise_operator values:
 
 viral_strength must be the integer 0, 1, or 2 using the anchors in system/content-dna.md.
 
+subject_key is required for every newly created or newly replaced fact after Stage 12.7. It must:
+
+- be a lowercase ASCII snake_case string from 1 through 80 characters;
+- identify the stable central subject or phenomenon, not the claim angle, topic, country, operator, or wording;
+- remain unchanged when only surface wording changes;
+- change only when the underlying subject changes through fact replacement.
+
+A legacy fact may omit subject_key. Derive an in-memory fallback from subject, relationship, canonical_claim, and tags for cooldown comparison, but never persist that fallback during inspection, approval, recommendation, publication, or audit.
+
 scope_check_passed may be true only after comparing the canonical claim, surface text, and evidence for subject, relationship, geography, time, quantity, qualifier, and record category. A broader or stronger surface statement must set this to false and block persistence.
 
 source_access_passed may be true only when at least one persisted authoritative source was opened and its readable content directly supports the final claim. If another source is restricted by login, paywall, CAPTCHA, expired link, or unreadable format, an accessible authoritative fallback is required.
@@ -395,7 +406,7 @@ Allowed risk_level values:
 
 High-risk facts must not enter ordinary production. Medium-risk facts require stronger verification and must not contain actionable medical, survival, emergency, legal, or safety instructions.
 
-Legacy fact snapshots may omit the four editorial fields while their parent record remains an unchanged legacy draft. They must receive the fields before the parent post becomes eligible for approval.
+Legacy fact snapshots may omit the four editorial fields while their parent record remains an unchanged legacy draft. They must receive those editorial fields before the parent post becomes eligible for approval. Missing subject_key alone is backward-compatible and uses the cooldown fallback; it is not an approval blocker and must remain absent during Fast Approval.
 
 ## 12. Active Draft Record
 
@@ -458,7 +469,16 @@ Required structure for a newly created or editorial-version-2-upgraded draft:
             "result": "replacement_passed",
             "reason": "The original filler was replaced and the final fact passed a second review."
           }
-        ]
+        ],
+        "cooldown_audit": {
+          "recent_published_posts_checked": 20,
+          "active_reservations_checked": 12,
+          "batch_posts_checked": 1,
+          "series_override_used": false,
+          "series_name": null,
+          "overridden_fact_positions": [],
+          "reason": null
+        }
       },
       "created_at": "2026-09-30T14:25:00Z",
       "updated_at": "2026-09-30T14:25:00Z",
@@ -514,7 +534,17 @@ weakest_fact_review must:
 - contain a concise reason based on the current final fact;
 - never store full rejected candidate wording.
 
-generation_audit is compact evidence, not a candidate database. Do not persist rejected candidate claims, complete research notes, or unused source lists.
+For every newly created post after Stage 12.7, generation_audit must also contain cooldown_audit:
+
+- recent_published_posts_checked is an integer from 0 through 20 and equals the available recent archive window checked at generation time;
+- active_reservations_checked is a non-negative integer recording how many active posts were checked;
+- batch_posts_checked is a positive integer recording the requested batch size considered;
+- series_override_used is boolean;
+- when false, series_name and reason are null and overridden_fact_positions is empty;
+- when true, the user must have explicitly requested a named series, series_name and reason are non-empty, and overridden_fact_positions contains unique integers from 1 through 6;
+- cooldown rejections use the existing rejected_counts.repetitive bucket.
+
+generation_audit is compact evidence, not a candidate database. Do not persist rejected candidate claims, complete research notes, unused source lists, or private reasoning.
 
 ### Legacy approval boundary
 
@@ -540,7 +570,7 @@ The target is eligible only when all of these conditions pass:
 - the user explicitly approves one canonical Post ID;
 - the latest record has status draft, exactly six facts, and null approved_at and ready_at;
 - its effective post format and post/fact topic relationship satisfy every format invariant above;
-- every fact has complete required snapshot fields, at least one stored source object, an allowed surprise_operator, a viral_strength integer from 0 through 2, scope_check_passed true, and source_access_passed true;
+- every fact has complete required snapshot fields, at least one stored source object, an allowed surprise_operator, a viral_strength integer from 0 through 2, scope_check_passed true, and source_access_passed true; a missing legacy subject_key is evaluated only as a compatible absent field and is not created during approval;
 - quality contains all six integer scores, a total equal to their sum, hard_rules_passed true, and six non-empty rationales;
 - opening_strength, readability, and factual_confidence are 2 and total is at least 10;
 - generation_audit contains candidate_count of at least 18, only allowed rejected_counts keys, a rejection sum equal to candidate_count minus 6, operator_variety matching the final facts, and exactly two different valid weakest_fact_review positions;
@@ -556,7 +586,7 @@ Eligibility checks may verify structure, allowed values, arithmetic, and cross-f
 - perform global semantic deduplication or read fact ledgers for approval;
 - rescore quality or rewrite quality rationales;
 - rebuild generation_audit;
-- change facts, sources, wording, ordering, topic, country focus, or editorial metadata;
+- change facts, sources, wording, ordering, topic, country focus, subject_key presence, cooldown audit, or other editorial metadata;
 - allocate or replace Post IDs or Fact IDs.
 
 Any missing, false, invalid, or inconsistent eligibility evidence is a hard Fast Approval failure. The operation performs zero writes and reports the exact stored-data failure.
@@ -596,6 +626,7 @@ Required structure for a fact produced or upgraded under editorial version 2:
       "claim_signature": "polar_bear|skin_color|black|species",
       "canonical_claim": "Polar bears have black skin beneath their fur.",
       "subject": "polar bear",
+      "subject_key": "polar_bear",
       "relationship": "skin color",
       "object_or_result": "black",
       "topic": "animals-nature",
@@ -687,7 +718,16 @@ Required structure for a post produced or upgraded under editorial version 2:
             "result": "replacement_passed",
             "reason": "The original filler was replaced and the final fact passed a second review."
           }
-        ]
+        ],
+        "cooldown_audit": {
+          "recent_published_posts_checked": 20,
+          "active_reservations_checked": 12,
+          "batch_posts_checked": 1,
+          "series_override_used": false,
+          "series_name": null,
+          "overridden_fact_positions": [],
+          "reason": null
+        }
       },
       "created_at": "2026-09-30T14:25:00Z",
       "approved_at": "2026-09-30T15:00:00Z",
@@ -808,10 +848,18 @@ Before saving a draft, check candidate facts against:
 3. Every published or blocked record in data/facts/*.jsonl.
 4. Other facts already selected for the same post.
 
+After permanent duplicate checks pass, apply the subject and angle cooldown across:
+
+1. Every fact already selected in the current post and every earlier post in the requested batch.
+2. Every fact snapshot in all active draft, approved, and ready records.
+3. Published fact records belonging to the 20 most recent archived posts by published_at descending, then post_id descending.
+
 Check both:
 
 - exact claim_signature;
 - semantic equivalence of canonical_claim, subject, relationship, and result.
+
+Then check exact subject identity and semantic subject-cluster frequency using subject_key when present and the legacy fallback otherwise. Duplicate failure uses rejected_counts.duplicate; cooldown failure uses rejected_counts.repetitive.
 
 Do not search monthly post archives as the primary duplicate mechanism. The fact indexes are the published-fact source of truth.
 
@@ -828,9 +876,9 @@ All lifecycle reads, preflight checks, writes, verification reads, and recovery 
 3. Read all relevant fact index files.
 4. Select effective post format and post topic, using the 75% themed and 25% mixed default rotation unless the user explicitly requested them.
 5. Research at least 18 unique plausible candidate claims.
-6. Verify, normalize, deduplicate, label operators, and rank candidate viral strength.
-7. Select six candidates that pass format/topic constraints, operator diversity, source access, scope, safety, and quality rules.
-8. Challenge the two weakest final facts and complete generation_audit.
+6. Verify, normalize, deduplicate, derive subject_key, apply the complete subject/cluster cooldown, label operators, and rank candidate viral strength.
+7. Select six candidates that pass format/topic, cooldown, operator diversity, source access, scope, safety, and quality rules.
+8. Challenge the two weakest final facts and complete generation_audit, including cooldown_audit and any explicit named-series override evidence.
 9. Allocate one post ID and six fact IDs only after every hard gate passes.
 10. Add one complete current-format draft record to active-drafts.jsonl, including `post_format`.
 11. Increment next_post_number by one.
@@ -873,8 +921,8 @@ active-drafts.jsonl is authoritative. If the active write succeeds but a later w
 - Increment next_fact_number.
 - Never reuse the removed fact ID.
 - Upgrade the complete post to editorial version 2.
-- Re-run duplicate, operator-diversity, viral-strength, source-access, scope, and quality checks.
-- Rebuild generation_audit without storing rejected candidate wording.
+- Derive subject_key for the replacement and re-run duplicate, subject/cluster cooldown, operator-diversity, viral-strength, source-access, scope, and quality checks.
+- Rebuild generation_audit, including current cooldown_audit, without storing rejected candidate wording.
 - Regenerate the ready queue when necessary.
 
 ### Reject draft
@@ -991,7 +1039,12 @@ Audit checks for all records:
 - every completed slot points to exactly one archived posted post;
 - no post has more than one slot and no scheduled_for timestamp is duplicated;
 - planned scheduled_for values are valid UTC timestamps and were future times when created or moved;
-- content-calendar.md exactly matches deterministic rendering of planned slots.
+- content-calendar.md exactly matches deterministic rendering of planned slots;
+- every fact created or replaced after Stage 12.7 has a valid subject_key;
+- legacy facts missing subject_key remain readable through the documented in-memory fallback and are not silently rewritten;
+- cooldown_audit is structurally valid when present;
+- any series override names the series, identifies overridden fact positions, and records a concise reason;
+- active reservations and the 20 most recent archived posts contain no prohibited exact-subject reuse or third semantic-cluster post without valid override evidence.
 
 Additional checks for a record containing editorial version 2 fields:
 
@@ -1008,7 +1061,8 @@ Additional checks for a record containing editorial version 2 fields:
 - candidate_count is at least 18;
 - rejected_counts uses only allowed keys and sums to candidate_count minus 6;
 - operator_variety equals the computed distinct-operator count;
-- weakest_fact_review contains exactly two different valid positions.
+- weakest_fact_review contains exactly two different valid positions;
+- newly created Stage 12.7 posts contain a valid cooldown_audit.
 
 A draft missing all or part of the editorial version 2 fields is a legacy draft, not corrupt data. Report it as requires_editorial_upgrade. Do not add invented audit evidence automatically, and do not approve or ready it until a real re-evaluation supplies the fields.
 
@@ -1070,6 +1124,15 @@ For every newly created or editorial-version-2-upgraded draft, also do not save,
 - operator_variety does not match the final six facts;
 - weakest_fact_review does not contain exactly two different valid final positions;
 - generation_audit contains full rejected candidate wording.
+
+For a newly created post after Stage 12.7, also do not save when:
+
+- any selected fact lacks a valid subject_key;
+- an exact subject appears in the current batch, active reservations, or recent 20-post window without a valid named-series override;
+- selecting the post would make one semantic subject cluster appear in more than two distinct posts across the cooldown scope without a valid override;
+- cooldown_audit is missing or internally inconsistent;
+- series_override_used is true without an explicit named series, non-empty reason, and valid overridden fact positions;
+- a cooldown rejection is recorded under any rejected_counts key other than repetitive.
 
 A legacy draft may remain stored as draft without the additive fields. Missing editorial version 2 fields become a hard transition failure when approval or ready status is requested.
 
@@ -1338,3 +1401,67 @@ When a ready post is marked posted:
 - on retry, finish an incomplete slot/calendar cleanup idempotently without duplicating publication data.
 
 Publishing-plan completion is part of the posted transition recovery surface, but it never causes a second production-state revision increment.
+
+## 26. Subject and Angle Cooldown
+
+### Subject key
+
+Every newly created or newly replaced fact stores:
+
+    "subject_key": "grand_canyon"
+
+Canonicalize the stable central subject or phenomenon as lowercase snake_case. Use the same key for different claims about the same subject. Do not include the relationship, result, topic, country, operator, date, or claim wording merely to evade cooldown.
+
+Examples:
+
+- Grand Canyon depth and Grand Canyon geology both use grand_canyon.
+- Polar bear skin and polar bear paws both use polar_bear.
+- Microwave oven history and microwave heating mechanism both use microwave_oven.
+
+Legacy facts without subject_key remain valid. For comparison only, derive a stable fallback from normalized subject first, then relationship, canonical_claim, and tags. The fallback is never written back automatically.
+
+### Cooldown scope and order
+
+Cooldown runs after permanent exact and semantic duplicate rejection and before final candidate selection.
+
+The comparison set is the union of:
+
+- all facts already selected in the current post;
+- all earlier posts in the same requested batch, updated virtually after each post;
+- every fact in all active draft, approved, and ready posts;
+- facts linked to the 20 most recent archived posts, ordered by published_at descending and post_id descending.
+
+Rules:
+
+1. Exact subject reuse: reject a candidate when its effective subject_key already exists anywhere in the comparison set.
+2. Semantic cluster limit: identify a narrow related-subject cluster using effective subject_key, subject, relationship, canonical_claim, tags, and semantic comparison. Count distinct post_ids containing that cluster. Reject a candidate when adding its post would make the cluster appear in more than two distinct posts.
+3. Multiple facts from one cluster inside the same new post count as one post occurrence, but exact subject_key repetition inside that post still fails.
+4. Cooldown rejection receives the primary rejection reason repetitive.
+5. A rejected cooldown candidate remains part of truthful candidate_count accounting but is never persisted.
+6. When an archive lacks linked fact-index data required for comparison, stop generation as an integrity failure.
+
+Cooldown is global across topics, countries, and post formats. A different topic label, country focus, wording, or surprise operator does not reset it.
+
+### Named-series override
+
+A named-series override may bypass exact-subject and semantic-cluster cooldown only when the user explicitly requests a named series before allocation.
+
+The override:
+
+- applies only to the identified final fact positions;
+- must be necessary for the named series;
+- must be recorded in generation_audit.cooldown_audit;
+- never bypasses permanent duplicate detection, verification, scope, source access, safety, operator, strength, word-count, quality, or any other hard gate;
+- cannot be inferred from a general topic request or from prior conversation context alone.
+
+Persist series_override_used, series_name, overridden_fact_positions, and a concise reason. If no final selected fact needs the override, store series_override_used false and the null/empty values.
+
+### Compatibility and lifecycle
+
+- New posts store subject_key on all six facts and complete cooldown_audit.
+- A newly replaced fact stores subject_key and triggers a fresh whole-post cooldown check.
+- Wording-only revision preserves subject_key when the underlying subject is unchanged.
+- Fast Approval performs no global cooldown recheck and preserves subject_key presence or absence exactly.
+- Publication copies subject_key unchanged into the fact ledger when present.
+- Legacy active and published facts may omit subject_key indefinitely and use the read-time fallback.
+- Inspection, recommendation, approval, publication, and audit never bulk-backfill subject_key.
