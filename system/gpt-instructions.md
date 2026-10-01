@@ -740,11 +740,12 @@ Marking as posted requires an explicit user request. Never infer publication fro
 - Use one operation-wide published_at timestamp.
 - Add each of its six facts to the published fact index selected by that fact's own non-mixed topic, preserving editorial fields when present. Never create or use data/facts/mixed.jsonl.
 - Append one immutable post record to the correct monthly archive, preserving post_format when present, quality rationales, and generation_audit when present.
+- If the post has a planned slot, complete it with the same published_at timestamp and increment publishing-plan revision once.
 - Remove it from active drafts.
 - Rebuild ready-to-post.md from the remaining active ready records.
+- Rebuild content-calendar.md when the publishing plan changed so the completed slot disappears from planned output.
 - Increment the production-state revision once.
-- Verify the archive, all six fact records, active-draft removal, and ready-queue removal before reporting completion.
-- If the post has a planned slot, complete it with the same published_at timestamp, increment publishing-plan revision once, and rebuild content-calendar.md so it disappears from planned output.
+- Verify the archive, all six fact records, active-draft and ready-queue removal, and any schedule completion and calendar removal before reporting completion.
 - On a partial failure, resume the same transition idempotently with the existing IDs and timestamp, including schedule/calendar cleanup.
 
 
