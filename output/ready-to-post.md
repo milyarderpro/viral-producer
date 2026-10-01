@@ -119,3 +119,23 @@ Shark Bay's 4,800-square-kilometre seagrass beds are the world's largest and ric
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000007 — Inventions, Firsts, and Records
+
+Did you know?
+
+Bubble Wrap began as wallpaper before becoming greenhouse insulation and protective packaging
+
+The first text message ever sent simply said "Merry Christmas" on December 3, 1992
+
+QR Codes use a 1:1:3:1:1 pattern so scanners can determine their orientation from any angle
+
+Memory foam was developed under a NASA contract to improve aircraft seat cushioning and crash protection
+
+The microwave oven began after Percy Spencer noticed a candy bar melting near a magnetron
+
+E Ink Carta displays use electric fields to move black and white particles inside millions of microcapsules
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
