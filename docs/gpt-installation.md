@@ -1,10 +1,10 @@
 # Instalasi Viral Producer di ChatGPT
 
-Documentation version: 2.0 — Stage 10.6
+Documentation version: 2.1 — Production
 
 ## 1. Tujuan
 
-Panduan ini menjelaskan cara memasang Viral Producer secara privat, menghubungkannya ke GitHub, memverifikasi akses baca dan tulis, lalu menyiapkannya untuk acceptance test.
+Panduan ini menjelaskan cara memasang Viral Producer secara privat, menghubungkannya ke GitHub, memverifikasi akses baca dan tulis, lalu menyiapkannya untuk produksi.
 
 Repository produksi:
 
@@ -50,7 +50,7 @@ Siapkan:
 - browser desktop untuk konfigurasi awal;
 - waktu untuk menjalankan smoke test sebelum penggunaan produksi.
 
-Pastikan file berikut sudah tersedia pada branch pengujian:
+Pastikan file berikut tersedia pada branch `main`:
 
     system/gpt-instructions.md
     system/content-dna.md
@@ -143,7 +143,7 @@ Di konfigurasi plugin:
 1. Tambahkan GitHub connection yang sudah diotorisasi.
 2. Jelaskan bahwa GitHub digunakan untuk pembacaan dan penulisan file.
 3. Pastikan web research tersedia untuk verifikasi fakta.
-4. Periksa bahwa instruksi menyebut repository dan branch pengujian secara eksplisit.
+4. Periksa bahwa instruksi menyebut repository dan branch `main` secara eksplisit.
 5. Simpan sebagai private.
 
 Jika kemampuan web search tidak tersedia pada pengalaman tersebut, jangan gunakan plugin untuk produksi fakta. Pindah ke pengalaman yang mendukung research atau tambahkan tool research yang sesuai.
@@ -252,55 +252,23 @@ Jika write meminta persetujuan, periksa target repository, branch, dan file sebe
 
 Setelah test, jangan menghapus record secara manual atau menurunkan counter. Gunakan lifecycle GPT atau biarkan record menjadi bagian dari acceptance run.
 
-## 10. Smoke Test Sebelum Acceptance Suite
+## 10. Smoke Test Setelah Instalasi
 
-Jalankan berurutan setelah version check pada bagian 16 lulus.
+### 10.1 Pemeriksaan read-only
 
-### 10.1 Read-only
+Jalankan version check pada bagian 16.5. Pastikan versi, repository, branch, dan state sesuai tanpa membuat commit.
 
-Gunakan AT-01. Pastikan tidak ada commit.
+### 10.2 Pemeriksaan write
 
-### 10.2 Write
+Lakukan hanya jika Anda memang ingin membuat satu draft produksi:
 
-Gunakan AT-02. Catat post ID yang dihasilkan. Periksa bahwa draft menyimpan:
+    Buatkan satu post trivia baru.
 
-- minimal 18 kandidat pada generation_audit;
-- rejected_counts yang konsisten;
-- minimal empat operator;
-- per-fact viral strength, scope check, dan source-access check;
-- enam quality rationales;
-- dua weakest-fact reviews.
+Lulus jika draft tersimpan lengkap, counter dan revision diperbarui, serta commit hanya mengubah file yang semestinya. Draft tersebut menjadi data produksi nyata; jangan menghapusnya atau menurunkan counter secara manual.
 
-### 10.3 Duplicate
+### 10.3 Acceptance test lanjutan
 
-Gunakan AT-05 dan AT-06. Pastikan duplicate exact dan paraphrase ditolak tanpa write.
-
-### 10.4 Editorial regression
-
-Jalankan AT-16 sampai AT-20. Kelimanya harus selesai tanpa write:
-
-- operator monoculture;
-- scope drift;
-- textbook-only facts;
-- score inflation;
-- inaccessible source.
-
-Jalankan AT-23 untuk memastikan tiga draft lama tetap dapat dibaca tetapi tidak melewati approval boundary.
-
-### 10.5 Lifecycle
-
-Gunakan post hasil AT-02:
-
-1. AT-08 untuk revisi wording.
-2. AT-09 untuk mengganti satu fakta.
-3. AT-10 untuk approval.
-4. AT-11 untuk ready queue dan percakapan baru.
-5. AT-12 untuk menandai posted.
-6. AT-13 untuk retry idempotent.
-7. AT-21 untuk memeriksa audit metadata setelah publikasi.
-8. AT-22 untuk memeriksa opening dan closing setelah publikasi.
-
-Setelah smoke test lulus, jalankan seluruh AT-01 sampai AT-23 dan final consistency audit.
+Jangan menjalankan acceptance test mutatif pada `main`. Jika perlu menguji lifecycle, konflik, atau recovery, gunakan branch test terisolasi dan ikuti `tests/acceptance-tests.md`.
 
 ## 11. Memeriksa Perubahan di GitHub
 
@@ -335,7 +303,7 @@ Jangan menilai keberhasilan hanya dari jawaban chat. Repository adalah bukti akh
 
 ## 12. Menjaga Versi Pertama Tetap Privat
 
-Sebelum Stage 10 selesai:
+Selama plugin masih bersifat pribadi:
 
 - gunakan visibility Private atau Only me;
 - jangan publikasikan ke workspace directory;
@@ -441,7 +409,7 @@ Jangan membangun fallback sebelum test membuktikan koneksi bawaan tidak cukup.
 
 ## 15. Checklist Instalasi
 
-Instalasi atau refresh siap untuk controlled live validation jika semua jawaban adalah ya:
+Instalasi atau refresh siap digunakan jika semua jawaban adalah ya:
 
 - [ ] Workflow tetap menggunakan Plugin atau GPT privat yang sama.
 - [ ] Nama, visibility, GitHub connection, dan permission tidak berubah tanpa alasan.
@@ -456,7 +424,7 @@ Instalasi atau refresh siap untuk controlled live validation jika semua jawaban 
 - [ ] Akses write tetap tersedia tetapi belum dipakai sebelum read-only checks lulus.
 - [ ] Web research tersedia.
 - [ ] generation_audit dan empat field editorial per fakta dikenali.
-- [ ] Main tidak berubah.
+- [ ] Tidak ada perubahan `main` yang tidak diharapkan.
 - [ ] Tiga saved regression prompts tersedia.
 - [ ] tests/acceptance-tests.md dapat dibuka.
 - [ ] Plugin masih Private atau Only me.
@@ -503,7 +471,7 @@ Data tersebut harus tetap dibaca langsung dari GitHub.
 
     Perbarui plugin privat Viral Producer yang sedang saya edit. Pertahankan identitas plugin, nama, visibility, GitHub connection, permission, dan audience saat ini. Ganti instruksi workflow dengan isi lengkap terbaru dari system/gpt-instructions.md pada repository milyarderpro/viral-producer branch main. Refresh reference system/content-dna.md dan system/data-contract.md dari branch yang sama. Gunakan tests/acceptance-tests.md sebagai test specification terbaru. Jangan mengubah branch dari main, jangan mengubah permission, jangan membuat plugin baru, dan jangan menyentuh data produksi. Setelah selesai, sebutkan file yang diperbarui dan biarkan plugin tetap private.
 
-7. Jika Plugin Creator meminta attachment, unduh file terbaru dari branch pengujian dan lampirkan file dengan nama yang sama.
+7. Jika Plugin Creator meminta attachment, unduh file terbaru dari branch `main` dan lampirkan file dengan nama yang sama.
 8. Pastikan file lama diganti, bukan ditambahkan sebagai salinan bernama berbeda.
 9. Review ringkasan perubahan sebelum menyelesaikan update.
 10. Simpan plugin tetap private.
@@ -564,7 +532,7 @@ Jika satu versi salah atau tidak dapat disebutkan, anggap plugin belum ter-refre
 
 ### 16.6 Saved regression prompts
 
-Simpan tiga prompt berikut. Jangan menjalankannya sampai Stage 10.7.
+Prompt berikut hanya untuk regression testing oleh administrator. Jangan jalankan pada `main` produksi; gunakan branch test terisolasi.
 
 #### Geography-history
 
@@ -627,23 +595,12 @@ Jika plugin meminta permission GitHub yang lebih luas:
 - pertahankan akses hanya ke repository yang diperlukan;
 - ulangi read-only version check setelah koneksi benar.
 
-## 17. Handoff ke Stage 10.7
+## 17. Pemeliharaan Setelah Go-Live
 
-Setelah checklist dan version check lulus, pertahankan runtime branch pada `main`.
+Runtime produksi menggunakan `main`.
 
-Mulai controlled live validation dengan:
-
-    Run AT-01 from tests/acceptance-tests.md and report the evidence. Do not run later tests yet.
-
-Kemudian:
-
-1. Jalankan test satu per satu.
-2. Periksa GitHub setelah setiap operasi tulis.
-3. Isi Results Table pada tests/acceptance-tests.md.
-4. Jalankan tiga saved regression prompts pada percakapan terpisah bila memungkinkan.
-5. Bandingkan hasil baru dengan baseline P-000001 sampai P-000003.
-6. Hentikan test yang bergantung pada test sebelumnya jika terjadi kegagalan.
-7. Perbaiki instruksi, kontrak, atau content DNA pada branch perubahan terisolasi, lalu review sebelum merge ke `main`.
-8. Refresh plugin lagi setelah perubahan.
-9. Ulangi seluruh test yang terdampak.
-10. Runtime branch produksi tetap `main`; jangan menjalankan ulang test mutatif di sana tanpa branch test terisolasi.
+- Gunakan plugin Viral Producer untuk operasi harian.
+- Jalankan acceptance test mutatif hanya pada branch test terisolasi.
+- Buat perubahan sistem pada feature branch, review melalui pull request, lalu merge.
+- Setelah perubahan sistem, refresh plugin dan jalankan version check read-only.
+- Jangan mengubah data produksi secara manual.

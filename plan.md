@@ -363,7 +363,7 @@ Status: COMPLETE
 
 Specification status: COMPLETE
 
-Execution status: NOT RUN — scheduled for Stage 10 after private GPT installation.
+Execution status: COMPLETE — AT-01 through AT-23 passed during Stage 10.
 
 Created:
 
@@ -388,7 +388,7 @@ Test coverage:
 15. Partial-write consistency recovery.
 16. Final full-database consistency audit.
 
-Every test defines its prompt, expected chat behavior, repository assertions, and pass condition. Results remain NOT RUN until executed and evidenced during Stage 10.
+Every test defines its prompt, expected chat behavior, repository assertions, and pass condition. Execution evidence is recorded in the same test specification.
 
 Completed commit:
 
@@ -656,6 +656,47 @@ Evidence:
 - `bbb08d718c89162515ffc09a86d8a47b22c8b289` — Complete P-000008 state recovery and final validated production snapshot.
 - `af3c09b6a69ebb3926aaf8ce529a39b096baf1eb` — Record body-science regression and final consistency evidence in the acceptance results.
 
+## 5B. Stage 11 — User Documentation
+
+Status: COMPLETE — READY FOR INTEGRATION
+
+Branch boundary:
+
+- documentation work uses `docs/user-guide`;
+- production continues on `main`;
+- documentation changes must not modify `data/**` or `output/**`.
+
+Writing standard:
+
+- concise, natural Indonesian;
+- technical terms remain in English when clearer;
+- short steps and copy-ready prompts;
+- no unnecessary schema detail.
+
+Progress:
+
+- Stage 11.1 — Information architecture: COMPLETE.
+- Stage 11.2 — Concise user guide: COMPLETE.
+- Stage 11.3 — Complete prompt library: COMPLETE.
+- Stage 11.4 — README navigation: COMPLETE.
+- Stage 11.5 — Documentation QA: COMPLETE.
+- Stage 11.6 — User acceptance test: COMPLETE.
+
+Deliverables:
+
+- `docs/user-guide.md`
+- `docs/prompt-library.md`
+- updated `README.md`
+
+Evidence:
+
+- `57865d69994280c3d623c27c43e7dbbb9efd0b9e` — Add concise Viral Producer user guide.
+- `3c7d9f8b6b033a58a053acdc96192b6f25d55a17` — Add complete copy-ready prompt library.
+- `d98027a1a110a320bf5f87818da568f79afed29e` — Turn README into a concise documentation landing page.
+- `c933a4c688b6f61504bf1942cdcce4a008352e33` — Replace the obsolete Stage 10.7 handoff with post-launch maintenance guidance.
+- `a15b1bcb9dbf730b0ecec3e662a98ba1da98c565` — Align installation and smoke-test guidance with the live `main` workflow.
+- 2026-10-01 — User reviewed and accepted the documentation; Stage 11.6 passed without production writes.
+
 ## 6. Definition of Done
 
 The implementation is complete when:
@@ -712,3 +753,8 @@ Do not rely on conversation history as the only record of the plan.
 - Completed the P-000008 body-science regression, verified its six direct sources and v2 editorial metadata, compared it with legacy P-000003, reran the full consistency audit, and marked Stage 10.7 complete.
 - Opened and reviewed pull request #1, confirmed it was mergeable with no blocking findings, merged the validated implementation into `main`, and marked Stage 10 complete.
 - Promoted `main` to the sole production runtime branch, retired operational use of `build/viral-content-gpt`, and prepared the renamed Viral Producer 1.0.0 plugin package.
+- Started Stage 11 on `docs/user-guide` and added a concise Indonesian user guide without changing production data.
+- Added the Stage 11.3 prompt library with clearly labeled read-only and repository-writing commands.
+- Completed Stage 11.4 with concise README navigation and two-way links between the user guide and prompt library.
+- Completed Stage 11.5 documentation QA: verified navigation, links, prompt intent coverage, Markdown structure, branch references, and production isolation; removed obsolete Stage 10.7 instructions and restricted mutative acceptance tests to isolated test branches.
+- Completed Stage 11.6 after the user reviewed and accepted the concise Indonesian documentation; no production test or data mutation was required.
