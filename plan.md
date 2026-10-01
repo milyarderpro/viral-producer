@@ -700,7 +700,7 @@ Evidence:
 
 ## 5C. Stage 12 — Viral Producer 1.1
 
-Status: IN PROGRESS — STAGE 12.3 COMPLETE
+Status: IN PROGRESS — STAGE 12.4 COMPLETE
 
 Branch implementasi:
 
@@ -723,6 +723,17 @@ Refreshed remote baseline (2026-10-01):
 - feature head before the direct GitHub update: `1b35ac8ee37bf605555669f4c6dd6c86c0ccd82d`;
 - `02efd0eb5bcf07f22567c7db5bfd8f9182596e07` and `04fe42ed7ba907ab5761e89b9b2494e098cb2d16` synchronize the protected active-draft and production-state snapshots through P-000072;
 - the synchronized protected file blobs exactly match main: active drafts `a141f32609812ea6d52902d237d78adcb6bcd430` and production state `0ddb8240c4625b06862256c952390b5789482ed9`;
+- main itself was not modified.
+
+Stage 12.4 refreshed remote baseline (2026-10-01):
+
+- GitHub main commit observed before implementation: `bae173883c82f08ea38c1863cab5951293f4eeca`;
+- feature head before Stage 12.4: `43aa67fabf9f4c461e41285d59c1cf19a9cf9e02`;
+- production state remained revision 121, next_post_number 80, next_fact_number 501, and single_writer_mode true;
+- production inventory remained 78 active records;
+- current feature versions before Stage 12.4 were Instruction 3.0 — Stage 12, Editorial 2.0 — Stage 10.2, Test specification 3.0 — Stage 12, and schema_version 1;
+- protected feature snapshots were already byte-identical to main, so no synchronization write was required;
+- protected blobs remained active drafts `f039901aa984aa69266951db39d5f5221c20fe10` and production state `00e56f289b7041db98c2e8840ac88dd7f6621659`;
 - main itself was not modified.
 
 ### Tujuan
@@ -998,7 +1009,7 @@ Completion evidence:
 
 ### Stage 12.4 — Update 2: Mixed-Topic Support
 
-Status: PENDING
+Status: COMPLETE
 
 Add post_format:
 
@@ -1041,6 +1052,19 @@ Mixed rules:
 Ready heading for mixed posts:
 
     Mixed Trivia
+
+Completion evidence:
+
+- `8111f7c4cb184eef4a3977052646055b64f3d1e1` upgrades Content DNA to Editorial 3.0 — Stage 12, defines the 75/25 default format rotation, and makes themed and mixed editorial gates explicit.
+- `e90408859c2b8c7f7e74efd3c3a5bc0d3b1695a4` adds the additive `post_format` contract, themed backward compatibility, mixed topic constraints, country-specific coverage, per-fact publication routing, and the prohibition on `data/facts/mixed.jsonl`.
+- `2c7a66f28ea71d80d15bb635e4210cd67e1ab475` implements format normalization, selection, generation, approval validation, publication, audit, and user-facing reporting in the active instructions.
+- `0b4cd8a1b8c7d9253f380dae74f0d39ee7c2b220` adds global format gates plus AT-30 through AT-32 for mixed generation, multi-ledger publication, and themed backward compatibility.
+- Mixed ready blocks use the fixed heading `Mixed Trivia`; fact-level topics remain limited to the six existing ledgers.
+- Missing `post_format` is interpreted as themed without a bulk or incidental rewrite, including during Fast Approval.
+- Static validation passed for required format rules, correct ready heading, independent fact routing, default rotation, JSON/JSONL parsing, and the new acceptance-test specifications.
+- Protected feature snapshots remain byte-identical to main: active drafts `f039901aa984aa69266951db39d5f5221c20fe10` and production state `00e56f289b7041db98c2e8840ac88dd7f6621659`.
+- AT-30 through AT-32 are specified but remain unexecuted until the isolated Stage 12.10 run.
+- Stage 12.5 remains pending and was not started.
 
 ### Stage 12.5 — Update 3: Performance Feedback Loop
 
