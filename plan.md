@@ -700,7 +700,7 @@ Evidence:
 
 ## 5C. Stage 12 — Viral Producer 1.1
 
-Status: IN PROGRESS — STAGE 12.6 COMPLETE
+Status: IN PROGRESS — STAGE 12.7 COMPLETE
 
 Branch implementasi:
 
@@ -757,6 +757,15 @@ Stage 12.6 refreshed remote baseline (2026-10-01):
 - protected feature snapshots were already byte-identical to main, so no synchronization write was required;
 - protected blobs remained active drafts `f039901aa984aa69266951db39d5f5221c20fe10` and production state `00e56f289b7041db98c2e8840ac88dd7f6621659`;
 - `data/publishing-plan.json` and `output/content-calendar.md` did not exist before this stage;
+- main itself was not modified.
+
+Stage 12.7 refreshed remote baseline (2026-10-01):
+
+- feature head before Stage 12.7: `8d2dc1bb0269c830784e09e3c109135898d9ae99`;
+- production state at stage start was revision 122, next_post_number 81, next_fact_number 507, single_writer_mode true, and 79 active records;
+- production advanced during implementation to GitHub main commit `55c10216f5cbfa7d0bc381a623a3b6f412458086`, revision 123, next_post_number 82, next_fact_number 513, and 80 active records;
+- the new production snapshot passed JSON/JSONL parsing, six-fact counts, active Post/Fact ID and claim-signature uniqueness, monotonic counters, and single-writer validation;
+- ready-to-post.md remained byte-identical, so only active drafts and production state required synchronization;
 - main itself was not modified.
 
 ### Tujuan
@@ -1248,7 +1257,7 @@ Completion evidence:
 
 ### Stage 12.7 — Update 5: Subject and Angle Cooldown
 
-Status: PENDING
+Status: COMPLETE
 
 Add subject_key for new facts:
 
@@ -1264,6 +1273,25 @@ Rules:
 - named-series override requires explicit user instruction and persisted generation_audit evidence;
 - cooldown rejection counts as repetitive;
 - no legacy bulk migration is required.
+
+Completion evidence:
+
+- `c80ce419ad8375a1c7a309119c4c874691e4aaee` separates permanent duplicate prevention from temporary subject/cluster cooldown and defines the named-series exception boundary.
+- `891d6c2b16829444018a0a47c2e74da7f2c24606` adds subject_key, cooldown_audit, the 20-post plus active/batch comparison scope, legacy fallback, override evidence, audit rules, and lifecycle compatibility to the data contract.
+- `862ed1fc28ed2601aff009b46913a8bfafed1b90` makes cooldown part of hard_rules_passed and validates stored cooldown evidence during Fast Approval without running a new global check.
+- `66c744264c678409db85098f815118b9640dbd26` implements subject-key derivation, duplicate-before-cooldown ordering, generation/replacement checks, repetitive rejection accounting, override handling, Fast Approval preservation, and audit behavior.
+- `c441f994f420759a57b3d94060fb3078abc8403e` ensures the weakest-fact challenge reruns cooldown checks after replacement.
+- `97bfd2f91a62a8e3d7e56585a6bb1700d740daa0` adds global cooldown gates and AT-45 through AT-48 for exact-subject rejection, semantic-cluster limits, legacy fallback, and explicit named-series override evidence.
+- Every newly created or replaced fact requires a stable lowercase snake_case subject_key; legacy missing keys remain valid and use an in-memory fallback without repository rewrite.
+- Permanent exact and semantic duplicate rejection runs before cooldown and cannot be bypassed by a series override.
+- Cooldown spans the current post and requested batch, every active reservation, and fact records linked to the 20 most recent archived posts.
+- Exact subject reuse is blocked and one narrow semantic cluster may appear in at most two distinct posts unless an explicit named-series override covers the required final positions.
+- Cooldown rejection uses rejected_counts.repetitive and new posts persist compact cooldown_audit evidence; no rejected candidate wording or private reasoning is stored.
+- `ab92215094723a2c7cb288a410d62d8e12e80b1d` and `56bbd4d1a8593fec9ae3e718957bc92bb9a2abd5` synchronize the protected feature snapshots with the latest production state without writing to main.
+- Protected feature snapshots are byte-identical to main: active drafts `63e5cc609407f951a83cf338d8d6e9042abd6982` and production state `588ef442472f2b3b91e3b8ae15daaa5bcdd34e39`.
+- Static validation passed for schema examples, sequential workflow numbering, duplicate-before-cooldown order, legacy non-migration, AT-45 through AT-48, JSON/JSONL parsing, whitespace, and protected-file parity.
+- AT-45 through AT-48 are specified but remain unexecuted until the isolated Stage 12.10 run.
+- Stage 12.8 remains pending and was not started.
 
 ### Stage 12.8 — Update 6: Complete Publishing Package
 
