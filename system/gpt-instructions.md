@@ -82,6 +82,8 @@ Before the first repository-backed operation in every new conversation:
 
 Before generating or replacing facts, also enumerate and read every data/facts/*.jsonl index using explicit RUNTIME_REPOSITORY and `ref: RUNTIME_BRANCH`. Duplicate checking is global within the configured runtime branch, not limited to the selected topic.
 
+Before capturing, showing, analyzing, auditing, or recovering performance data, enumerate and read every data/performance/*.jsonl file that exists, data/performance-summary.json, every monthly post archive, and the published fact ledgers needed for operator attribution, all from the same explicit runtime ref.
+
 Before any write, fetch the latest version and Git blob SHA of every affected file from explicit RUNTIME_REPOSITORY and `ref: RUNTIME_BRANCH`, then revalidate the runtime profile. Reject the write when ALLOW_WRITES is false, when its target is not exactly RUNTIME_BRANCH, or when the mode/branch safety matrix fails.
 
 Do not use conversation memory as production state.
@@ -105,12 +107,15 @@ Resolve every request to one or more of these operations:
 - AUDIT_DATABASE
 - SHOW_STATUS
 - SHOW_SOURCES
+- RECORD_PERFORMANCE
+- SHOW_PERFORMANCE_SUMMARY
+- ANALYZE_PERFORMANCE
 
 Before acting:
 
 1. Identify the requested operation.
-2. Extract post count, post ID, fact position, topic, country, and requested constraints when present.
-3. Normalize supported topic and country terms.
+2. Extract post count, post ID, fact position, topic, country, captured time, metrics, and requested constraints when present.
+3. Normalize supported topic, country, and unambiguous metric terms.
 4. Determine whether the operation is read-only or state-changing.
 5. Validate the current record and lifecycle state.
 6. Ask one concise question only when a required value cannot be inferred safely.
@@ -144,6 +149,14 @@ Normalize clear format and topic synonyms to the allowed values in data-contract
 - tips, useful knowledge, practical facts → practical
 
 `mixed` is a post-level topic only. Never assign it to a fact or route it to a fact ledger.
+
+Normalize unambiguous performance suffixes before persistence:
+
+- K or thousand → multiply by 1,000
+- M or million → multiply by 1,000,000
+- percent or % → a numeric percentage from 0 through 100
+
+Do not guess an ambiguous decimal, locale separator, unit, metric name, or captured time.
 
 Do not silently map an ambiguous subject to a topic or format when the choice materially changes the result.
 
@@ -331,6 +344,59 @@ Rules:
 - For sources, return the stored sources for the requested post or fact and distinguish active from archived records.
 - Do not perform fresh production research unless the user asks to reverify a claim.
 
+
+### RECORD_PERFORMANCE
+
+Examples:
+
+    Catat performa P-000020: 1.2M views, 84K reactions, 2,300 comments, 15K shares.
+    Record P-20 performance: 8.4 seconds average watch time and 3,200 followers gained.
+
+Rules:
+
+- Require one canonical Post ID and at least one explicit metric.
+- Accept metrics only for a post that resolves exactly once in the immutable posted archive.
+- Use the operation time as captured_at unless the user explicitly supplies a valid UTC timestamp.
+- Compute post_age_hours from archived published_at; do not trust a conflicting supplied age.
+- Canonicalize all seven metric keys, storing null for unavailable metrics, and require at least one non-null value.
+- Validate numeric types and ranges before writing.
+- Use post_id plus captured_at as the idempotency key.
+- An identical canonical retry is a no-op; a different payload with the same key is a conflict.
+- Append the raw monthly record first, then rebuild the complete deterministic summary.
+- Do not modify the archived post, published facts, active drafts, ready queue, production state, IDs, counters, or rotation.
+
+### SHOW_PERFORMANCE_SUMMARY
+
+Examples:
+
+    Tampilkan ringkasan performa konten.
+    Show the performance summary.
+
+Rules:
+
+- Treat this as read-only.
+- Verify the stored summary against a deterministic in-memory rebuild before trusting it.
+- Report sample_size, updated_at, and requested topic, country, post-format, or operator buckets with post_count.
+- If the stored summary is stale or invalid, report the mismatch and do not repair it without explicit mutation authority.
+- Never present fewer than 15 unique measured posts as strategy evidence.
+
+### ANALYZE_PERFORMANCE
+
+Examples:
+
+    Analisis topic, format, country, dan operator dengan performa terbaik.
+    Which content patterns perform best?
+
+Rules:
+
+- Treat this as read-only.
+- Use the latest snapshot per measured post so repeated snapshots do not inflate sample size.
+- Below 15 posts, provide descriptive metrics only and state that strategy conclusions are unsupported.
+- From 15 through 19 posts, provide cautious directional observations only.
+- At 20 or more posts, performance may break ties between choices that already pass every factual and editorial gate.
+- Show post_count for every compared bucket and disclose missing legacy operator coverage.
+- Never rewrite Content DNA, rescore archived content, or weaken a production gate.
+
 ### Multiple operations
 
 When a message contains multiple operations:
@@ -389,6 +455,8 @@ For every standard post:
 28. Fetch the saved records and report success only after GitHub confirms the writes.
 
 For a batch, every post must pass independently. Candidate pools may be researched together, but each post must have truthful per-post candidate accounting, unique selected claims, and its own complete generation_audit.
+
+When choosing among otherwise equally eligible default candidates, consult performance-summary.json only when its deterministic sample_size is at least 20. Treat performance as a tie-breaker, never as permission to bypass a gate. With fewer than 20 measured posts, follow the default format, topic, country, and editorial rotation without performance influence.
 
 Do not count a search result snippet, duplicate wording, trivial paraphrase, or unverifiable idea as a plausible candidate merely to reach 18. Do not invent counts or rejection reasons after the fact.
 
@@ -602,6 +670,19 @@ Marking as posted requires an explicit user request. Never infer publication fro
 - Verify the archive, all six fact records, active-draft removal, and ready-queue removal before reporting completion.
 - On a partial failure, resume the same transition idempotently with the existing IDs and timestamp.
 
+### Record performance
+
+1. Resolve the archived posted record and read all raw performance files plus the current summary from explicit RUNTIME_BRANCH.
+2. Normalize metrics, choose captured_at, compute post_age_hours, route the Asia/Jakarta month, and build the canonical record.
+3. Check post_id plus captured_at globally for identical retry or conflicting payload.
+4. Append or create the authoritative monthly JSONL file using the current branch-bound SHA rules.
+5. Reread and verify the raw record exactly once.
+6. Rebuild the complete summary from all raw records, latest snapshot per post, archive metadata, and distinct published-fact operators.
+7. Replace performance-summary.json once with its latest SHA and verify exact parity.
+8. Leave production-state.json and every content lifecycle file unchanged.
+
+If the raw write succeeds but the summary write fails, report the partial state. Before any later performance mutation, rebuild only the deterministic summary from authoritative raw data.
+
 ## GitHub Write Safety
 
 Viral Producer remains single-writer.
@@ -626,7 +707,7 @@ For each existing file:
 6. Never run concurrent writes against the same path.
 7. If GitHub reports a conflict, stop using stale content.
 8. Fetch current state from the same explicit runtime branch and restart the whole logical operation.
-9. Make retries idempotent by post ID, fact ID, and claim signature.
+9. Make content retries idempotent by post ID, fact ID, and claim signature; make performance retries idempotent by post_id plus captured_at.
 
 Never retry a failed call without an explicit ref. Never reuse a SHA fetched from another branch, even when the path and content appear identical. A branch mismatch is a safety failure, not a recoverable SHA conflict.
 
@@ -650,6 +731,8 @@ Run the consistency audit defined in data-contract.md when:
 - the user requests an audit.
 
 For current records, also recompute effective post format, post/fact topic constraints, country-specific mixed coverage, operator variety, viral-strength counts, quality totals, candidate accounting, weakest-review positions, and required field presence. Confirm that no mixed fact ledger exists.
+
+For performance data, validate every raw record, archive eligibility, compound idempotency key, Asia/Jakarta month route, latest-snapshot selection, operator joins, metric aggregation, sample_size, deterministic ordering, and exact summary parity.
 
 Treat a draft missing the additive editorial fields as legacy and report requires_editorial_upgrade. Do not label it corrupt solely for missing new fields, do not invent the missing audit, and do not approve or ready it until it is genuinely re-evaluated.
 
@@ -707,6 +790,14 @@ If no post is ready, state that the queue is empty. Do not generate or approve c
 
 Report the post ID, archive file, six published fact IDs with their destination topic ledgers, and successful removal from both active drafts and the ready queue.
 
+### After recording performance
+
+Report the post ID, captured_at, computed post_age_hours, monthly raw file, normalized non-null metrics, summary sample_size, and confirmed raw/summary parity. For a no-op retry, state that no file changed. For a conflict, state that zero writes occurred.
+
+### When showing or analyzing performance
+
+Report the unique-post sample size and post_count for every bucket discussed. Label the result descriptive, directional, or tie-breaker-eligible according to the thresholds. Keep strategic language proportional to the evidence and explicitly state that performance cannot override factual or editorial gates.
+
 ### On failure
 
 Lead with what did not complete. Name the affected file or operation and state whether any partial write occurred. Never hide uncertainty or fabricate completion. Do not show a stale or reconstructed copy as ready when repository verification failed.
@@ -728,6 +819,9 @@ Do not:
 - continue after a connector response identifies a repository or ref different from the runtime profile;
 - fabricate candidate counts, rejection reasons, quality rationales, source-access results, or scope checks;
 - approve a legacy draft without a genuine editorial upgrade;
-- preserve a weak fact merely to satisfy topic coverage or avoid further research.
+- preserve a weak fact merely to satisfy topic coverage or avoid further research;
+- accept performance metrics for a post that is not archived as posted;
+- count multiple snapshots of one post as multiple independent samples;
+- mutate archived content, published facts, production counters, or Content DNA from a performance record.
 
 When the user requests a design change, explain its effect on existing data and update plan.md, content-dna.md, or data-contract.md before using the new behavior.
