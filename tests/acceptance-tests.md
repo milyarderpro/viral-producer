@@ -203,6 +203,20 @@ Every newly created or upgraded standard post must have:
 - two different valid final fact positions;
 - no full rejected candidate wording persisted.
 
+### Subject and angle cooldown
+
+For every newly created post or newly replaced fact:
+
+- every new fact has a stable lowercase snake_case subject_key;
+- permanent exact and semantic duplicate rejection runs before cooldown;
+- the cooldown scope includes the current batch, every active reservation, and facts from the 20 most recent archived posts;
+- exact subject reuse fails unless a valid named-series override covers the position;
+- one semantic subject cluster appears in at most two distinct posts unless valid override evidence covers the position;
+- legacy facts missing subject_key use subject, relationship, canonical claim, tags, and semantic comparison without repository rewrite;
+- cooldown rejection increments rejected_counts.repetitive;
+- cooldown_audit records actual window counts and any explicit named-series override;
+- an override never bypasses duplicate, source, scope, safety, strength, operator, word-count, audit, or quality gates.
+
 ### Smart queue and content calendar
 
 For every recommendation or scheduling operation:
@@ -1463,6 +1477,111 @@ Repository assertions:
 
 Pass: publication and schedule cleanup reach one consistent recoverable state.
 
+### AT-45 — Exact subject cooldown rejection
+
+Purpose: Block a different claim about a subject already present in the cooldown scope.
+
+Setup: On the isolated test branch, place subject_key grand_canyon in an active reservation or one of the 20 most recent archived posts. Ensure the proposed new claim is materially different and not a permanent duplicate.
+
+Prompt:
+
+    Create a post that must include a new Grand Canyon fact.
+
+Expected behavior:
+
+- Derives subject_key grand_canyon for the candidate.
+- Confirms that permanent duplicate checks pass but subject cooldown fails.
+- Does not infer a series override from the subject request.
+- Reports the cooldown conflict and cannot satisfy the mandatory constraint.
+
+Repository assertions:
+
+- No Post ID or Fact ID is allocated.
+- Active drafts, fact ledgers, archives, queues, plans, calendars, performance data, and production state are unchanged.
+- If candidate accounting is exercised inside a broader successful fixture, the rejection uses repetitive, not duplicate.
+- The existing subject record remains unchanged.
+
+Pass: a new angle cannot evade exact-subject cooldown.
+
+### AT-46 — Semantic subject-cluster limit
+
+Purpose: Prevent a narrow related-subject cluster from appearing in a third distinct post.
+
+Setup: Two distinct posts inside the union of active reservations and the 20-post archive window contain different subject_key values that belong to one documented narrow semantic cluster. The test candidate has a third distinct subject_key in that same cluster and a non-duplicate claim.
+
+Prompt:
+
+    Create a post that must include the prepared third cluster subject.
+
+Expected behavior:
+
+- Uses subject_key, subject, relationship, canonical claim, tags, and semantic comparison.
+- Counts distinct posts, not raw fact occurrences.
+- Rejects the candidate because it would create a third post in the cluster.
+- Does not weaken or relabel the cluster to satisfy the prompt.
+
+Repository assertions:
+
+- No IDs, counters, timestamps, or repository files change.
+- No named-series override is recorded.
+- Any candidate rejection evidence uses repetitive.
+
+Pass: a semantic cluster appears in no more than two posts without explicit override.
+
+### AT-47 — Legacy subject-key fallback
+
+Purpose: Preserve compatibility while still enforcing cooldown against facts without subject_key.
+
+Setup: Select a legacy active or recently published fact whose subject_key field is absent. Record its exact bytes and prepare a new non-duplicate candidate about the same subject.
+
+Prompts:
+
+    Audit the subject cooldown for the prepared candidate. Do not modify anything.
+    Create a post that must include the prepared candidate.
+
+Expected behavior:
+
+- Derives an in-memory fallback from the legacy subject, relationship, canonical claim, and tags.
+- Detects the cooldown conflict.
+- Reports the legacy field as compatible rather than corrupt.
+- Does not add subject_key to the legacy record during audit, recommendation, approval, publication, or failed generation.
+
+Repository assertions:
+
+- The legacy record remains byte-for-byte unchanged.
+- The read-only audit performs zero writes.
+- The constrained generation fails before allocation and performs zero writes.
+- No bulk migration occurs anywhere in active drafts or fact ledgers.
+
+Pass: missing legacy keys remain readable and cannot bypass cooldown.
+
+### AT-48 — Explicit named-series override evidence
+
+Purpose: Allow an intentional series continuation without weakening any permanent gate.
+
+Setup: A recent subject would normally fail exact-subject or cluster cooldown. Prepare a genuinely different verified claim that passes every other gate.
+
+Prompt:
+
+    Create one post for the named series "Grand Canyon Week" and allow the necessary Grand Canyon subject cooldown override.
+
+Expected behavior:
+
+- Recognizes explicit named-series intent before allocation.
+- Still performs permanent duplicate, source, scope, safety, operator, strength, word-count, audit, and quality checks.
+- Applies the override only to the necessary final fact positions.
+- Reports the override without exposing private reasoning.
+
+Repository assertions:
+
+- Every new fact has a valid subject_key.
+- generation_audit.cooldown_audit has series_override_used true, series_name "Grand Canyon Week", unique valid overridden_fact_positions, and a concise non-empty reason.
+- candidate and rejection arithmetic remains correct; unrelated cooldown rejections still use repetitive.
+- No exact or semantic claim duplicate is persisted.
+- A comparable prompt without explicit named-series wording fails the cooldown.
+
+Pass: only an explicit, auditable named series can bypass temporary cooldown.
+
 ## 6. Final Consistency Audit
 
 After all applicable tests, prompt:
@@ -1496,6 +1615,10 @@ The final result passes only when:
 - every Fast Approval preserves IDs, counters, facts, sources, quality, and generation_audit;
 - every Fast Approval uses one active write, one queue write, and one state write with exact parity;
 - no incomplete draft crossed into ready status;
+- every newly created or replaced fact after Stage 12.7 has a valid subject_key;
+- legacy facts without subject_key remain readable and unchanged through fallback comparison;
+- no prohibited exact-subject reuse or third semantic-cluster post exists without valid named-series override evidence;
+- every present cooldown_audit is internally consistent and every cooldown rejection uses repetitive;
 - every performance record references exactly one archived posted post and uses the correct monthly route;
 - performance idempotency keys are unique or exact duplicates, never conflicting;
 - performance-summary.json is byte-exact from deterministic reconstruction;
@@ -1562,6 +1685,10 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-42 Schedule conflicts and retry | PENDING | Stage 12.10 | Duplicate posts, occupied times, and identical retries must preserve exact state. |
 | AT-43 Move scheduled post | PENDING | Stage 12.10 | Must normalize WIB and change only plan/calendar state. |
 | AT-44 Scheduled publication cleanup | PENDING | Stage 12.10 | Posting must complete the slot and remove it from the active calendar exactly once. |
+| AT-45 Exact subject cooldown | PENDING | Stage 12.10 | A different claim about a recent or active subject must fail without explicit series override. |
+| AT-46 Semantic cluster limit | PENDING | Stage 12.10 | A narrow cluster must not enter a third distinct post. |
+| AT-47 Legacy subject fallback | PENDING | Stage 12.10 | Missing subject_key must use fallback without rewriting legacy data. |
+| AT-48 Named-series override | PENDING | Stage 12.10 | Explicit override must be narrowly applied, persisted, and unable to bypass duplicate or quality gates. |
 | Body-science v2 regression | PASS | `P-000008`; `bbb08d7` | 24 candidates, 18 rejected, five operator families, six strength-2 facts, complete rationales, and directly supportive sources; materially stronger than legacy P-000003. |
 | Final consistency audit | PASS | `bbb08d718c89162515ffc09a86d8a47b22c8b289` | 7 active posts, 42 active fact snapshots, 6 published facts, 1 archive, and 1 ready post; counters, rotation, global uniqueness, publication linkage, v2 gates, and deterministic ready-queue parity all passed. |
 
@@ -1570,7 +1697,7 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 The version-3 implementation is ready to merge only when:
 
 - historical AT-01 through AT-23 remain valid or are rerun when affected;
-- AT-24 through AT-44 pass;
+- AT-24 through AT-48 pass;
 - all later Stage 12 feature and regression tests pass;
 - the final consistency audit passes;
 - failures are corrected in the instructions, contract, content DNA, or data model;
@@ -1580,4 +1707,4 @@ The version-3 implementation is ready to merge only when:
 - legacy baseline records remain unchanged unless explicitly revised through the normal lifecycle;
 - no test-only corruption remains on the branch.
 
-Current result: AT-01 through AT-23, the body-science v2 regression, and the version-2 final consistency audit remain historical passing evidence. AT-24 through AT-44 are specified but not yet executed; the Stage 12 implementation is not acceptance-ready until Stage 12.10 completes.
+Current result: AT-01 through AT-23, the body-science v2 regression, and the version-2 final consistency audit remain historical passing evidence. AT-24 through AT-48 are specified but not yet executed; the Stage 12 implementation is not acceptance-ready until Stage 12.10 completes.
