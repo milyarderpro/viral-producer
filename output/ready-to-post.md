@@ -219,3 +219,23 @@ Heat pumps can move heat from cold outdoor air into a warmer home
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000013 — Geography and History
+
+Did you know?
+
+Canada’s coastline links three oceans and is the longest coastline in the world
+
+Newfoundland Standard Time is 3.5 hours behind UTC, half an hour ahead of Atlantic Standard Time
+
+Canada’s Bay of Fundy has the world’s highest tides between New Brunswick and Nova Scotia
+
+The Rideau Canal was among the first canals designed specifically for steam-powered vessels
+
+Great Slave Lake plunges about 615 metres, making it North America’s deepest lake
+
+Georges Island is home to one of Canada’s first fully automated lighthouses
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
