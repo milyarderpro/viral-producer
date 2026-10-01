@@ -504,7 +504,7 @@ Format invariants:
 - total must equal the sum of the six dimension scores;
 - rationales must contain one non-empty, evidence-based sentence for each scored dimension;
 - rationales must explain why the visible script earns the score, not merely repeat the number;
-- hard_rules_passed may be true only when every formatting, safety, duplicate, operator-diversity, viral-strength, source-access, and scope rule passes.
+- hard_rules_passed may be true only when every formatting, safety, duplicate, cooldown, operator-diversity, viral-strength, source-access, and scope rule passes.
 
 ### Generation audit rules
 
@@ -573,7 +573,7 @@ The target is eligible only when all of these conditions pass:
 - every fact has complete required snapshot fields, at least one stored source object, an allowed surprise_operator, a viral_strength integer from 0 through 2, scope_check_passed true, and source_access_passed true; a missing legacy subject_key is evaluated only as a compatible absent field and is not created during approval;
 - quality contains all six integer scores, a total equal to their sum, hard_rules_passed true, and six non-empty rationales;
 - opening_strength, readability, and factual_confidence are 2 and total is at least 10;
-- generation_audit contains candidate_count of at least 18, only allowed rejected_counts keys, a rejection sum equal to candidate_count minus 6, operator_variety matching the final facts, and exactly two different valid weakest_fact_review positions;
+- generation_audit contains candidate_count of at least 18, only allowed rejected_counts keys, a rejection sum equal to candidate_count minus 6, operator_variety matching the final facts, and exactly two different valid weakest_fact_review positions; when cooldown_audit is present, it is internally consistent, while compatible legacy absence is preserved;
 - the six stored facts contain at least four distinct operators, no operator more than twice, no more than two record_superlative facts, at least four viral-strength-2 facts, and no strength-0 fact;
 - Facts 1 and 6 both have viral_strength 2 and different surprise_operator values;
 - the current active data and derived ready queue have no unresolved partial lifecycle operation;
