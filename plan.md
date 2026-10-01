@@ -700,7 +700,7 @@ Evidence:
 
 ## 5C. Stage 12 — Viral Producer 1.1
 
-Status: IN PROGRESS — STAGE 12.4 COMPLETE
+Status: IN PROGRESS — STAGE 12.5 COMPLETE
 
 Branch implementasi:
 
@@ -732,6 +732,17 @@ Stage 12.4 refreshed remote baseline (2026-10-01):
 - production state remained revision 121, next_post_number 80, next_fact_number 501, and single_writer_mode true;
 - production inventory remained 78 active records;
 - current feature versions before Stage 12.4 were Instruction 3.0 — Stage 12, Editorial 2.0 — Stage 10.2, Test specification 3.0 — Stage 12, and schema_version 1;
+- protected feature snapshots were already byte-identical to main, so no synchronization write was required;
+- protected blobs remained active drafts `f039901aa984aa69266951db39d5f5221c20fe10` and production state `00e56f289b7041db98c2e8840ac88dd7f6621659`;
+- main itself was not modified.
+
+Stage 12.5 refreshed remote baseline (2026-10-01):
+
+- GitHub main commit observed before implementation: `bae173883c82f08ea38c1863cab5951293f4eeca`;
+- feature head before Stage 12.5: `4c0d502259e8ee9c4f6f623c75cb54c88bc7dfd3`;
+- production state remained revision 121, next_post_number 80, next_fact_number 501, and single_writer_mode true;
+- production inventory remained 78 active records;
+- current feature versions before Stage 12.5 were Instruction 3.0 — Stage 12, Editorial 3.0 — Stage 12, Test specification 3.0 — Stage 12, and schema_version 1;
 - protected feature snapshots were already byte-identical to main, so no synchronization write was required;
 - protected blobs remained active drafts `f039901aa984aa69266951db39d5f5221c20fe10` and production state `00e56f289b7041db98c2e8840ac88dd7f6621659`;
 - main itself was not modified.
@@ -1068,7 +1079,7 @@ Completion evidence:
 
 ### Stage 12.5 — Update 3: Performance Feedback Loop
 
-Status: PENDING
+Status: COMPLETE
 
 Raw storage:
 
@@ -1129,6 +1140,22 @@ Initial performance-summary.json:
     }
 
 The monthly performance directory/file is created on the first actual metrics write.
+
+Completion evidence:
+
+- `3e682fa8fcfbcb63d1bb9666d25f0aee055d8a4f` adds performance-feedback guardrails to Content DNA, including the descriptive, directional, and tie-breaker sample thresholds.
+- `c0d071902110418401becd5a637ceecceff1b927` defines raw monthly storage, posted-only eligibility, canonical metrics, compound-key idempotency, deterministic aggregation, recovery, audit, and hard failures.
+- `188ac724988888cee49d13018d50f07ebf75cdc6` implements record, summary, and analysis commands plus the serialized raw-then-summary persistence flow.
+- `ccdd18e4deb57aae641b5d4c3ec7d64a9615f7cb` adds global performance gates and AT-33 through AT-38 for valid snapshots, posted-only enforcement, retry, conflict, deterministic rebuilding, and small-sample restraint.
+- `e2e78b80e09e1b3dca386ea94ed05f11ac9879c1` creates the empty deterministic `data/performance-summary.json` baseline.
+- Raw performance uses `data/performance/YYYY-MM.jsonl`, routed from `captured_at` in Asia/Jakarta; the directory and monthly file remain absent until the first real metrics write.
+- The summary counts unique measured posts from their latest snapshots and aggregates topic, country, effective post format, and distinct operator buckets with explicit post counts.
+- Fewer than 15 posts supports descriptive reporting only, 15–19 supports cautious directional observations, and at least 20 posts is required before performance may act as a tie-breaker.
+- Performance writes do not modify archived posts, published facts, active drafts, ready queue, production-state revision, IDs, counters, rotation, or Content DNA.
+- Static validation passed for the empty summary schema, raw/summary rules, deterministic latest-snapshot aggregation, command coverage, AT-33 through AT-38, JSON/JSONL parsing, and protected-file parity.
+- Protected feature snapshots remain byte-identical to main: active drafts `f039901aa984aa69266951db39d5f5221c20fe10` and production state `00e56f289b7041db98c2e8840ac88dd7f6621659`.
+- AT-33 through AT-38 are specified but remain unexecuted until the isolated Stage 12.10 run.
+- Stage 12.6 remains pending and was not started.
 
 ### Stage 12.6 — Update 4: Smart Ready Queue and Content Calendar
 
