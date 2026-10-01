@@ -30,7 +30,7 @@ The goals are:
 
 - Use ISO 8601 timestamps.
 - Store full operational timestamps in UTC with a trailing Z.
-- Use the Asia/Jakarta timezone to determine the monthly archive file.
+- Use the Asia/Jakarta timezone to determine monthly archive and performance file routing.
 - Store date-only values as YYYY-MM-DD.
 - Never infer a missing timestamp from a Git commit date.
 
@@ -48,7 +48,7 @@ A future incompatible structure must increment the schema version. Do not silent
 
 ### Additive editorial compatibility
 
-Stage 10.3 and Stage 12.4 add optional fields without changing the meaning of existing fields, so schema_version remains 1.
+Stage 10.3, Stage 12.4, and Stage 12.5 add compatible records and derived data without changing the meaning of existing records, so schema_version remains 1.
 
 Compatibility rules:
 
@@ -111,6 +111,13 @@ Repository files may describe profiles for documentation, but they cannot change
 
     data/posts/YYYY-MM.jsonl
 
+### Performance feedback
+
+    data/performance/YYYY-MM.jsonl
+    data/performance-summary.json
+
+The monthly performance directory and file are created only on the first actual metrics write.
+
 ### Human copy queue
 
     output/ready-to-post.md
@@ -126,6 +133,8 @@ Each type of information has exactly one authoritative location.
 - Reserved fact signatures: fact snapshots inside data/active-drafts.jsonl
 - Published or permanently blocked facts: data/facts/*.jsonl
 - Posted scripts: data/posts/YYYY-MM.jsonl
+- Raw performance snapshots: data/performance/YYYY-MM.jsonl
+- Deterministic performance summary: data/performance-summary.json
 - Copy-friendly queue: output/ready-to-post.md
 
 The Markdown ready queue is a derived view, not a database. If it disagrees with active-drafts.jsonl, regenerate it from active drafts.
@@ -186,7 +195,8 @@ Required structure:
 
 ### Field rules
 
-- revision increases by exactly one after every completed state-changing operation.
+- revision increases by exactly one after every completed content-lifecycle or production-state operation.
+- Performance capture and derived-summary rebuild do not modify production-state.json, its revision, ID counters, or rotation fields.
 - next_post_number points to the next unused post number.
 - next_fact_number points to the next unused fact number.
 - recent_topics stores no more than the 10 most recently created post topics and may contain `mixed` for a mixed post.
@@ -895,6 +905,9 @@ Every state-changing command must be safe to retry.
 - If a monthly post record already exists with identical content, do not append it again.
 - If a ready block already exists, replace or preserve it; never duplicate it.
 - If Mark as posted is repeated for an archived post, report that it is already posted.
+- For performance data, post_id plus captured_at is the idempotency key.
+- An identical canonical performance retry is a no-op success with no append and no summary rewrite.
+- A different canonical payload with the same performance key is a conflict and must not modify any file.
 
 ## 20. Concurrency and GitHub Write Safety
 
@@ -918,6 +931,8 @@ Never overwrite after a SHA conflict using stale content.
 Never use a SHA from another branch, retry through an implicit default branch, or reinterpret a branch mismatch as an ordinary conflict. Stop before writing when the runtime target does not match.
 
 Do not run two write operations against the same path in parallel.
+
+Performance writes are serialized. Append or create the authoritative monthly raw file first, verify it, then rebuild and replace the derived summary. A partial raw-only success is recoverable only by rebuilding the summary from all authoritative raw files; never delete the confirmed raw record to simulate rollback.
 
 Read-only research and fact collection may run in parallel, but final allocation and persistence must be serialized.
 
@@ -951,7 +966,13 @@ Audit checks for all records:
 - no non-ready post appears in ready-to-post.md;
 - every archived post has six published fact records;
 - every published fact points to an existing archived post;
-- monthly file placement matches Asia/Jakarta publication month.
+- monthly post file placement matches Asia/Jakarta publication month;
+- every performance JSONL record satisfies the performance schema;
+- every performance post_id resolves to exactly one archived posted post;
+- no duplicate performance idempotency key has conflicting payloads;
+- every monthly performance file matches the Asia/Jakarta month of captured_at;
+- performance-summary.json exactly matches a deterministic rebuild from all raw performance files and current immutable archive metadata;
+- performance sample_size equals the number of unique measured posts, using only the latest snapshot per post.
 
 Additional checks for a record containing editorial version 2 fields:
 
@@ -980,6 +1001,8 @@ Repair existing records when the intended state is unambiguous. Otherwise stop a
 - Ready-to-post.md should contain only the current queue.
 - Published posts are partitioned monthly.
 - Published facts are partitioned by topic.
+- Raw performance snapshots are partitioned by the Asia/Jakarta month of captured_at.
+- Performance summary remains one small derived file and must be rebuilt rather than patched incrementally.
 - Do not create one permanent file per post.
 - Do not merge all historical records into one global file.
 
@@ -1032,4 +1055,132 @@ A legacy draft may remain stored as draft without the additive fields. Missing e
 
 Fast Approval must also fail before any write when stored evidence is incomplete or internally inconsistent. It must not repair, research, rescore, upgrade, or otherwise manufacture eligibility inside the approval operation.
 
+Performance capture must also fail before any write when the post is not archived and posted, captured_at is invalid or before publication, post_age_hours cannot be derived, every metric is null, a metric is outside its allowed range, the idempotency key conflicts, month routing is wrong, or required archive evidence is unavailable.
+
 Report the failing condition clearly and leave existing valid data unchanged.
+
+## 24. Performance Feedback Data
+
+### Raw performance record
+
+Path:
+
+    data/performance/YYYY-MM.jsonl
+
+Select YYYY-MM by converting captured_at to Asia/Jakarta. Create the directory and monthly file only for the first confirmed metrics write in that month.
+
+Required canonical record:
+
+    {
+      "schema_version": 1,
+      "post_id": "P-000020",
+      "captured_at": "2026-10-01T14:00:00Z",
+      "post_age_hours": 24,
+      "source": "manual",
+      "metrics": {
+        "views": 1200000,
+        "reactions": 84000,
+        "comments": 2300,
+        "shares": 15000,
+        "average_watch_time_seconds": 8.4,
+        "retention_percent": null,
+        "followers_gained": 3200
+      }
+    }
+
+Rules:
+
+- post_id must resolve to exactly one immutable archive record with status posted;
+- active draft, approved, ready, rejected, missing, or ambiguous posts are ineligible;
+- captured_at is a UTC ISO-8601 timestamp with trailing Z and defaults to the operation time when the user omits it;
+- captured_at must not precede the archived published_at timestamp;
+- post_age_hours is computed from captured_at minus published_at, expressed in hours and rounded to at most two decimal places; never trust or invent a conflicting user-supplied age;
+- source is manual in Stage 12.5;
+- every metrics key is required in canonical storage;
+- views, reactions, comments, shares, and followers_gained are non-negative integers or null;
+- average_watch_time_seconds is a non-negative finite number or null;
+- retention_percent is a finite number from 0 through 100 or null;
+- at least one metric value must be non-null;
+- normalize unambiguous human forms such as 1.2M before persistence, but stop for ambiguous values;
+- metrics are observations only and never modify the archived post, published facts, quality, generation audit, sources, IDs, or production rotation.
+
+Multiple snapshots per post are allowed. The compound key is post_id plus captured_at. Compare canonical normalized records for idempotency.
+
+### Deterministic performance summary
+
+Path:
+
+    data/performance-summary.json
+
+Empty structure:
+
+    {
+      "schema_version": 1,
+      "updated_at": null,
+      "sample_size": 0,
+      "by_topic": {},
+      "by_country": {},
+      "by_post_format": {},
+      "by_operator": {}
+    }
+
+The raw monthly files are authoritative. The summary is a replaceable derived view.
+
+Rebuild procedure:
+
+1. Enumerate and parse every file under data/performance/ on the explicit runtime branch.
+2. Reject malformed records, ineligible post references, incorrect month placement, and conflicting duplicate keys.
+3. Collapse exact duplicate keys to one logical record if legacy or partial recovery produced duplicates.
+4. For each post_id, select the record with the greatest captured_at. Each post therefore contributes at most once.
+5. Join the selected post to its immutable archive record for topic, country_focus, and effective post_format; missing post_format means themed.
+6. Join published fact ledgers by published_in to recover distinct stored surprise_operator values. A post contributes once to every distinct operator it contains. Missing legacy operator metadata creates no operator bucket contribution and must be disclosed during analysis.
+7. Set sample_size to the number of unique selected post IDs.
+8. Set updated_at to the greatest selected captured_at, or null when there are no records.
+9. Build by_topic, by_country, by_post_format, and by_operator with category keys sorted lexicographically.
+10. Replace the complete summary using its latest branch-bound SHA and verify byte-exact reconstruction.
+
+Each category bucket has:
+
+    {
+      "post_count": 2,
+      "metrics": {
+        "views": {
+          "measured_count": 2,
+          "total": 2200000,
+          "average": 1100000
+        }
+      }
+    }
+
+Include all seven metric keys in their canonical order. For each metric, measured_count excludes null values, total is the sum of non-null values, and average is total divided by measured_count rounded to at most four decimal places. When measured_count is zero, total is 0 and average is null.
+
+A rebuild from unchanged raw records and archive metadata must produce identical JSON bytes, including two-space indentation, LF line endings, deterministic key order, and one final newline.
+
+### Capture performance operation
+
+1. Require one canonical Post ID and at least one explicit metric.
+2. Read all monthly post archives needed to resolve the post exactly once and confirm status posted.
+3. Read every raw performance file and the current summary from the explicit runtime branch with current SHAs.
+4. Normalize metrics, choose or validate captured_at, compute post_age_hours, and build the canonical record.
+5. Check the compound idempotency key across all monthly files.
+6. For an identical existing record, report no-op success without any write.
+7. For a conflicting existing record, stop before every write.
+8. Append to the existing routed monthly file with its current SHA, or create it only after a confirmed not-found read.
+9. Reread the raw file and confirm the new record appears exactly once.
+10. Rebuild the entire performance summary from authoritative raw files and immutable archive/fact metadata.
+11. Replace performance-summary.json once using its preflight SHA.
+12. Reread both files and confirm raw/summary parity before reporting success.
+
+Do not write production-state.json during this operation. If the raw write succeeds but summary replacement fails, report the partial state and rebuild only the deterministic summary before any later performance mutation.
+
+### Performance reporting and strategy
+
+SHOW_PERFORMANCE_SUMMARY and ANALYZE_PERFORMANCE are read-only. They must verify or recompute the summary in memory before trusting it, but must not repair it without explicit mutation authority.
+
+Interpret sample size conservatively:
+
+- fewer than 15 unique posts: descriptive metrics only, explicitly insufficient for strategy;
+- 15 through 19 unique posts: cautious directional observations only, no default-selection change;
+- 20 or more unique posts: performance may break ties between otherwise equally eligible choices.
+
+Always show post_count for compared buckets. Performance never weakens factual, safety, originality, scope, source, format, cooldown, or editorial gates and never rewrites Content DNA automatically.
