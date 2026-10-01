@@ -20,7 +20,8 @@ It verifies that the GPT:
 - preserves exact claim scope and verifies accessible evidence;
 - prevents textbook filler and quality-score inflation;
 - persists compact generation audit evidence;
-- keeps legacy drafts readable while blocking unverified approval.
+- keeps legacy drafts readable while blocking unverified approval;
+- performs Fast Approval only from complete stored evidence with no fresh research, rescoring, or ID allocation.
 
 Stages 8 and 10 created and executed the version-2 suite. Stage 12 extends the specification; execute and record the new version-3 tests during Stage 12.10 after the isolated test plugin is installed.
 
@@ -89,6 +90,8 @@ Capture these placeholders as the run proceeds:
 - {{LEGACY_POST_1}} — pre-refinement baseline P-000001.
 - {{LEGACY_POST_2}} — pre-refinement baseline P-000002.
 - {{LEGACY_POST_3}} — pre-refinement baseline P-000003.
+- {{INCOMPLETE_APPROVAL_POST}} — isolated test fixture missing one required Fast Approval field.
+- {{APPROVAL_CONFLICT_POST}} — complete draft used for the Fast Approval SHA-conflict test.
 
 Never assume the next ID is P-000001 or F-000001. Read current state and record the IDs actually allocated.
 
@@ -112,6 +115,22 @@ Every test must satisfy all applicable gates.
 - Test mode rejects `main`, uses only its configured isolated branch, and keeps ALLOW_MAIN_WRITES false.
 - A SHA fetched from one branch is never used on another branch.
 - A reported success is backed by a confirmed GitHub write.
+
+### Fast Approval
+
+Every approval test must prove that:
+
+- one canonical Post ID and explicit approval intent are present;
+- eligibility is calculated only from the latest stored active record;
+- no source URL is opened and no Web Search, fresh research, factual revalidation, freshness gate, global semantic deduplication, quality rescoring, audit rebuilding, fact replacement, or ID allocation occurs;
+- an incomplete or internally inconsistent draft fails before any write;
+- an eligible approval performs exactly one active-drafts write, one ready-queue write, and one production-state write;
+- no intermediate approved record is persisted;
+- revision increases exactly once while next_post_number, next_fact_number, and every unrelated state field remain unchanged;
+- post IDs, fact IDs, facts, sources, quality, and generation_audit remain unchanged;
+- approved_at and ready_at use the same operation timestamp;
+- final active, queue, state, chat copy, and any already stored publishing package have exact parity;
+- a stale SHA causes a complete refetch and eligibility restart rather than overwrite.
 
 ### Standard post quality
 
@@ -424,9 +443,11 @@ Repository assertions:
 
 Pass: one new unique fact replaces the old claim safely.
 
-### AT-10 — Approval and ready rendering
+### AT-10 — Fast Approval and ready rendering
 
-Purpose: Verify the draft-to-ready transition and copy-ready queue.
+Purpose: Verify the stored-evidence-only draft-to-ready transition, strict write budget, counter preservation, and copy-ready queue.
+
+Precondition: {{POST_A}} has status draft and complete current editorial metadata.
 
 Prompt:
 
@@ -434,22 +455,30 @@ Prompt:
 
 Expected chat behavior:
 
-- Treats the command as explicit approval.
+- Treats the command as explicit approval for one Post ID.
+- Uses only the latest stored validation evidence.
+- Does not open source URLs, call Web Search, research, revalidate facts, perform global semantic deduplication, rescore quality, rebuild generation_audit, replace content, allocate IDs, or run a freshness gate.
 - Reports ready status, not posted status.
-- Shows one plain-text clean-copy block.
-- Confirms the same copy exists in output/ready-to-post.md.
+- Shows the stored on-screen copy and any already stored publishing package without regeneration.
+- Confirms exact queue parity.
 
-Repository assertions:
+Repository and trace assertions:
 
-- {{POST_A}} has status ready.
-- approved_at and ready_at are non-null.
-- revision increases by 1.
-- ready-to-post.md contains {{POST_A}} exactly once.
-- The queue block passes every ready-copy parity gate.
-- No monthly archive or published fact records are created yet.
-- The active ready record contains complete editorial metadata and passes every current hard gate.
+- The preflight reads the latest complete active drafts, ready queue, and production state with explicit RUNTIME_BRANCH and current SHAs.
+- The target passes every stored Fast Approval eligibility check.
+- active-drafts.jsonl is written exactly once and contains no persisted intermediate approved record.
+- ready-to-post.md is rebuilt and written exactly once.
+- production-state.json is written exactly once.
+- {{POST_A}} has status ready with equal non-null approved_at and ready_at timestamps.
+- revision increases by exactly 1.
+- next_post_number and next_fact_number are unchanged.
+- Every other state field except updated_at is unchanged.
+- Post ID, six fact IDs, facts, sources, quality object, and generation_audit are byte-equivalent to their pre-approval values.
+- ready-to-post.md contains {{POST_A}} exactly once and passes every ready-copy parity gate.
+- No monthly archive or published fact record is created.
+- No source URL, Web Search, fact-ledger, research, rescoring, audit-rebuild, replacement, or allocation call occurs after bootstrap.
 
-Pass: approval produces a verified ready record without publishing it.
+Pass: Fast Approval uses stored evidence only, respects the one-write-per-file budget, preserves IDs and counters, and produces exact active/queue/chat parity.
 
 ### AT-11 — Next ready post and cross-conversation persistence
 
@@ -806,15 +835,17 @@ Part B prompt:
 Part B expected behavior:
 
 - Refuses to bypass the required editorial upgrade.
-- Notes the existing diversity and scope issues where applicable.
+- Names the missing or inconsistent stored eligibility evidence.
+- Does not open sources, use Web Search, research, rescore, rebuild audit evidence, or allocate IDs.
 - Does not approve, ready, or regenerate the queue.
 
 Part B repository assertions:
 
 - P-000001 remains status draft.
 - No version-2 audit fields are fabricated.
-- ready-to-post.md is unchanged.
+- active-drafts.jsonl, ready-to-post.md, and production-state.json are unchanged.
 - Counters and revision are unchanged.
+- The trace contains zero source, Web Search, research, or write calls.
 - No commit is created.
 
 Pass: legacy records remain readable, and incomplete legacy evidence cannot cross the approval boundary.
@@ -924,6 +955,70 @@ Repository and trace assertions:
 
 Pass: response mismatch is treated as a hard runtime-boundary failure.
 
+### AT-28 — Incomplete Fast Approval rejection
+
+Purpose: Verify that Fast Approval never upgrades or repairs incomplete evidence.
+
+Setup: On the isolated test branch only, select a complete draft and create {{INCOMPLETE_APPROVAL_POST}} by removing exactly one required quality rationale or one required generation_audit field. Preserve its status draft, IDs, facts, sources, counters, and all unrelated records. Record the fixture setup commit. Never create this fixture on main.
+
+Prompt:
+
+    Approve {{INCOMPLETE_APPROVAL_POST}} using only its stored evidence. Do not revise or upgrade it.
+
+Expected chat behavior:
+
+- Detects the exact missing stored field.
+- Refuses approval and explains that revision or editorial upgrade is a separate command.
+- Does not open sources, browse, research, revalidate, deduplicate globally, rescore, rebuild audit evidence, replace content, or allocate IDs.
+- Does not present the post as approved or ready.
+
+Repository and trace assertions:
+
+- active-drafts.jsonl, ready-to-post.md, and production-state.json are unchanged by the approval attempt.
+- The target remains status draft with the fixture field still missing.
+- revision, next_post_number, and next_fact_number are unchanged.
+- Zero connector write calls occur and no commit is created.
+
+Pass: incomplete stored evidence fails before any write and is not manufactured during approval.
+
+Cleanup: Restore the fixture's original complete record on the isolated test branch before the final consistency audit. Record the cleanup commit; never merge fixture data.
+
+### AT-29 — Fast Approval SHA conflict restart
+
+Purpose: Verify that Fast Approval cannot overwrite a concurrent active-file change.
+
+Precondition: {{APPROVAL_CONFLICT_POST}} is a complete eligible draft on the isolated test branch.
+
+Writer A prompt:
+
+    Approve {{APPROVAL_CONFLICT_POST}}, but pause after eligibility validation and latest-SHA preflight, immediately before the first write.
+
+While Writer A is paused, Writer B creates or revises a different draft through the normal workflow, changing active-drafts.jsonl and production state. Record Writer B's confirmed result and counters.
+
+Then tell Writer A:
+
+    CONTINUE. Recheck the runtime profile, latest files, SHAs, eligibility, and counters before any write.
+
+Expected behavior:
+
+- Writer A discards the stale active and state SHAs.
+- Writer A refetches the complete active, queue, and state files from explicit RUNTIME_BRANCH.
+- Writer A recalculates the entire Fast Approval operation from the new snapshot.
+- If the target remains eligible, Writer A approves it with one fresh active write, one queue write, and one state write.
+- If eligibility changed, Writer A stops with zero approval writes.
+- Writer A never overwrites or removes Writer B's confirmed changes.
+
+Repository assertions when approval completes:
+
+- Writer B's record and state changes are preserved.
+- {{APPROVAL_CONFLICT_POST}} is ready exactly once.
+- Revision advances once from Writer B's latest state for the approval.
+- next_post_number and next_fact_number equal Writer B's post-operation values.
+- No duplicate IDs, records, signatures, or queue blocks exist.
+- Target facts, sources, quality, and generation_audit remain unchanged.
+
+Pass: stale approval state never overwrites the latest branch and the operation restarts from current evidence.
+
 ## 6. Final Consistency Audit
 
 After all applicable tests, prompt:
@@ -950,6 +1045,9 @@ The final result passes only when:
 - the runtime profile passes its mode/branch safety matrix;
 - every repository call in the audit uses one explicit RUNTIME_REPOSITORY and RUNTIME_BRANCH;
 - no cross-branch SHA, data, queue, ledger, archive, or recovery evidence is used;
+- every Fast Approval preserves IDs, counters, facts, sources, quality, and generation_audit;
+- every Fast Approval uses one active write, one queue write, and one state write with exact parity;
+- no incomplete draft crossed into ready status;
 - no unresolved partial failure remains.
 
 Reject any remaining temporary draft through the GPT if cleanup is desired. Do not manually decrement counters, reuse test IDs, fabricate audit evidence, or rewrite legacy records merely to make the audit green.
@@ -989,6 +1087,8 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-25 Test profile refuses main | PENDING | Stage 12.10 | Must pass with zero connector calls to main. |
 | AT-26 Production profile refuses test | PENDING | Stage 12.10 | Must pass without research, allocation, or writes. |
 | AT-27 Explicit ref and mismatch rejection | PENDING | Stage 12.10 | Run only with the isolated connector test harness. |
+| AT-28 Incomplete Fast Approval rejection | PENDING | Stage 12.10 | Must fail with zero research and zero writes. |
+| AT-29 Fast Approval SHA conflict restart | PENDING | Stage 12.10 | Must preserve the competing writer and restart from fresh SHAs. |
 | Body-science v2 regression | PASS | `P-000008`; `bbb08d7` | 24 candidates, 18 rejected, five operator families, six strength-2 facts, complete rationales, and directly supportive sources; materially stronger than legacy P-000003. |
 | Final consistency audit | PASS | `bbb08d718c89162515ffc09a86d8a47b22c8b289` | 7 active posts, 42 active fact snapshots, 6 published facts, 1 archive, and 1 ready post; counters, rotation, global uniqueness, publication linkage, v2 gates, and deterministic ready-queue parity all passed. |
 
@@ -997,7 +1097,7 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 The version-3 implementation is ready to merge only when:
 
 - historical AT-01 through AT-23 remain valid or are rerun when affected;
-- AT-24 through AT-27 pass;
+- AT-24 through AT-29 pass;
 - all later Stage 12 feature and regression tests pass;
 - the final consistency audit passes;
 - failures are corrected in the instructions, contract, content DNA, or data model;
