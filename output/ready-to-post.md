@@ -439,3 +439,23 @@ Volvo immediately made its three-point seatbelt patent available to other car ma
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000024 — Safe Practical Knowledge
+
+Did you know?
+
+Frozen food can stay safe indefinitely; freezer time limits mainly protect quality
+
+Nearby lamps or TVs can warm a room A.C.'s thermostat, making it run longer
+
+Average household leaks can waste 180 gallons of water every week
+
+Some dishwashers test how dirty the wash water is and adjust the cycle automatically
+
+Some plugged-in devices still use electricity even when they appear switched off
+
+About 90% of a clothes washer's energy goes into heating the water
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
