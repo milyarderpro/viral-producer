@@ -700,7 +700,7 @@ Evidence:
 
 ## 5C. Stage 12 — Viral Producer 1.1
 
-Status: IN PROGRESS — STAGE 12.5 COMPLETE
+Status: IN PROGRESS — STAGE 12.6 COMPLETE
 
 Branch implementasi:
 
@@ -745,6 +745,18 @@ Stage 12.5 refreshed remote baseline (2026-10-01):
 - current feature versions before Stage 12.5 were Instruction 3.0 — Stage 12, Editorial 3.0 — Stage 12, Test specification 3.0 — Stage 12, and schema_version 1;
 - protected feature snapshots were already byte-identical to main, so no synchronization write was required;
 - protected blobs remained active drafts `f039901aa984aa69266951db39d5f5221c20fe10` and production state `00e56f289b7041db98c2e8840ac88dd7f6621659`;
+- main itself was not modified.
+
+Stage 12.6 refreshed remote baseline (2026-10-01):
+
+- GitHub main commit observed before implementation: `bae173883c82f08ea38c1863cab5951293f4eeca`;
+- feature head before Stage 12.6: `6d354cf2edb83ad71a313a447a5f3a850bfa732e`;
+- production state remained revision 121, next_post_number 80, next_fact_number 501, and single_writer_mode true;
+- production inventory remained 78 active records;
+- current feature versions before Stage 12.6 were Instruction 3.0 — Stage 12, Editorial 3.0 — Stage 12, Test specification 3.0 — Stage 12, and schema_version 1;
+- protected feature snapshots were already byte-identical to main, so no synchronization write was required;
+- protected blobs remained active drafts `f039901aa984aa69266951db39d5f5221c20fe10` and production state `00e56f289b7041db98c2e8840ac88dd7f6621659`;
+- `data/publishing-plan.json` and `output/content-calendar.md` did not exist before this stage;
 - main itself was not modified.
 
 ### Tujuan
@@ -1160,7 +1172,7 @@ Completion evidence:
 
 ### Stage 12.6 — Update 4: Smart Ready Queue and Content Calendar
 
-Status: PENDING
+Status: COMPLETE
 
 Existing output/ready-to-post.md remains the deterministic complete ready queue.
 
@@ -1213,6 +1225,24 @@ Commands:
     Susun jadwal posting tujuh hari, dua post per hari.
     Tampilkan content calendar.
     Pindahkan P-000020 ke jadwal besok pukul 19.00 WIB.
+
+Completion evidence:
+
+- `684031f86f3946e8e04119d295a6a05c6ebce255` defines deterministic smart-queue recommendation priorities without repository mutation.
+- `78349883ec5581d9280d62958511b0356e017d02` defines the publishing-plan schema, WIB/UTC routing, calendar renderer, scheduling and move flows, publication cleanup, idempotency, recovery, audit, and hard failures.
+- `e5cd65a8d21636d3b50d3bdf422e3c23773e9fd9` implements recommendation, scheduling, calendar display, and move commands in the active instructions.
+- `25a2aeeeeafd43d5073bbe773a1536ca58db03f4` aligns the scheduled Mark-as-posted write order with the authoritative lifecycle contract.
+- `3ed0319a97eba81e2dc8fde658b5ab776c3c1567` creates the empty `data/publishing-plan.json` baseline at revision 0.
+- `4e9bc916d5e51edb0c29d5c363a4de394d24b7e5` creates the deterministic empty `output/content-calendar.md`.
+- `ef3d9aeec2737fe36ced387bea384763b548232d` adds global scheduling gates and AT-39 through AT-44 for read-only recommendation, seven-day scheduling, ready-only enforcement, conflicts, WIB moves, and publication cleanup.
+- Recommendations choose only ready posts, honor the earliest planned slot, and otherwise apply the ordered rotation, cooldown, operator, quality, ready-age, eligible-performance, and Post-ID rules.
+- Default seven-day scheduling starts on the next full Asia/Jakarta day at 12:00 and 19:00 WIB, stores UTC timestamps, and prepares the whole batch before one plan write and one calendar rebuild.
+- Publishing-plan mutations use their own revision and do not change post lifecycle, ready queue order, production revision, IDs, counters, content, archives, facts, or performance data.
+- A scheduled post marked as posted becomes a completed plan slot using the same published_at timestamp and disappears from the active calendar while production-state revision still increases only once.
+- Static validation passed for initial JSON/Markdown files, planned-to-ready and completed-to-archive linkage rules, unique post/time constraints, command coverage, AT-39 through AT-44, JSON/JSONL parsing, whitespace, and protected-file parity.
+- Protected feature snapshots remain byte-identical to main: active drafts `f039901aa984aa69266951db39d5f5221c20fe10` and production state `00e56f289b7041db98c2e8840ac88dd7f6621659`.
+- AT-39 through AT-44 are specified but remain unexecuted until the isolated Stage 12.10 run.
+- Stage 12.7 remains pending and was not started.
 
 ### Stage 12.7 — Update 5: Subject and Angle Cooldown
 
