@@ -700,7 +700,7 @@ Evidence:
 
 ## 5C. Stage 12 — Viral Producer 1.1
 
-Status: IN PROGRESS — STAGE 12.2 COMPLETE
+Status: IN PROGRESS — STAGE 12.3 COMPLETE
 
 Branch implementasi:
 
@@ -940,7 +940,7 @@ Completion evidence:
 
 ### Stage 12.3 — Update 1: Fast Approval
 
-Status: PENDING
+Status: COMPLETE
 
 Eligibility:
 
@@ -980,6 +980,21 @@ Write flow:
 8. Display the stored script and publishing package without regeneration.
 
 Legacy or incomplete drafts must fail Fast Approval and require a separate revision or upgrade command.
+
+Completion evidence:
+
+- Current main was read and validated through the GitHub connector at observed commit `bae173883c82f08ea38c1863cab5951293f4eeca`, revision 121, next_post_number 80, next_fact_number 501, and 78 active records.
+- Main JSON/JSONL parsing, global active/published ID and signature uniqueness, counters, archive linkage, ready-queue parity, single_writer_mode, and partial-operation checks passed before implementation.
+- `1df7520c59aa8663792b9327da0ff73d4ca308c2` replaces approval-time re-evaluation with stored-evidence-only Fast Approval in `system/gpt-instructions.md`.
+- `4c2f3f9b495f6b7ee0a985593f24c3fdb94dcb71` defines complete Fast Approval eligibility, forbidden operations, one-write-per-file sequencing, counter preservation, postconditions, and partial recovery in `system/data-contract.md`.
+- `c0bc0f4bda4bebe172ba3ea4484d1cab0e80cb1f` expands AT-10 and adds AT-28 and AT-29 for zero-revalidation approval, incomplete-record rejection, strict write counts, exact parity, and stale-SHA restart behavior.
+- Fast Approval now performs no source opening, Web Search, research, factual revalidation, freshness gate, global semantic deduplication, rescoring, audit rebuilding, content replacement, or ID allocation.
+- An eligible approval writes active drafts once, the complete ready queue once, and production state once; revision increases once while both next-ID counters and stored editorial evidence remain unchanged.
+- Legacy, incomplete, inconsistent, mismatched-ref, partial-operation, or stale-preflight conditions block before write or trigger contract-defined recovery.
+- `eb09f1f1c62c7d8fa11cff7d2a4563b8321f77ba` and `c6a631f8db5abbda85a7a4ed10def3f8f1475ca8` synchronize the protected feature snapshots with main through P-000079 and revision 121.
+- Protected snapshot blobs match main: active drafts `f039901aa984aa69266951db39d5f5221c20fe10` and production state `00e56f289b7041db98c2e8840ac88dd7f6621659`.
+- The new Fast Approval tests are specified but remain unexecuted until the isolated Stage 12.10 run.
+- Stage 12.4 remains pending and was not started.
 
 ### Stage 12.4 — Update 2: Mixed-Topic Support
 
