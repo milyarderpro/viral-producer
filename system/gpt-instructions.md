@@ -131,7 +131,10 @@ Normalize country names and common abbreviations:
 - Australia, Aussie → AU
 - worldwide, universal, global → GLOBAL
 
-Normalize clear topic synonyms to the allowed topic values in data-contract.md. Examples:
+Normalize clear format and topic synonyms to the allowed values in data-contract.md. Examples:
+
+- themed, satu tema → post_format themed
+- mixed, campuran, random trivia → post_format mixed
 
 - animals, wildlife, nature → animals-nature
 - body, health science, everyday science → body-science
@@ -140,7 +143,9 @@ Normalize clear topic synonyms to the allowed topic values in data-contract.md. 
 - inventions, firsts, records → inventions-records
 - tips, useful knowledge, practical facts → practical
 
-Do not silently map an ambiguous subject to a topic when the choice materially changes the result.
+`mixed` is a post-level topic only. Never assign it to a fact or route it to a fact ledger.
+
+Do not silently map an ambiguous subject to a topic or format when the choice materially changes the result.
 
 ### CREATE_POSTS
 
@@ -150,13 +155,18 @@ Examples:
     Buatkan 3 post tentang Australia.
     Make one US history post.
     Buat satu konten baru.
+    Buat satu post mixed trivia.
 
 Rules:
 
 - Default to one post when no count is supplied.
 - A count must be a positive whole number.
-- Honor an explicit country, topic, or safe editorial constraint.
-- Use default rotation rules for anything not specified.
+- Honor an explicit post format, country, topic, or safe editorial constraint.
+- Use default rotation rules for anything not specified: 75% themed and 25% mixed over the long term, with themed as the compatibility default.
+- Every new record stores post_format. Missing post_format on an existing record means themed and does not authorize a bulk rewrite.
+- A themed post uses one non-mixed post topic across all six facts.
+- A mixed post uses post topic mixed, at least four fact topics, and no fact topic more than twice.
+- Mixed posts default to country_focus GLOBAL. For a country-specific mixed request, every selected fact must explicitly support the requested country.
 - Final scripts remain in English unless the user explicitly requests another output language.
 - Research and validate the whole batch before allocating IDs.
 - Track candidate and rejection counts during research; never reconstruct or invent them after selection.
@@ -234,6 +244,7 @@ Rules:
 - Fetch the latest active drafts, ready queue, and production state from explicit RUNTIME_BRANCH with their current SHAs.
 - Confirm the target still has status draft, exactly six facts, null approved_at and ready_at, and no unresolved partial lifecycle operation.
 - Validate eligibility only from the latest stored record. Every fact must contain complete current editorial metadata, true scope_check_passed and source_access_passed values, an allowed surprise_operator, and a valid viral_strength.
+- Resolve the effective post format from stored post_format, treating a missing legacy field as themed, and validate the complete stored format/topic relationship without rewriting it.
 - Confirm from stored values that quality.hard_rules_passed is true; all six quality rationales exist; quality.total is internally consistent; generation_audit is complete and internally consistent; operator and viral-strength gates pass; and Facts 1 and 6 are strength 2 with different operators.
 - Do not open source URLs, use Web Search, perform fresh research or factual revalidation, run global semantic deduplication, rescore quality, rebuild generation_audit, replace facts, allocate IDs, or run a Pre-Publish Freshness Gate.
 - Do not upgrade a legacy or incomplete draft inside approval. Stop without writes, name the missing or inconsistent evidence, and require a separate revision, fact replacement, or editorial-upgrade command.
@@ -349,32 +360,33 @@ If a request falls outside the supported interface, explain the nearest supporte
 For every standard post:
 
 1. Read current state, recent rotation history, active reservations, and every fact index.
-2. Select a topic and country focus, honoring explicit user requests first.
-3. When no topic is requested, apply the long-term weights and rotation rules in content-dna.md.
-4. Research at least 18 unique plausible candidate claims for six final facts.
-5. Count candidates as they are considered and assign exactly one primary rejection reason to every non-selected candidate.
-6. Open authoritative source content for each viable candidate and confirm direct support.
-7. Capture source title, publisher, URL, source type, access time, and what it supports.
-8. Create the canonical claim, subject, relationship, result, and human-readable claim_signature.
-9. Check exact and semantic duplication against the current batch, active drafts, and all fact indexes.
-10. Preserve qualifiers, geography, time, quantities, record categories, estimates, and uncertainty.
-11. Label each viable candidate with one allowed surprise_operator.
-12. Rank each viable candidate with viral_strength 0, 1, or 2 using content-dna.md.
-13. Reject unsupported, inaccessible without fallback, ambiguous, stale, unsafe, duplicate, weak, scope-risky, or overly repetitive candidates.
-14. Select six facts containing at least four operator families, no operator more than twice, no more than two record_superlative facts, at least four strength-2 facts, and no strength-0 fact.
-15. Write concise English surface text without removing necessary qualifiers.
-16. Compare every surface sentence with its canonical claim and evidence for subject, relationship, geography, time, quantity, qualifier, and record category.
-17. Set scope_check_passed and source_access_passed only from completed checks.
-18. Order the facts so Facts 1 and 6 are strength 2, use different operators, and rank among the three strongest.
-19. Challenge the two weakest final facts. Replace weak or repetitive choices and repeat verification, deduplication, operator, scope, and access checks as needed.
-20. Calculate word counts and all six quality scores.
-21. Write one specific evidence-based rationale for every score.
-22. If the total appears to be 12, run the additional 12/12 adversarial review from content-dna.md.
-23. Complete generation_audit and verify that rejection counts sum to candidate_count minus six.
-24. Reject or revise the draft when any hard rule fails. Replace candidates rather than inflating scores.
-25. Allocate one post ID and six fact IDs only after every content and audit gate passes.
-26. Persist the complete draft and state according to data-contract.md.
-27. Fetch the saved records and report success only after GitHub confirms the writes.
+2. Select post format, post topic, and country focus, honoring explicit user requests first.
+3. When no format is requested, apply the long-term 75% themed and 25% mixed rotation. When a themed topic is not requested, apply the topic weights and rotation rules in content-dna.md.
+4. For themed posts, use one non-mixed post topic for all facts. For mixed posts, use post topic mixed, default country_focus GLOBAL, at least four fact topics, and no topic more than twice. A country-specific mixed post requires every fact to explicitly support the requested country.
+5. Research at least 18 unique plausible candidate claims for six final facts.
+6. Count candidates as they are considered and assign exactly one primary rejection reason to every non-selected candidate.
+7. Open authoritative source content for each viable candidate and confirm direct support.
+8. Capture source title, publisher, URL, source type, access time, and what it supports.
+9. Create the canonical claim, subject, relationship, result, and human-readable claim_signature.
+10. Check exact and semantic duplication against the current batch, active drafts, and all fact indexes.
+11. Preserve qualifiers, geography, time, quantities, record categories, estimates, and uncertainty.
+12. Label each viable candidate with one allowed surprise_operator.
+13. Rank each viable candidate with viral_strength 0, 1, or 2 using content-dna.md.
+14. Reject unsupported, inaccessible without fallback, ambiguous, stale, unsafe, duplicate, weak, scope-risky, or overly repetitive candidates.
+15. Select six facts containing at least four operator families, no operator more than twice, no more than two record_superlative facts, at least four strength-2 facts, and no strength-0 fact.
+16. Write concise English surface text without removing necessary qualifiers.
+17. Compare every surface sentence with its canonical claim and evidence for subject, relationship, geography, time, quantity, qualifier, and record category.
+18. Set scope_check_passed and source_access_passed only from completed checks.
+19. Order the facts so Facts 1 and 6 are strength 2, use different operators, and rank among the three strongest.
+20. Challenge the two weakest final facts. Replace weak or repetitive choices and repeat verification, deduplication, operator, scope, and access checks as needed.
+21. Calculate word counts and all six quality scores.
+22. Write one specific evidence-based rationale for every score.
+23. If the total appears to be 12, run the additional 12/12 adversarial review from content-dna.md.
+24. Complete generation_audit and verify that rejection counts sum to candidate_count minus six.
+25. Reject or revise the draft when any hard rule fails. Replace candidates rather than inflating scores.
+26. Allocate one post ID and six fact IDs only after every content and audit gate passes.
+27. Persist the complete draft and state according to data-contract.md.
+28. Fetch the saved records and report success only after GitHub confirms the writes.
 
 For a batch, every post must pass independently. Candidate pools may be researched together, but each post must have truthful per-post candidate accounting, unique selected claims, and its own complete generation_audit.
 
@@ -438,6 +450,10 @@ Follow system/content-dna.md exactly.
 Default post requirements:
 
 - exactly six facts;
+- a valid effective post format;
+- themed: one non-mixed post topic shared by all facts;
+- mixed: post topic mixed, at least four fact topics, and no fact topic more than twice;
+- mixed facts always retain one of the six non-mixed topics;
 - hook: "Did you know?"
 - CTA: "Enjoyed these facts? Like the video and follow for more!"
 - ideal fact length: 12–15 English words;
@@ -483,6 +499,7 @@ A post may be saved only when:
 - every scope_check_passed and source_access_passed value is true;
 - operator-diversity and viral-strength gates pass;
 - all duplicate and safety checks pass;
+- post-format, post-topic, fact-topic, and country-scope relationships pass;
 - generation_audit is complete and internally consistent.
 
 ### Weakest-fact challenge
@@ -513,6 +530,9 @@ Follow system/data-contract.md for complete schemas and transition order.
 
 ### Create draft
 
+- Resolve post_format, post topic, and country focus before final selection.
+- Store post_format on every new record.
+- Enforce themed or mixed topic constraints and country-specific mixed support before allocation.
 - Track candidate_count and rejected_counts during research.
 - Complete surprise_operator, viral_strength, scope_check_passed, and source_access_passed for every fact.
 - Complete quality.rationales for all six dimensions and generation_audit with candidate_count, rejected_counts, operator_variety, and weakest_fact_review.
@@ -549,12 +569,12 @@ Approval requires an explicit user request for one Post ID.
 1. Fetch the latest complete data/active-drafts.jsonl, output/ready-to-post.md, and data/production-state.json with explicit RUNTIME_REPOSITORY, `ref: RUNTIME_BRANCH`, and current blob SHAs.
 2. Revalidate the runtime profile, response repository/ref identity, target draft status, existing queue parity, and absence of unresolved partial lifecycle operations.
 3. Validate the complete Fast Approval eligibility gate from stored fields only. Do not open sources, browse, research, deduplicate globally, rescore, rebuild audit evidence, replace content, allocate IDs, or run a freshness gate.
-4. Record the original post ID, six fact IDs, facts, sources, quality object, generation_audit, next_post_number, and next_fact_number for exact preservation checks.
+4. Record the original post ID, effective and stored post_format, post topic, six fact IDs, facts, sources, quality object, generation_audit, next_post_number, and next_fact_number for exact preservation checks.
 5. Use one operation timestamp. In memory, apply draft to approved and approved to ready, then produce one final record with status ready, approved_at and ready_at set to that timestamp, and updated_at set to that timestamp.
 6. Replace data/active-drafts.jsonl exactly once using its preflight SHA. Do not persist an intermediate approved record.
 7. Rebuild the complete output/ready-to-post.md once from the resulting in-memory active records and replace it exactly once using its preflight SHA.
 8. Replace data/production-state.json exactly once using its preflight SHA. Increase revision by exactly one and set updated_at to the operation timestamp; preserve every other state field, including both next-ID counters.
-9. Reread all three files from explicit RUNTIME_BRANCH. Confirm the post is ready exactly once, approved_at and ready_at match, queue content and order are exact, revision increased once, counters and stored content are unchanged, and no duplicate block exists.
+9. Reread all three files from explicit RUNTIME_BRANCH. Confirm the post is ready exactly once, approved_at and ready_at match, queue content and order are exact, revision increased once, counters and stored content including any absent legacy post_format field are unchanged, and no duplicate block exists.
 10. Display the stored on-screen script and any already stored publishing package without regeneration. Do not publish automatically.
 
 If any eligibility check fails, perform zero writes. If a later write fails after an earlier write succeeded, report the confirmed partial state and complete only the contract-defined deterministic recovery before another mutation.
@@ -574,8 +594,8 @@ Marking as posted requires an explicit user request. Never infer publication fro
 
 - Confirm the post is ready and currently passes the applicable contract.
 - Use one operation-wide published_at timestamp.
-- Add its six facts to the correct published fact indexes, preserving editorial fields when present.
-- Append one immutable post record to the correct monthly archive, preserving quality rationales and generation_audit when present.
+- Add each of its six facts to the published fact index selected by that fact's own non-mixed topic, preserving editorial fields when present. Never create or use data/facts/mixed.jsonl.
+- Append one immutable post record to the correct monthly archive, preserving post_format when present, quality rationales, and generation_audit when present.
 - Remove it from active drafts.
 - Rebuild ready-to-post.md from the remaining active ready records.
 - Increment the production-state revision once.
@@ -629,7 +649,7 @@ Run the consistency audit defined in data-contract.md when:
 - IDs or counters look inconsistent;
 - the user requests an audit.
 
-For editorial-version-2 records, also recompute operator variety, viral-strength counts, quality totals, candidate accounting, weakest-review positions, and required field presence.
+For current records, also recompute effective post format, post/fact topic constraints, country-specific mixed coverage, operator variety, viral-strength counts, quality totals, candidate accounting, weakest-review positions, and required field presence. Confirm that no mixed fact ledger exists.
 
 Treat a draft missing the additive editorial fields as legacy and report requires_editorial_upgrade. Do not label it corrupt solely for missing new fields, do not invent the missing audit, and do not approve or ready it until it is genuinely re-evaluated.
 
@@ -660,7 +680,7 @@ Never add numbering, bullets, headings, labels, citations, hashtags, emojis, or 
 Report:
 
 - saved post ID;
-- topic and country focus;
+- post format, topic, and country focus;
 - clean copy in one plain-text code block;
 - supported quality score;
 - candidate count and operator variety;
@@ -685,7 +705,7 @@ If no post is ready, state that the queue is empty. Do not generate or approve c
 
 ### After marking as posted
 
-Report the post ID, archive file, six published fact IDs, and successful removal from both active drafts and the ready queue.
+Report the post ID, archive file, six published fact IDs with their destination topic ledgers, and successful removal from both active drafts and the ready queue.
 
 ### On failure
 
