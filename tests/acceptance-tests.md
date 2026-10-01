@@ -127,10 +127,24 @@ Every approval test must prove that:
 - an eligible approval performs exactly one active-drafts write, one ready-queue write, and one production-state write;
 - no intermediate approved record is persisted;
 - revision increases exactly once while next_post_number, next_fact_number, and every unrelated state field remain unchanged;
-- post IDs, fact IDs, facts, sources, quality, and generation_audit remain unchanged;
+- post IDs, effective and stored post_format, post topic, fact IDs, facts, sources, quality, and generation_audit remain unchanged;
 - approved_at and ready_at use the same operation timestamp;
 - final active, queue, state, chat copy, and any already stored publishing package have exact parity;
 - a stale SHA causes a complete refetch and eligibility restart rather than overwrite.
+
+### Post format and topic routing
+
+For every post:
+
+- effective post_format is the stored value, or themed when a legacy record omits it;
+- every newly created record stores post_format;
+- a themed post uses one non-mixed post topic and all six fact topics equal it;
+- a mixed post uses post topic mixed, at least four distinct fact topics, and no topic more than twice;
+- no fact uses topic mixed and no data/facts/mixed.jsonl file exists;
+- a mixed post defaults to country_focus GLOBAL;
+- every fact in a country-specific mixed post explicitly includes the requested country in country_scope;
+- default unrequested format selection targets 75% themed and 25% mixed over the long term;
+- explicit format requests override the default rotation.
 
 ### Standard post quality
 
@@ -255,8 +269,9 @@ Expected chat behavior:
 
 Repository assertions:
 
-- {{POST_A}} exists exactly once in active-drafts.jsonl with status draft.
+- {{POST_A}} exists exactly once in active-drafts.jsonl with status draft and an explicit valid post_format.
 - It contains exactly six fact snapshots, valid sources, and all required per-fact editorial fields.
+- Its post format, post topic, and fact topics satisfy the global format gates.
 - It contains six quality rationales and a complete generation_audit.
 - candidate_count is at least 18 and rejected_counts sums to candidate_count minus 6.
 - operator_variety matches the final six facts.
@@ -282,7 +297,8 @@ Expected chat behavior:
 - Produces final script copy in English.
 - Shows the saved post ID; record it as {{POST_B}}.
 - Uses country_focus AU.
-- Does not force all six facts to be Australia-specific when doing so would weaken quality, but the post has a clear Australian focus.
+- If themed, it has a clear Australian focus without forcing all six facts to be Australia-specific when that would weaken quality.
+- If mixed, every selected fact explicitly supports Australia.
 
 Repository assertions:
 
@@ -1019,6 +1035,93 @@ Repository assertions when approval completes:
 
 Pass: stale approval state never overwrites the latest branch and the operation restarts from current evidence.
 
+### AT-30 — Mixed-topic generation
+
+Purpose: Verify explicit mixed generation, persistence, country defaults, and all existing quality gates.
+
+Prompt:
+
+    Create one mixed trivia post.
+
+Expected chat behavior:
+
+- Produces one English six-fact script and records its post ID as {{MIXED_POST}}.
+- Reports post_format mixed, topic mixed, and country_focus GLOBAL.
+- Reports the distinct fact-topic count and confirms that no topic appears more than twice.
+- Applies the same source, scope, safety, duplicate, word-count, operator, strength, opening-and-closing, audit, and quality gates as a themed post.
+
+Repository assertions:
+
+- {{MIXED_POST}} exists exactly once with status draft, post_format mixed, topic mixed, and country_focus GLOBAL.
+- Its six facts use only the six allowed non-mixed fact topics.
+- At least four distinct fact topics appear and no fact topic appears more than twice.
+- No data/facts/mixed.jsonl file exists.
+- One post ID and six fact IDs are allocated only after all gates pass.
+- Counters and revision increase exactly as required for one created post.
+
+Pass: the stored mixed record satisfies all global gates without weakening the standard post contract.
+
+### AT-31 — Mixed multi-ledger publication routing
+
+Purpose: Verify that a mixed post publishes each fact to its own topic ledger and never creates a mixed ledger.
+
+Precondition: On the isolated test branch, approve {{MIXED_POST}} and confirm exact queue parity.
+
+Prompt:
+
+    Mark {{MIXED_POST}} as posted.
+
+Expected chat behavior:
+
+- Reports the monthly archive file and all six published fact IDs.
+- Reports the destination fact ledger for each fact.
+- Does not claim or create a mixed fact ledger.
+
+Repository assertions:
+
+- The archive contains {{MIXED_POST}} exactly once with status posted, post_format mixed, and topic mixed.
+- Every archived fact text and position matches the approved record.
+- Every published fact appears exactly once in the ledger named by its own non-mixed topic.
+- No published fact is routed by the post-level mixed topic.
+- data/facts/mixed.jsonl does not exist.
+- The post is absent from active drafts and the ready queue.
+- Revision increases once and all ordinary publication integrity gates pass.
+
+Pass: publication preserves the mixed post while routing facts independently and idempotently.
+
+### AT-32 — Themed backward compatibility
+
+Purpose: Verify that missing post_format remains a read-compatible themed record without bulk migration.
+
+Setup: On the isolated test branch, use an existing valid themed record whose post_format field is absent. Do not alter the fixture merely for inspection.
+
+Prompt:
+
+    Show {{LEGACY_THEMED_POST}} and explain its effective post format. Do not modify anything.
+
+Expected chat behavior:
+
+- Reports effective post_format themed.
+- Confirms that the non-mixed post topic matches all six fact topics.
+- Does not report corruption solely because post_format is absent.
+- Does not add post_format or change any other field.
+
+Repository assertions:
+
+- active drafts, archives, fact ledgers, ready queue, and production state are byte-for-byte unchanged.
+- No write call or commit occurs.
+- No data/facts/mixed.jsonl file exists.
+
+Approval subtest, when the record otherwise satisfies every current Fast Approval eligibility rule:
+
+    Approve {{LEGACY_THEMED_POST}} using only stored evidence.
+
+- Approval treats the absent post_format as themed for validation.
+- The one active write preserves the field as absent rather than performing a bulk or incidental schema rewrite.
+- IDs, facts, sources, quality, generation_audit, counters, and queue parity follow the Fast Approval gates.
+
+Pass: old themed records remain readable and lifecycle-compatible without a format backfill.
+
 ## 6. Final Consistency Audit
 
 After all applicable tests, prompt:
@@ -1031,6 +1134,10 @@ The final result passes only when:
 - all ID and signature uniqueness checks pass;
 - counters exceed allocated IDs;
 - active statuses and fact counts are valid;
+- every record has a valid effective post format and post/fact topic relationship;
+- every mixed post has at least four fact topics and no topic more than twice;
+- every country-specific mixed post has explicit country support on all six facts;
+- no mixed fact topic or data/facts/mixed.jsonl file exists;
 - every ready post has exactly one queue block;
 - every archived post has six published facts;
 - every published fact points to an archived post;
@@ -1089,6 +1196,9 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-27 Explicit ref and mismatch rejection | PENDING | Stage 12.10 | Run only with the isolated connector test harness. |
 | AT-28 Incomplete Fast Approval rejection | PENDING | Stage 12.10 | Must fail with zero research and zero writes. |
 | AT-29 Fast Approval SHA conflict restart | PENDING | Stage 12.10 | Must preserve the competing writer and restart from fresh SHAs. |
+| AT-30 Mixed-topic generation | PENDING | Stage 12.10 | Must prove at least four fact topics, at most two per topic, and all ordinary quality gates. |
+| AT-31 Mixed multi-ledger publication | PENDING | Stage 12.10 | Must route each fact by its own topic and never create a mixed ledger. |
+| AT-32 Themed backward compatibility | PENDING | Stage 12.10 | Missing post_format must mean themed without an inspection-time rewrite. |
 | Body-science v2 regression | PASS | `P-000008`; `bbb08d7` | 24 candidates, 18 rejected, five operator families, six strength-2 facts, complete rationales, and directly supportive sources; materially stronger than legacy P-000003. |
 | Final consistency audit | PASS | `bbb08d718c89162515ffc09a86d8a47b22c8b289` | 7 active posts, 42 active fact snapshots, 6 published facts, 1 archive, and 1 ready post; counters, rotation, global uniqueness, publication linkage, v2 gates, and deterministic ready-queue parity all passed. |
 
@@ -1097,7 +1207,7 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 The version-3 implementation is ready to merge only when:
 
 - historical AT-01 through AT-23 remain valid or are rerun when affected;
-- AT-24 through AT-29 pass;
+- AT-24 through AT-32 pass;
 - all later Stage 12 feature and regression tests pass;
 - the final consistency audit passes;
 - failures are corrected in the instructions, contract, content DNA, or data model;
@@ -1107,4 +1217,4 @@ The version-3 implementation is ready to merge only when:
 - legacy baseline records remain unchanged unless explicitly revised through the normal lifecycle;
 - no test-only corruption remains on the branch.
 
-Current result: AT-01 through AT-23, the body-science v2 regression, and the version-2 final consistency audit remain historical passing evidence. The version-3 runtime-isolation tests are specified but not yet executed; the Stage 12 implementation is not acceptance-ready until Stage 12.10 completes.
+Current result: AT-01 through AT-23, the body-science v2 regression, and the version-2 final consistency audit remain historical passing evidence. AT-24 through AT-32 are specified but not yet executed; the Stage 12 implementation is not acceptance-ready until Stage 12.10 completes.
