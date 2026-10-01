@@ -1147,6 +1147,7 @@ Completion evidence:
 - `c0d071902110418401becd5a637ceecceff1b927` defines raw monthly storage, posted-only eligibility, canonical metrics, compound-key idempotency, deterministic aggregation, recovery, audit, and hard failures.
 - `188ac724988888cee49d13018d50f07ebf75cdc6` implements record, summary, and analysis commands plus the serialized raw-then-summary persistence flow.
 - `ccdd18e4deb57aae641b5d4c3ec7d64a9615f7cb` adds global performance gates and AT-33 through AT-38 for valid snapshots, posted-only enforcement, retry, conflict, deterministic rebuilding, and small-sample restraint.
+- `39e57c4a8f8642c4fda1e4dad5fb71e6db9a81cf` removes legacy trailing whitespace from the acceptance specification so the Stage 12.5 static check is clean.
 - `e2e78b80e09e1b3dca386ea94ed05f11ac9879c1` creates the empty deterministic `data/performance-summary.json` baseline.
 - Raw performance uses `data/performance/YYYY-MM.jsonl`, routed from `captured_at` in Asia/Jakarta; the directory and monthly file remain absent until the first real metrics write.
 - The summary counts unique measured posts from their latest snapshots and aggregates topic, country, effective post format, and distinct operator buckets with explicit post counts.
