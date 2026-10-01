@@ -698,6 +698,682 @@ Evidence:
 - 2026-10-01 — User reviewed and accepted the documentation; Stage 11.6 passed without production writes.
 - `7084c30a654d5ad94b582c9477214103b37d6167` — Merge pull request #3 and publish the Stage 11 documentation to `main`.
 
+## 5C. Stage 12 — Viral Producer 1.1
+
+Status: APPROVED — IMPLEMENTATION NOT STARTED
+
+Branch implementasi:
+
+    upgrade/viral-producer-v1.1
+
+Branch acceptance test:
+
+    test/viral-producer-v1.1
+
+Production runtime tetap menggunakan main. Branch implementasi dibuat dari main saat revision 100, next_post_number 59, next_fact_number 375, dan 57 active records. Nilai tersebut hanya baseline pembuatan branch; chat implementasi wajib membaca ulang main terbaru sebelum bekerja karena produksi terus berjalan.
+
+### Tujuan
+
+Meningkatkan Viral Producer menjadi versi 1.1.0 melalui enam update:
+
+1. Fast Approval.
+2. Mixed-Topic Support.
+3. Performance Feedback Loop.
+4. Smart Ready Queue dan Content Calendar.
+5. Subject dan Angle Cooldown.
+6. Complete Publishing Package dengan caption dan hashtag.
+
+Implementasi harus tetap menggunakan GitHub sebagai source of truth, mempertahankan single_writer_mode, kompatibel dengan data lama, tidak mengganggu produksi aktif di main, dan tidak memasukkan data acceptance test ke main.
+
+### Keputusan final
+
+#### Fast Approval
+
+- Tidak membuka ulang source.
+- Tidak menggunakan Web Search atau factual revalidation.
+- Tidak menjalankan semantic deduplication dan quality scoring ulang.
+- Tidak memiliki Pre-Publish Freshness Gate.
+- Tidak membuat candidate pool, mengganti fakta, atau mengalokasikan ID.
+- Menggunakan validation evidence yang sudah tersimpan ketika draft dibuat atau direvisi.
+- Legacy atau incomplete draft tidak di-upgrade otomatis saat approval; approval harus berhenti dan meminta revisi terpisah.
+
+#### Mixed content
+
+- Default jangka panjang: 75 persen themed dan 25 persen mixed.
+- Mixed post berisi minimal empat fact topics.
+- Maksimal dua fakta dari fact topic yang sama.
+- Existing operator, strength, source, scope, safety, dan quality gates tetap berlaku.
+
+#### Caption dan hashtag
+
+- Caption satu kalimat, idealnya 6–14 kata.
+- Caption singkat, padat, jelas, menarik, dan memakai natural American English.
+- Caption tidak memakai pertanyaan generik, kalimat trivia, kata trivia dalam prose, pengulangan CTA, emoji default, atau factual claim baru.
+- Hashtag berjumlah 4–6, unik, relevan, dan bukan spam.
+- Tag #Trivia diperbolehkan; larangan trivia hanya berlaku untuk prose caption.
+- On-screen script dan Facebook caption ditampilkan dalam dua code block terpisah.
+
+#### Concurrency
+
+- Produksi tetap single-writer.
+- Multi-writer production tidak termasuk scope versi 1.1.
+- Plugin test dapat menulis hanya ke configured test branch.
+
+### Target versi
+
+- Plugin: Viral Producer 1.1.0.
+- Instruction version: 3.0 — Stage 12.
+- Editorial version: 3.0 — Stage 12.
+- Test specification version: 3.0 — Stage 12.
+- schema_version tetap 1 karena perubahan additive dan backward-compatible.
+
+### Branch dan isolation policy
+
+Struktur:
+
+    main
+    ├── upgrade/viral-producer-v1.1
+    └── test/viral-producer-v1.1
+
+main:
+
+- tetap menjadi branch produksi;
+- tetap dapat menerima produksi selama pengembangan;
+- tidak digunakan untuk mutative acceptance tests.
+
+upgrade/viral-producer-v1.1:
+
+- menyimpan perubahan system, contract, tests, docs, plan, dan initial files versi 1.1;
+- satu-satunya branch yang boleh dibuatkan pull request ke main;
+- tidak boleh mengubah snapshot data produksi aktif.
+
+test/viral-producer-v1.1:
+
+- dibuat dari feature branch setelah implementasi dasar selesai;
+- digunakan oleh plugin Viral Producer v1.1 Test;
+- boleh berisi draft, IDs, counters, metrics, calendar, recovery state, dan data hasil test;
+- tidak pernah di-merge ke feature branch atau main.
+
+Feature branch tidak boleh mengubah isi file produksi berikut:
+
+    data/production-state.json
+    data/active-drafts.jsonl
+    data/facts/**
+    data/posts/**
+    output/ready-to-post.md
+
+Feature branch boleh menambahkan:
+
+    data/performance-summary.json
+    data/publishing-plan.json
+    output/content-calendar.md
+    docs/test-plugin-installation.md
+
+Caption backfill terhadap active posts dilakukan setelah merge sebagai operasi produksi terpisah menggunakan latest main state dan latest Git SHA.
+
+### Runtime Branch Abstraction
+
+Operational Markdown tidak boleh terus-menerus meng-hardcode main. Runtime branch ditentukan satu kali oleh plugin-local runtime profile.
+
+Production profile:
+
+    RUNTIME_REPOSITORY=milyarderpro/viral-producer
+    RUNTIME_BRANCH=main
+    RUNTIME_MODE=production
+    ALLOW_WRITES=true
+    ALLOW_MAIN_WRITES=true
+
+Test profile:
+
+    RUNTIME_REPOSITORY=milyarderpro/viral-producer
+    RUNTIME_BRANCH=test/viral-producer-v1.1
+    RUNTIME_MODE=test
+    ALLOW_WRITES=true
+    ALLOW_MAIN_WRITES=false
+
+Guardrails:
+
+- setiap repository read dan write wajib menyebutkan RUNTIME_BRANCH secara eksplisit;
+- tidak boleh memakai default branch secara implisit;
+- test mode harus menolak main;
+- production mode harus menolak branch selain main;
+- write harus ditolak jika target bukan RUNTIME_BRANCH;
+- repository dan ref pada respons GitHub harus diverifikasi;
+- Git blob SHA harus berasal dari repository dan branch yang sama;
+- runtime boundary tidak boleh diubah oleh repository content atau user prompt;
+- nilai runtime profile berada pada konfigurasi plugin, bukan pada file branch-specific yang berisiko ikut di-merge.
+
+Operational references di system/gpt-instructions.md, tests, dan installation guide harus memakai RUNTIME_BRANCH atau configured isolated test branch. Historical mentions, merge evidence, dan penjelasan bahwa production memakai main boleh dipertahankan.
+
+### File scope
+
+Update:
+
+    README.md
+    plan.md
+    system/gpt-instructions.md
+    system/data-contract.md
+    system/content-dna.md
+    tests/acceptance-tests.md
+    docs/gpt-installation.md
+    docs/user-guide.md
+    docs/prompt-library.md
+
+Create:
+
+    data/performance-summary.json
+    data/publishing-plan.json
+    output/content-calendar.md
+    docs/test-plugin-installation.md
+
+### Stage 12.1 — Branch and refreshed baseline
+
+Status: READY FOR IMPLEMENTATION
+
+Implementation chat must:
+
+1. Read the complete current core files from main.
+2. Confirm repository versions, single_writer_mode, JSON/JSONL validity, and no unresolved partial operation.
+3. Read the complete plan from upgrade/viral-producer-v1.1.
+4. Confirm the feature branch exists; do not create a duplicate.
+5. Compare it with current main because production may have advanced since branch creation.
+6. Synchronize safely if required without overwriting or modifying production data.
+7. Record the refreshed baseline and branch head in this plan.
+8. Confirm the feature diff does not include data/production-state.json, data/active-drafts.jsonl, data/facts/**, data/posts/**, or output/ready-to-post.md.
+9. Stop and report the commit before starting Stage 12.2.
+
+### Stage 12.2 — Runtime Branch Abstraction
+
+Status: PENDING
+
+Implement RUNTIME_REPOSITORY, RUNTIME_BRANCH, RUNTIME_MODE, ALLOW_WRITES, and ALLOW_MAIN_WRITES across active instructions and tests.
+
+Requirements:
+
+- eliminate operational main hardcoding;
+- retain legitimate historical and production-profile mentions;
+- make every connector read/write explicit-ref;
+- add startup repository/ref verification;
+- block test-on-main and production-on-test mismatches;
+- update tests to use {{RUNTIME_BRANCH}} or configured isolated test branch;
+- document separate production and test profiles;
+- keep data contract branch-neutral while making SHA, lifecycle, and recovery rules apply inside one RUNTIME_BRANCH.
+
+Acceptance:
+
+- test profile cannot write main;
+- production profile cannot write test;
+- no default-branch fallback exists;
+- branch mismatch blocks before write.
+
+### Stage 12.3 — Update 1: Fast Approval
+
+Status: PENDING
+
+Eligibility:
+
+- explicit Post ID and approval intent;
+- current status draft;
+- exactly six facts;
+- complete current editorial metadata;
+- every stored scope_check_passed and source_access_passed is true;
+- quality.hard_rules_passed is true;
+- quality rationales and generation_audit are complete and internally consistent;
+- operator and viral-strength gates pass from stored metadata;
+- Fact 1 and Fact 6 are strength 2 with different operators;
+- no unresolved partial lifecycle operation;
+- latest SHA preflight passes.
+
+Fast Approval must not:
+
+- open source URLs;
+- use Web Search;
+- run fresh research or factual revalidation;
+- perform global semantic dedup research;
+- rescore editorial quality;
+- rebuild generation_audit;
+- replace facts;
+- allocate IDs;
+- run a Pre-Publish Freshness Gate.
+
+Write flow:
+
+1. Fetch latest affected files and SHAs.
+2. Calculate final draft-to-approved-to-ready record in memory.
+3. Persist active-drafts.jsonl once with approved_at and ready_at.
+4. Rebuild and write the complete ready-to-post.md once.
+5. Increment production-state revision once.
+6. Leave next_post_number and next_fact_number unchanged.
+7. Reread and verify exact queue parity.
+8. Display the stored script and publishing package without regeneration.
+
+Legacy or incomplete drafts must fail Fast Approval and require a separate revision or upgrade command.
+
+### Stage 12.4 — Update 2: Mixed-Topic Support
+
+Status: PENDING
+
+Add post_format:
+
+    themed
+    mixed
+
+Backward compatibility:
+
+- missing post_format means themed;
+- existing records do not require bulk rewrite.
+
+Post-level topic values:
+
+    animals-nature
+    body-science
+    food-home
+    geography-history
+    inventions-records
+    practical
+    mixed
+
+Fact-level topic values remain the six existing non-mixed topics. Never create data/facts/mixed.jsonl.
+
+Themed rules:
+
+- all facts use the themed post topic unless the live contract explicitly allows a documented exception.
+
+Mixed rules:
+
+- at least four fact topics;
+- no fact topic appears more than twice;
+- post topic is mixed;
+- each fact preserves its own fact topic;
+- publication routes every fact to its own topic ledger;
+- default country_focus is GLOBAL;
+- country-specific mixed requests require every selected fact to support the requested country;
+- existing operator, strength, opening/closing, source, scope, safety, word-count, audit, and quality rules remain mandatory;
+- long-term default rotation is 75 percent themed and 25 percent mixed.
+
+Ready heading for mixed posts:
+
+    Mixed Trivia
+
+### Stage 12.5 — Update 3: Performance Feedback Loop
+
+Status: PENDING
+
+Raw storage:
+
+    data/performance/YYYY-MM.jsonl
+
+Derived summary:
+
+    data/performance-summary.json
+
+Performance record minimum:
+
+    {
+      "schema_version": 1,
+      "post_id": "P-000020",
+      "captured_at": "ISO-8601",
+      "post_age_hours": 24,
+      "source": "manual",
+      "metrics": {
+        "views": 1200000,
+        "reactions": 84000,
+        "comments": 2300,
+        "shares": 15000,
+        "average_watch_time_seconds": 8.4,
+        "retention_percent": null,
+        "followers_gained": 3200
+      }
+    }
+
+Rules:
+
+- metrics are accepted only for archived posted posts;
+- multiple snapshots per post are allowed;
+- post_id plus captured_at is the idempotency key;
+- an identical retry is a no-op success;
+- a different payload with the same key is a conflict;
+- metrics never modify the published post;
+- summary is rebuilt deterministically;
+- sample size below 15–20 posts must not drive strong strategic conclusions;
+- performance may act as a tie-breaker but never weaken factual, safety, originality, or editorial gates;
+- Content DNA is never automatically rewritten from one successful post.
+
+Commands:
+
+    Catat performa P-000020: ...
+    Tampilkan ringkasan performa konten.
+    Analisis topic, format, country, dan operator dengan performa terbaik.
+
+Initial performance-summary.json:
+
+    {
+      "schema_version": 1,
+      "updated_at": null,
+      "sample_size": 0,
+      "by_topic": {},
+      "by_country": {},
+      "by_post_format": {},
+      "by_operator": {}
+    }
+
+The monthly performance directory/file is created on the first actual metrics write.
+
+### Stage 12.6 — Update 4: Smart Ready Queue and Content Calendar
+
+Status: PENDING
+
+Existing output/ready-to-post.md remains the deterministic complete ready queue.
+
+Add a read-only recommendation command:
+
+    Rekomendasikan post terbaik untuk diposting berikutnya.
+
+Recommendation considers:
+
+- scheduled slot;
+- topic and country rotation;
+- themed/mixed alternation;
+- subject cooldown;
+- operator repetition;
+- quality;
+- ready age;
+- performance summary only after the minimum sample threshold.
+
+Recommendation must not mutate repository state.
+
+Create data/publishing-plan.json:
+
+    {
+      "schema_version": 1,
+      "timezone": "Asia/Jakarta",
+      "revision": 0,
+      "slots": []
+    }
+
+Slot minimum:
+
+    {
+      "scheduled_for": "ISO-8601",
+      "post_id": "P-000020",
+      "status": "planned"
+    }
+
+Rules:
+
+- only ready posts may be scheduled;
+- one post cannot occupy multiple active slots;
+- scheduling does not change post lifecycle;
+- timezone is Asia/Jakarta;
+- marking a post as posted must finish or remove its active schedule entry;
+- output/content-calendar.md is rebuilt deterministically from the publishing plan;
+- empty plan and empty calendar are valid.
+
+Commands:
+
+    Susun jadwal posting tujuh hari, dua post per hari.
+    Tampilkan content calendar.
+    Pindahkan P-000020 ke jadwal besok pukul 19.00 WIB.
+
+### Stage 12.7 — Update 5: Subject and Angle Cooldown
+
+Status: PENDING
+
+Add subject_key for new facts:
+
+    "subject_key": "grand_canyon"
+
+Rules:
+
+- the same subject cannot be reused within the 20 most recent posts;
+- one semantic subject cluster may appear at most twice within those 20 posts;
+- the current batch, all active reservations, and recent published posts are included;
+- subject similarity uses subject_key, subject, relationship, canonical claim, tags, and semantic comparison;
+- legacy facts without subject_key use the existing fields as fallback;
+- named-series override requires explicit user instruction and persisted generation_audit evidence;
+- cooldown rejection counts as repetitive;
+- no legacy bulk migration is required.
+
+### Stage 12.8 — Update 6: Complete Publishing Package
+
+Status: PENDING
+
+Add to active post records:
+
+    "caption": "Nature has a talent for making the impossible look ordinary.",
+    "hashtags": [
+      "#DidYouKnow",
+      "#AmazingFacts",
+      "#AnimalFacts",
+      "#NatureFacts",
+      "#LearnSomethingNew"
+    ]
+
+Caption rules:
+
+- exactly one sentence;
+- ideal length 6–14 words;
+- natural American English;
+- concise, clear, and attractive;
+- not a generic question;
+- no "Which fact surprised you?";
+- no prose use of trivia;
+- no "Here are six facts";
+- no restatement of the six facts;
+- no new factual claim;
+- no duplicate CTA;
+- no citation;
+- no emoji by default.
+
+Hashtag rules:
+
+- 4–6 unique tags;
+- relevant to topic, post format, and supported country scope;
+- no misleading, unrelated, or spam tags;
+- PascalCase when appropriate;
+- #Trivia is allowed as a hashtag;
+- hashtags never enter the on-screen script.
+
+Behavior:
+
+- generate caption and hashtags after the final six facts pass;
+- persist them with the draft;
+- approval must not regenerate them;
+- wording-only revision may preserve them when still relevant;
+- fact replacement, topic change, country change, or post-format change must recheck them;
+- archive future posted posts with the same caption and hashtags.
+
+Chat and queue output use two separate plain-text code blocks:
+
+1. ON-SCREEN SCRIPT.
+2. FACEBOOK CAPTION containing the caption, one blank line, and the hashtags.
+
+### Stage 12.9 — Compatibility and Initial Files
+
+Status: PENDING
+
+Compatibility rules:
+
+- missing post_format means themed;
+- missing caption/hashtags is allowed only for archived legacy content and active content awaiting controlled backfill;
+- missing subject_key uses legacy fallback;
+- existing IDs, counters, facts, sources, quality, audits, and archives are preserved;
+- performance data and publishing plan may begin empty;
+- schema_version remains 1.
+
+Create the empty performance summary, publishing plan, content calendar, and test-plugin guide on the feature branch. Do not modify production snapshots.
+
+### Stage 12.10 — Isolated Acceptance Tests
+
+Status: PENDING
+
+Create test/viral-producer-v1.1 from the current feature branch. Configure a new private plugin named Viral Producer v1.1 Test with the test runtime profile.
+
+Never use the feature branch directly for mutative tests. Never merge test data.
+
+Required test groups:
+
+Runtime isolation:
+
+- test plugin reads and writes only the test branch;
+- test plugin refuses main;
+- production profile refuses test;
+- no implicit default ref.
+
+Fast Approval:
+
+- zero web/source calls;
+- zero new IDs;
+- counters unchanged;
+- one active write, one queue write, one state write;
+- exact queue parity;
+- legacy/incomplete rejection.
+
+Mixed:
+
+- minimum four fact topics;
+- maximum two per fact topic;
+- correct post topic and fact topics;
+- correct multi-ledger publication routing;
+- themed backward compatibility.
+
+Performance:
+
+- posted-only enforcement;
+- valid snapshots;
+- idempotent retry;
+- conflict rejection;
+- deterministic summary;
+- small-sample restraint.
+
+Smart queue/calendar:
+
+- read-only recommendation;
+- ready-only scheduling;
+- no duplicate schedule;
+- Asia/Jakarta handling;
+- no lifecycle mutation from scheduling;
+- posted cleanup.
+
+Cooldown:
+
+- exact subject rejection;
+- semantic cluster limit;
+- legacy fallback;
+- explicit series override evidence.
+
+Publishing package:
+
+- caption length and style;
+- no generic trivia prose or new factual claim;
+- 4–6 unique relevant hashtags;
+- no hashtags in script;
+- active/queue/chat/archive parity;
+- approval preservation.
+
+Regression:
+
+- rerun every affected create, revise, replace, approve, ready, posted, persistence, conflict, recovery, legacy, and final consistency test.
+
+### Stage 12.11 — Documentation and Plugin Guide
+
+Status: PENDING
+
+Update README, user guide, prompt library, production installation guide, and plan. Add docs/test-plugin-installation.md with:
+
+- Plugin Creator prompt;
+- test runtime profile;
+- GitHub connection;
+- version check;
+- branch read/write smoke test;
+- explicit main rejection test;
+- acceptance-test sequence;
+- troubleshooting;
+- instruction never to merge the test branch.
+
+Documentation language is concise natural Indonesian except technical identifiers.
+
+### Stage 12.12 — Pull Request, Cutover, and Backfill
+
+Status: PENDING
+
+Before PR:
+
+1. Re-read and synchronize with latest main.
+2. Confirm the feature diff contains no stale production snapshots.
+3. Confirm test data is absent.
+4. Run final read-only consistency and compatibility audit.
+5. Open PR only from upgrade/viral-producer-v1.1 to main.
+6. Attach the PR to the task.
+7. Do not merge until acceptance results pass and the user approves cutover.
+
+Cutover requires a short production-write pause:
+
+1. Pause production writers.
+2. Merge the reviewed PR.
+3. Update the existing production Viral Producer plugin to version 1.1.0.
+4. Use the production runtime profile pointing to main.
+5. Start a fresh conversation.
+6. Run version and branch verification read-only.
+7. Confirm the production plugin refuses test branch writes.
+8. Run controlled active caption/hashtag backfill.
+9. Run final full consistency audit.
+10. Resume production.
+
+Caption/hashtag backfill:
+
+- targets current draft and ready records only;
+- excludes archived posts;
+- uses latest main content and SHA;
+- does not open sources or use Web Search;
+- does not change facts, IDs, counters other than one revision increment, quality, generation audit, or sources;
+- treats missing post_format as themed without requiring a bulk format rewrite;
+- prepares and validates all captions/hashtags before the first write;
+- writes active records, rebuilds ready queue, increments revision once, and verifies parity.
+
+### Definition of Done for Stage 12
+
+Stage 12 is complete only when:
+
+- production and test runtime profiles are isolated;
+- test plugin cannot write main;
+- no test data reaches main;
+- Fast Approval performs no web/source recheck;
+- mixed posts generate, persist, approve, and publish correctly;
+- performance snapshots and deterministic summary work;
+- smart recommendation is read-only;
+- publishing calendar persists safely;
+- subject cooldown works with legacy fallback;
+- captions and hashtags are stored and copy-ready;
+- active, queue, chat, and archive parity pass;
+- old records remain readable;
+- IDs and counters remain monotonic;
+- all new and affected regression tests pass;
+- final consistency audit passes;
+- documentation and plugin guides are complete;
+- production backfill completes successfully;
+- production resumes on main.
+
+### Execution Protocol for a New Chat
+
+The implementation chat must:
+
+1. Read this entire plan and the live Viral Producer skill.
+2. Read complete core files from current main and complete plan.md from the feature branch.
+3. Use current repository evidence, not conversation memory.
+4. Start only with Stage 12.1.
+5. Work one stage at a time.
+6. Update this plan after every completed stage.
+7. Record commits and validation evidence.
+8. Stop after each stage and wait for the user to say "lanjutkan".
+9. Never create a duplicate feature branch.
+10. Never run mutative tests on main.
+11. Never create a PR or merge before all acceptance tests pass.
+
+Suggested first prompt for the new chat:
+
+    Implementasikan Stage 12.1 dari plan.md pada repository milyarderpro/viral-producer. Main masih aktif digunakan untuk produksi. Baca core files terbaru dari main, baca seluruh Stage 12 pada branch upgrade/viral-producer-v1.1, refresh baseline, sinkronkan feature branch secara aman jika diperlukan, pastikan production data tidak berubah, update plan.md, commit hasilnya, lalu berhenti. Jangan mengerjakan Stage 12.2 sebelum saya mengatakan "lanjutkan".
+
 ## 6. Definition of Done
 
 The implementation is complete when:
