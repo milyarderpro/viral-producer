@@ -219,7 +219,7 @@ Rules:
 - Re-run operator diversity, viral strength, opening and closing strength, scope, source access, weakest-fact review, candidate accounting, and the complete quality score with rationales.
 - If the post is ready, regenerate the ready queue after replacement.
 
-### APPROVE_POST
+### APPROVE_POST — Fast Approval
 
 Examples:
 
@@ -229,14 +229,16 @@ Examples:
 
 Rules:
 
-- A post ID is required.
-- The user must explicitly express approval for that post.
-- Praise, satisfaction, or "looks good" without an approval or ready-queue instruction is not approval.
-- Re-run the current hard validation before changing status.
-- If the draft is legacy, perform a genuine editorial re-evaluation and add complete version-2 fact metadata, quality rationales, and generation_audit before approval.
-- Never invent missing candidate history for a legacy draft. If a valid generation audit cannot be established, research a fresh candidate pool and reevaluate the post.
-- If any existing fact is weak, repetitive, inaccessible, scope-mismatched, or otherwise fails, do not approve; report the exact failure and recommend revision or replacement.
-- Apply the approved-to-ready transition and regenerate the ready queue exactly as defined in data-contract.md.
+- A canonical Post ID and explicit approval or ready-queue intent are required.
+- Praise, satisfaction, or "looks good" without approval intent is not approval.
+- Fetch the latest active drafts, ready queue, and production state from explicit RUNTIME_BRANCH with their current SHAs.
+- Confirm the target still has status draft, exactly six facts, null approved_at and ready_at, and no unresolved partial lifecycle operation.
+- Validate eligibility only from the latest stored record. Every fact must contain complete current editorial metadata, true scope_check_passed and source_access_passed values, an allowed surprise_operator, and a valid viral_strength.
+- Confirm from stored values that quality.hard_rules_passed is true; all six quality rationales exist; quality.total is internally consistent; generation_audit is complete and internally consistent; operator and viral-strength gates pass; and Facts 1 and 6 are strength 2 with different operators.
+- Do not open source URLs, use Web Search, perform fresh research or factual revalidation, run global semantic deduplication, rescore quality, rebuild generation_audit, replace facts, allocate IDs, or run a Pre-Publish Freshness Gate.
+- Do not upgrade a legacy or incomplete draft inside approval. Stop without writes, name the missing or inconsistent evidence, and require a separate revision, fact replacement, or editorial-upgrade command.
+- After the latest-SHA preflight passes, calculate the final draft-to-approved-to-ready record in memory and follow the one-write-per-file Fast Approval flow in data-contract.md.
+- Keep post IDs, fact IDs, facts, sources, quality scores and rationales, generation_audit, next_post_number, and next_fact_number unchanged.
 - Approval never means the content has been published to Facebook.
 
 ### REJECT_POST
@@ -540,23 +542,22 @@ Follow system/data-contract.md for complete schemas and transition order.
 - Repeat duplicate, operator-diversity, viral-strength, source-access, scope, weakest-fact, word-count, and quality checks.
 - Rebuild generation_audit without storing rejected candidate wording.
 
-### Approve
+### Fast approve
 
-Approval requires an explicit user request.
+Approval requires an explicit user request for one Post ID.
 
-- Confirm the target currently has status draft.
-- Re-run current hard validation before changing status.
-- If the target is legacy, perform a real editorial re-evaluation and upgrade; do not invent missing evidence.
-- Stop without approval when any fact or audit field fails.
-- Use one operation time for approved_at and ready_at unless the transitions genuinely complete at different times.
-- Transition draft to approved, then approved to ready.
-- Persist the authoritative active record before rendering the queue.
-- Rebuild the complete output/ready-to-post.md from all ready records using section 15 of data-contract.md.
-- Fetch the result and confirm the post appears exactly once and matches its active record.
-- Increment the production-state revision once for the completed approval operation.
-- Show the same clean copy in chat in one plain-text code block.
-- If queue regeneration fails, report a partial failure and repair the derived queue before another write.
-- Do not publish it automatically.
+1. Fetch the latest complete data/active-drafts.jsonl, output/ready-to-post.md, and data/production-state.json with explicit RUNTIME_REPOSITORY, `ref: RUNTIME_BRANCH`, and current blob SHAs.
+2. Revalidate the runtime profile, response repository/ref identity, target draft status, existing queue parity, and absence of unresolved partial lifecycle operations.
+3. Validate the complete Fast Approval eligibility gate from stored fields only. Do not open sources, browse, research, deduplicate globally, rescore, rebuild audit evidence, replace content, allocate IDs, or run a freshness gate.
+4. Record the original post ID, six fact IDs, facts, sources, quality object, generation_audit, next_post_number, and next_fact_number for exact preservation checks.
+5. Use one operation timestamp. In memory, apply draft to approved and approved to ready, then produce one final record with status ready, approved_at and ready_at set to that timestamp, and updated_at set to that timestamp.
+6. Replace data/active-drafts.jsonl exactly once using its preflight SHA. Do not persist an intermediate approved record.
+7. Rebuild the complete output/ready-to-post.md once from the resulting in-memory active records and replace it exactly once using its preflight SHA.
+8. Replace data/production-state.json exactly once using its preflight SHA. Increase revision by exactly one and set updated_at to the operation timestamp; preserve every other state field, including both next-ID counters.
+9. Reread all three files from explicit RUNTIME_BRANCH. Confirm the post is ready exactly once, approved_at and ready_at match, queue content and order are exact, revision increased once, counters and stored content are unchanged, and no duplicate block exists.
+10. Display the stored on-screen script and any already stored publishing package without regeneration. Do not publish automatically.
+
+If any eligibility check fails, perform zero writes. If a later write fails after an earlier write succeeded, report the confirmed partial state and complete only the contract-defined deterministic recovery before another mutation.
 
 ### Reject
 
@@ -672,7 +673,9 @@ Keep sources outside the copy. Show detailed sources only when requested, becaus
 
 ### After approval
 
-Report the post ID and ready status, then show the clean copy in one plain-text code block. Confirm that the same copy appears exactly once in output/ready-to-post.md.
+Report the post ID and ready status, then show the stored clean copy in one plain-text code block. Confirm that the same copy appears exactly once in output/ready-to-post.md.
+
+If the record already contains a stored publishing package, display it separately without regenerating it. Do not create missing caption or hashtag fields during approval.
 
 ### When showing the next ready post
 
