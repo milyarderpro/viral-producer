@@ -459,3 +459,23 @@ About 90% of a clothes washer's energy goes into heating the water
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000025 — Geography and History
+
+Did you know?
+
+Hot Springs water can spend over 4,000 years underground before reaching the surface
+
+Olympic's Hoh Rain Forest gets about 140 inches yearly; nearby Sequim gets around 16
+
+Petrified Forest logs look chainsaw-cut because quartz-rich trunks fractured like glass rods
+
+Big Bend exposes rock beds laid down around the extinction that ended the dinosaurs
+
+Arches National Park preserves over 2,000 natural arches, the world's greatest concentration
+
+Great Salt Lake has no outlet, so evaporation leaves dissolved salts behind
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
