@@ -279,3 +279,23 @@ Without smell, familiar foods can lose so much flavor that chocolate and oranges
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000016 — Inventions, Firsts, and Records
+
+Did you know?
+
+Thomas Edison did not invent the first light bulb; he made the first practical incandescent light
+
+Sound was recorded in 1857, but those recordings were not successfully played back until 2008
+
+The Gateway Arch tram combines elevator and Ferris-wheel principles in one unusual capsule system
+
+The first invisible braces used transparent ceramic that was originally developed by NASA
+
+In 1947, a computer bug was literally a moth found in Harvard’s Mark II
+
+The world’s first webcam watched a Cambridge coffee pot to show researchers when coffee was ready
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
