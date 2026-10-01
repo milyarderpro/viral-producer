@@ -319,3 +319,23 @@ Romans abandoned Hadrian’s Wall for about twenty years, then returned when the
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000018 — Animals and Nature
+
+Did you know?
+
+Some deep-sea anglerfish males fuse into females until they become permanent appendages
+
+Some sea stars push a stomach through their mouths to digest prey outside their bodies
+
+Flamingos make bright-red crop milk in their throats to feed their chicks
+
+Owls cannot move their tubular eyeballs, so they swivel their necks more than 180 degrees
+
+Naked mole-rats can move each front tooth separately, almost like using chopsticks
+
+Vampire bats regurgitate blood to feed hungry social partners, even unrelated adults
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
