@@ -99,3 +99,23 @@ Smell and taste receptor cells are continually replaced throughout life, unlike 
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000005 — Geography and History
+
+Did you know?
+
+The Great Barrier Reef Marine Park covers 344,400 square kilometres, roughly the size of Japan
+
+K'gari stretches 122 kilometres and is the world's largest sand island
+
+Canberra's design competition drew 137 entries worldwide, and an American architect's plan won
+
+Western Australia's 3,256-kilometre rabbit-proof fence failed because rabbits had crossed before it was finished
+
+Australia contains rare zircon crystals dated to 4.4 billion years, among its oldest geological features
+
+Shark Bay's 4,800-square-kilometre seagrass beds are the world's largest and richest
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
