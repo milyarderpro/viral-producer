@@ -1,14 +1,13 @@
 {
   "schema_version": 1,
-  "revision": 82,
-  "next_post_number": 41,
-  "next_fact_number": 267,
+  "revision": 83,
+  "next_post_number": 42,
+  "next_fact_number": 273,
   "operational_timezone": "Asia/Jakarta",
   "single_writer_mode": true,
-  "last_topic": "geography-history",
-  "last_country_focus": "US",
+  "last_topic": "animals-nature",
+  "last_country_focus": "GLOBAL",
   "recent_topics": [
-    "food-home",
     "inventions-records",
     "geography-history",
     "animals-nature",
@@ -17,10 +16,10 @@
     "food-home",
     "inventions-records",
     "animals-nature",
-    "geography-history"
+    "geography-history",
+    "animals-nature"
   ],
   "recent_country_focuses": [
-    "GLOBAL",
     "GLOBAL",
     "US",
     "GLOBAL",
@@ -29,7 +28,8 @@
     "GLOBAL",
     "GLOBAL",
     "GLOBAL",
-    "US"
+    "US",
+    "GLOBAL"
   ],
-  "updated_at": "2026-10-01T09:17:00Z"
+  "updated_at": "2026-10-01T09:18:00Z"
 }
