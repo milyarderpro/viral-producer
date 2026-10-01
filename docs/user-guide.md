@@ -2,6 +2,8 @@
 
 Viral Producer membantu membuat dan mengelola naskah trivia untuk Facebook Reels. Penjelasan diberikan dalam bahasa Indonesia, sedangkan naskah konten menggunakan natural American English.
 
+Butuh perintah siap salin? Buka [Pustaka Prompt](prompt-library.md).
+
 ## 1. Yang Dilakukan AI
 
 Setiap kali membuat post, AI akan:
