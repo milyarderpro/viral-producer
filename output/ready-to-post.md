@@ -339,3 +339,23 @@ Vampire bats regurgitate blood to feed hungry social partners, even unrelated ad
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000019 — Food and Household Knowledge
+
+Did you know?
+
+Broccoli, cabbage, cauliflower, kale, and Brussels sprouts are all varieties of the same species
+
+Peanut flowers send fertilized pegs underground, where the pods develop beneath the soil
+
+Cinnamon sticks are rolled inner bark stripped from trees and dried into fragrant quills
+
+One nutmeg fruit produces two spices: nutmeg and the crimson mace wrapped around it
+
+Capers are pickled flower buds, harvested before Capparis spinosa gets the chance to bloom
+
+UV-B light can make mushrooms richer in vitamin D by converting their natural ergosterol
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
