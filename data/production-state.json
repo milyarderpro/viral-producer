@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "revision": 29,
+  "revision": 30,
   "next_post_number": 14,
-  "next_fact_number": 90,
+  "next_fact_number": 96,
   "operational_timezone": "Asia/Jakarta",
   "single_writer_mode": true,
   "last_topic": "geography-history",
@@ -31,5 +31,5 @@
     "GLOBAL",
     "CA"
   ],
-  "updated_at": "2026-10-01T04:30:00Z"
+  "updated_at": "2026-10-01T05:11:19.636Z"
 }
