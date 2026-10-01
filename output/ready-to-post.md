@@ -79,3 +79,23 @@ Spinner dolphins can sleep with half their brain while the other half stays aler
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000003 — Body and Everyday Science
+
+Did you know?
+
+Goosebumps happen when tiny smooth muscles in your skin pull individual hairs upright
+
+The stapes in your middle ear is the smallest bone in the human body
+
+Taste cells for sweet, sour, bitter, salty, and umami are scattered across your tongue
+
+Your inner ear acts like a miniature accelerometer, continuously tracking head movement and position
+
+Your ears can produce measurable sounds of their own that are normally inaudible to your brain
+
+Smell and taste receptor cells are continually replaced throughout life, unlike other known mammalian sensory cells
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
