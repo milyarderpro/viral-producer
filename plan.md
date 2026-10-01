@@ -700,7 +700,7 @@ Evidence:
 
 ## 5C. Stage 12 — Viral Producer 1.1
 
-Status: APPROVED — IMPLEMENTATION NOT STARTED
+Status: IN PROGRESS — STAGE 12.2 COMPLETE
 
 Branch implementasi:
 
@@ -711,6 +711,19 @@ Branch acceptance test:
     test/viral-producer-v1.1
 
 Production runtime tetap menggunakan main. Branch implementasi dibuat dari main saat revision 100, next_post_number 59, next_fact_number 375, dan 57 active records. Nilai tersebut hanya baseline pembuatan branch; chat implementasi wajib membaca ulang main terbaru sebelum bekerja karena produksi terus berjalan.
+
+Refreshed remote baseline (2026-10-01):
+
+- GitHub main commit observed during the direct update: `ae0464f327cf97ba42e4e39a8cc7f8e82f145105`;
+- production state: revision 114, next_post_number 73, next_fact_number 459, single_writer_mode true;
+- repository versions before the feature update: Instruction 2.0 — Stage 10.4, Editorial 2.0 — Stage 10.2, Test specification 2.0 — Stage 10.5, schema_version 1;
+- production inventory: 71 active records, 426 active fact snapshots, 45 drafts, 26 ready posts, 1 archived post, and 6 published fact records;
+- complete current main core files were read through the GitHub connector with explicit `ref: main`;
+- current main JSON and JSONL parsing, active ID/signature uniqueness, fact counts, counters, and single-writer invariant passed;
+- feature head before the direct GitHub update: `1b35ac8ee37bf605555669f4c6dd6c86c0ccd82d`;
+- `02efd0eb5bcf07f22567c7db5bfd8f9182596e07` and `04fe42ed7ba907ab5761e89b9b2494e098cb2d16` synchronize the protected active-draft and production-state snapshots through P-000072;
+- the synchronized protected file blobs exactly match main: active drafts `a141f32609812ea6d52902d237d78adcb6bcd430` and production state `0ddb8240c4625b06862256c952390b5789482ed9`;
+- main itself was not modified.
 
 ### Tujuan
 
@@ -868,7 +881,7 @@ Create:
 
 ### Stage 12.1 — Branch and refreshed baseline
 
-Status: READY FOR IMPLEMENTATION
+Status: COMPLETE
 
 Implementation chat must:
 
@@ -882,9 +895,16 @@ Implementation chat must:
 8. Confirm the feature diff does not include data/production-state.json, data/active-drafts.jsonl, data/facts/**, data/posts/**, or output/ready-to-post.md.
 9. Stop and report the commit before starting Stage 12.2.
 
+Completion evidence:
+
+- Existing branch `upgrade/viral-producer-v1.1` was reused; no duplicate branch was created.
+- Current main was read and validated through the official GitHub connector before synchronization.
+- Protected production snapshots were synchronized with SHA preconditions and verified byte-identical to main.
+- The feature branch changes exclude `data/production-state.json`, `data/active-drafts.jsonl`, `data/facts/**`, `data/posts/**`, and `output/ready-to-post.md` as feature-owned changes.
+
 ### Stage 12.2 — Runtime Branch Abstraction
 
-Status: PENDING
+Status: COMPLETE
 
 Implement RUNTIME_REPOSITORY, RUNTIME_BRANCH, RUNTIME_MODE, ALLOW_WRITES, and ALLOW_MAIN_WRITES across active instructions and tests.
 
@@ -905,6 +925,18 @@ Acceptance:
 - production profile cannot write test;
 - no default-branch fallback exists;
 - branch mismatch blocks before write.
+
+Completion evidence:
+
+- `d0572ff85df34b2cbb35174efacdccd70a3eaac7` adds the immutable runtime profile and explicit-ref enforcement to `system/gpt-instructions.md`.
+- `1c48373c4c873852c0da211a5d4d1361cd847d5d` makes lifecycle, SHA, concurrency, audit, and recovery rules branch-neutral within one RUNTIME_BRANCH.
+- `040d9c2940e318fb054088960f250af1e710f3e9` upgrades the test specification to 3.0 — Stage 12 and adds AT-24 through AT-27 for runtime isolation.
+- `94bd3cb24efe53478be2bccc259a70e65ad2eb34` documents separate production and test profiles plus explicit connector refs.
+- Instruction version is 3.0 — Stage 12 and Test specification version is 3.0 — Stage 12. Editorial version remains 2.0 — Stage 10.2 until later Stage 12 editorial work changes content DNA.
+- Production/test profile mismatches, target-branch mismatches, default-branch fallback, connector response mismatches, and cross-branch SHA reuse are hard failures before write.
+- Static validation passed for all five profile fields, explicit read/write refs, protected-file isolation, JSON/JSONL validity, and whitespace errors.
+- AT-24 through AT-27 are specified but remain pending execution on the isolated test plugin during Stage 12.10.
+- Stage 12.3 remains pending and was not started.
 
 ### Stage 12.3 — Update 1: Fast Approval
 
