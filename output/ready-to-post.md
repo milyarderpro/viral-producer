@@ -399,3 +399,23 @@ Cells lining your stomach and intestines are continually replaced in a week or l
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000022 — Animals and Nature
+
+Did you know?
+
+Sleeping glassfrogs hide nearly 90 percent of their red blood cells inside their liver
+
+Octopus suckers contain receptors that let their arms taste chemicals on touched surfaces
+
+Mantis shrimp strikes create collapsing cavitation bubbles that can add damage to prey
+
+The reflective layer in reindeer eyes changes from gold-turquoise in summer to deep blue in winter
+
+Green turtles can use Earth's magnetic field as a positional map while navigating
+
+Sperm whales have the largest absolute brain size of any living animal
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
