@@ -203,6 +203,22 @@ Every newly created or upgraded standard post must have:
 - two different valid final fact positions;
 - no full rejected candidate wording persisted.
 
+### Performance feedback
+
+For every performance operation:
+
+- metrics are accepted only for exactly one archived posted post;
+- captured_at is UTC and post_age_hours is computed from archived published_at;
+- all seven metric keys are stored and at least one value is non-null;
+- numeric values and ranges pass the current contract;
+- post_id plus captured_at is globally unique unless an identical retry is a no-op;
+- raw records route by the Asia/Jakarta month of captured_at;
+- the summary uses only the latest snapshot per post and sample_size counts unique posts;
+- topic, country, post-format, and operator buckets are deterministic and show post_count;
+- archived posts, fact ledgers, active drafts, ready queue, production state, IDs, counters, and rotation remain unchanged;
+- fewer than 15 posts supports description only, 15–19 supports cautious direction only, and at least 20 is required for tie-breaking;
+- performance never weakens production gates or rewrites Content DNA.
+
 ### Legacy compatibility
 
 The pre-refinement records P-000001, P-000002, and P-000003 may omit the additive editorial fields while they remain unchanged drafts.
@@ -1122,6 +1138,159 @@ Approval subtest, when the record otherwise satisfies every current Fast Approva
 
 Pass: old themed records remain readable and lifecycle-compatible without a format backfill.
 
+### AT-33 — Valid posted performance snapshot
+
+Purpose: Verify canonical performance capture for an archived posted post.
+
+Precondition: On the isolated test branch, {{PERF_POST}} exists exactly once in a monthly archive with status posted and has six linked published facts. Record production-state.json and all content-file SHAs.
+
+Prompt:
+
+    Catat performa {{PERF_POST}} pada 2026-10-02T02:00:00Z: 1.2M views, 84K reactions, 2,300 comments, 15K shares, 8.4 seconds average watch time, retention unavailable, and 3,200 followers gained.
+
+Expected chat behavior:
+
+- Normalizes the Post ID and numeric suffixes.
+- Confirms archived posted eligibility.
+- Computes post_age_hours from the archived published_at timestamp.
+- Reports the routed Asia/Jakarta monthly raw file and updated summary sample_size.
+- Does not claim to modify the published content.
+
+Repository assertions:
+
+- Exactly one canonical raw record exists under data/performance/YYYY-MM.jsonl selected from captured_at in Asia/Jakarta.
+- All seven metric keys are present; retention_percent is null and every supplied metric is normalized to its exact numeric value.
+- post_age_hours equals the contract-defined computation.
+- performance-summary.json exactly matches a deterministic rebuild.
+- {{PERF_POST}} contributes once to sample_size and to its topic, country, effective post-format, and distinct stored operator buckets.
+- Archived post bytes, published fact bytes, active drafts, ready queue, and production-state.json are unchanged.
+- No performance record, summary value, or analysis rewrites Content DNA.
+
+Pass: raw and derived performance data are correct while production content remains immutable.
+
+### AT-34 — Posted-only performance enforcement
+
+Purpose: Reject metrics for content that is not archived as posted.
+
+Prompt:
+
+    Catat performa {{ACTIVE_OR_MISSING_POST}}: 10,000 views.
+
+Expected chat behavior:
+
+- Reports whether the Post ID is active, missing, rejected, or otherwise not an archived posted post.
+- Refuses the snapshot before any write.
+- Does not create a monthly performance file or alter the summary.
+
+Repository assertions:
+
+- Every raw performance file and performance-summary.json is unchanged.
+- Active drafts, archives, fact ledgers, ready queue, and production state are unchanged.
+- Zero write calls occur and no commit is created.
+
+Pass: non-posted content cannot enter performance storage.
+
+### AT-35 — Performance idempotent retry
+
+Purpose: Verify that an identical canonical retry is a no-op.
+
+Prompt:
+
+    Repeat the exact {{PERF_POST}} snapshot from AT-33 with the same captured_at and metrics.
+
+Expected chat behavior:
+
+- Resolves the existing post_id plus captured_at key.
+- Canonicalizes the input to the identical stored payload.
+- Reports no-op success and performs no write.
+
+Repository assertions:
+
+- The raw record appears exactly once.
+- The raw monthly file and performance-summary.json are byte-for-byte unchanged.
+- No content or production-state file changes.
+- Zero write calls occur and no commit is created.
+
+Pass: an identical retry creates neither duplicate data nor summary churn.
+
+### AT-36 — Performance idempotency conflict
+
+Purpose: Reject a different payload that reuses an existing performance key.
+
+Prompt:
+
+    Record {{PERF_POST}} at the AT-33 captured_at with views changed to 1,300,000.
+
+Expected chat behavior:
+
+- Detects the same post_id plus captured_at with a different canonical payload.
+- Reports an idempotency conflict.
+- Does not replace, append, merge, or reinterpret the existing snapshot.
+
+Repository assertions:
+
+- Raw performance data and summary are byte-for-byte unchanged.
+- Archived content and production state are unchanged.
+- Zero write calls occur and no commit is created.
+
+Pass: conflicting retries stop before every write.
+
+### AT-37 — Deterministic performance summary rebuild
+
+Purpose: Verify latest-snapshot selection, joins, aggregation, ordering, null handling, and recovery.
+
+Setup: On the isolated test branch only, create valid performance fixtures for multiple archived posts, including at least one post with two different captured_at snapshots and at least one null metric. Use normal capture operations and preserve fixture commits.
+
+Prompt:
+
+    Rebuild the performance summary from all raw snapshots and verify it twice.
+
+Expected chat behavior:
+
+- Enumerates every raw performance file and required archive/fact metadata from explicit RUNTIME_BRANCH.
+- Uses only the greatest captured_at snapshot for each post.
+- Reports unique-post sample_size and operator metadata coverage.
+- Confirms whether the second rebuild is byte-identical.
+
+Repository assertions:
+
+- sample_size equals unique measured posts, not snapshot count.
+- updated_at equals the greatest selected captured_at.
+- by_topic, by_country, by_post_format, and by_operator use sorted category keys.
+- A post contributes once to each distinct operator it contains.
+- measured_count excludes nulls; totals and averages match the contract.
+- Rebuilding twice from unchanged inputs produces byte-identical JSON.
+- Production state and all content lifecycle files are unchanged.
+
+Pass: the derived summary is fully reproducible and safely recoverable from raw authority.
+
+### AT-38 — Small-sample restraint
+
+Purpose: Prevent premature or overconfident strategy changes.
+
+Precondition: Use valid deterministic summaries representing fewer than 15, 15–19, and at least 20 unique measured posts on the isolated test branch.
+
+Prompts:
+
+    Analisis performa konten dan rekomendasikan strategi.
+    Use performance when selecting between two otherwise equally eligible default options.
+
+Expected behavior:
+
+- Below 15 posts, reports descriptive metrics only and explicitly refuses strategy conclusions.
+- At 15–19 posts, reports only cautious directional observations and does not alter default selection.
+- At 20 or more posts, uses performance only as a tie-breaker after every factual and editorial gate passes.
+- Shows post_count for compared buckets and discloses missing operator coverage.
+- Never lowers a gate, changes archived scores, or rewrites Content DNA.
+
+Repository assertions:
+
+- Both prompts are read-only.
+- No repository file, timestamp, counter, or revision changes.
+- No weak, unsafe, duplicate, unsupported, or scope-mismatched candidate is selected because of performance.
+
+Pass: performance influence remains proportional to sample size and subordinate to all production gates.
+
 ## 6. Final Consistency Audit
 
 After all applicable tests, prompt:
@@ -1155,6 +1324,11 @@ The final result passes only when:
 - every Fast Approval preserves IDs, counters, facts, sources, quality, and generation_audit;
 - every Fast Approval uses one active write, one queue write, and one state write with exact parity;
 - no incomplete draft crossed into ready status;
+- every performance record references exactly one archived posted post and uses the correct monthly route;
+- performance idempotency keys are unique or exact duplicates, never conflicting;
+- performance-summary.json is byte-exact from deterministic reconstruction;
+- performance sample_size counts unique posts using their latest snapshots;
+- performance writes did not mutate content lifecycle data or production state;
 - no unresolved partial failure remains.
 
 Reject any remaining temporary draft through the GPT if cleanup is desired. Do not manually decrement counters, reuse test IDs, fabricate audit evidence, or rewrite legacy records merely to make the audit green.
@@ -1199,6 +1373,12 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-30 Mixed-topic generation | PENDING | Stage 12.10 | Must prove at least four fact topics, at most two per topic, and all ordinary quality gates. |
 | AT-31 Mixed multi-ledger publication | PENDING | Stage 12.10 | Must route each fact by its own topic and never create a mixed ledger. |
 | AT-32 Themed backward compatibility | PENDING | Stage 12.10 | Missing post_format must mean themed without an inspection-time rewrite. |
+| AT-33 Valid performance snapshot | PENDING | Stage 12.10 | Must persist one canonical posted-only snapshot and rebuild the summary. |
+| AT-34 Posted-only performance | PENDING | Stage 12.10 | Active, missing, or non-posted IDs must fail with zero writes. |
+| AT-35 Performance idempotent retry | PENDING | Stage 12.10 | Identical compound-key retry must be a no-op. |
+| AT-36 Performance conflict | PENDING | Stage 12.10 | Different payload on the same compound key must fail before write. |
+| AT-37 Deterministic performance summary | PENDING | Stage 12.10 | Latest snapshot per post and all aggregate buckets must rebuild byte-identically. |
+| AT-38 Small-sample restraint | PENDING | Stage 12.10 | Performance influence must respect the 15/20-post thresholds and remain read-only. |
 | Body-science v2 regression | PASS | `P-000008`; `bbb08d7` | 24 candidates, 18 rejected, five operator families, six strength-2 facts, complete rationales, and directly supportive sources; materially stronger than legacy P-000003. |
 | Final consistency audit | PASS | `bbb08d718c89162515ffc09a86d8a47b22c8b289` | 7 active posts, 42 active fact snapshots, 6 published facts, 1 archive, and 1 ready post; counters, rotation, global uniqueness, publication linkage, v2 gates, and deterministic ready-queue parity all passed. |
 
@@ -1207,7 +1387,7 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 The version-3 implementation is ready to merge only when:
 
 - historical AT-01 through AT-23 remain valid or are rerun when affected;
-- AT-24 through AT-32 pass;
+- AT-24 through AT-38 pass;
 - all later Stage 12 feature and regression tests pass;
 - the final consistency audit passes;
 - failures are corrected in the instructions, contract, content DNA, or data model;
@@ -1217,4 +1397,4 @@ The version-3 implementation is ready to merge only when:
 - legacy baseline records remain unchanged unless explicitly revised through the normal lifecycle;
 - no test-only corruption remains on the branch.
 
-Current result: AT-01 through AT-23, the body-science v2 regression, and the version-2 final consistency audit remain historical passing evidence. AT-24 through AT-32 are specified but not yet executed; the Stage 12 implementation is not acceptance-ready until Stage 12.10 completes.
+Current result: AT-01 through AT-23, the body-science v2 regression, and the version-2 final consistency audit remain historical passing evidence. AT-24 through AT-38 are specified but not yet executed; the Stage 12 implementation is not acceptance-ready until Stage 12.10 completes.
