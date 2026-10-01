@@ -299,3 +299,23 @@ The world’s first webcam watched a Cambridge coffee pot to show researchers wh
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000017 — Geography and History
+
+Did you know?
+
+London’s Underground became the world’s first underground railway when passenger service began in 1863
+
+Big Ben is the 13.7-ton Great Bell hanging inside Parliament’s Elizabeth Tower
+
+Roman express messengers could cover up to 150 miles daily, changing horses every eight miles
+
+In 1884, telescope cross-hairs at Greenwich were chosen to define zero degrees longitude worldwide
+
+The pound traces to Anglo-Saxon Britain and is the oldest currency still in use today
+
+Romans abandoned Hadrian’s Wall for about twenty years, then returned when the Antonine Wall was abandoned
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
