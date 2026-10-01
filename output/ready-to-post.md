@@ -419,3 +419,23 @@ Sperm whales have the largest absolute brain size of any living animal
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000023 — Inventions, Firsts, and Records
+
+Did you know?
+
+Play-Doh began as wallpaper cleaner before teachers helped turn it into a children's toy
+
+Sasson's 1975 digital camera recorded 0.01-megapixel images to cassette tape in 23 seconds
+
+Post-it Notes grew from a weak 3M adhesive that failed its original strength goal
+
+Hook-and-loop fasteners grip when tiny hooks catch loops, a design inspired by clinging burrs
+
+The first UPC-scanned supermarket purchase was a package of Wrigley's chewing gum in 1974
+
+Volvo immediately made its three-point seatbelt patent available to other car manufacturers
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
