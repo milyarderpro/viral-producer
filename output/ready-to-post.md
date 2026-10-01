@@ -359,3 +359,23 @@ UV-B light can make mushrooms richer in vitamin D by converting their natural er
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000020 — Geography and History
+
+Did you know?
+
+Death Valley's sailing stones move when wind drives thin floating ice panels against them
+
+Crater Lake has no incoming rivers or streams; rain and snow fill it
+
+Yosemite's Horsetail Fall can glow orange when sunset backlights flowing water in February
+
+Mammoth Cave has more than 426 surveyed miles, making it the world's longest known cave system
+
+Lassen Volcanic National Park contains all four primary types of volcanoes
+
+Great Basin bristlecone pines are the oldest known non-clonal tree species on Earth
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
