@@ -1239,8 +1239,10 @@ Completion evidence:
 - Default seven-day scheduling starts on the next full Asia/Jakarta day at 12:00 and 19:00 WIB, stores UTC timestamps, and prepares the whole batch before one plan write and one calendar rebuild.
 - Publishing-plan mutations use their own revision and do not change post lifecycle, ready queue order, production revision, IDs, counters, content, archives, facts, or performance data.
 - A scheduled post marked as posted becomes a completed plan slot using the same published_at timestamp and disappears from the active calendar while production-state revision still increases only once.
-- Static validation passed for initial JSON/Markdown files, planned-to-ready and completed-to-archive linkage rules, unique post/time constraints, command coverage, AT-39 through AT-44, JSON/JSONL parsing, whitespace, and protected-file parity.
-- Protected feature snapshots remain byte-identical to main: active drafts `f039901aa984aa69266951db39d5f5221c20fe10` and production state `00e56f289b7041db98c2e8840ac88dd7f6621659`.
+- Production advanced during final verification to revision 122, next_post_number 81, next_fact_number 507, and 79 active records; uniqueness, counters, six-fact records, and unchanged ready-queue parity passed before synchronization.
+- `38166692688b2c8d0d2ef3a0cbfdd27e61003c59` and `a7d27d63a243b6e52e6b5ea100c8443eef082117` synchronize the protected feature snapshots with the latest main without writing to main.
+- Static validation passed for initial JSON/Markdown files, planned-to-ready and completed-to-archive linkage rules, unique post/time constraints, command coverage, AT-39 through AT-44, JSON/JSONL parsing, whitespace, and final protected-file parity.
+- Protected feature snapshots are byte-identical to main: active drafts `60adad6cb25bec4810fbcf85baf7421c665c2a30` and production state `3bcb7a8f8671f578165a72c6939a3b04f67f75bd`.
 - AT-39 through AT-44 are specified but remain unexecuted until the isolated Stage 12.10 run.
 - Stage 12.7 remains pending and was not started.
 
