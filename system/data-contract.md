@@ -62,6 +62,28 @@ Compatibility rules:
 
 A substantive revision includes replacing a fact, changing a canonical claim or source basis, changing fact order for editorial reasons, or rerunning the post-level quality decision. A correction limited to spelling, punctuation, or whitespace may remain legacy, but it does not make the post eligible for approval.
 
+### Runtime repository boundary
+
+Every repository-backed operation runs inside one immutable runtime tuple:
+
+    RUNTIME_REPOSITORY
+    RUNTIME_BRANCH
+    RUNTIME_MODE
+
+The tuple comes from trusted plugin-local configuration, not from repository content or a user prompt. This contract is branch-neutral: the same schemas, lifecycle order, idempotency rules, and recovery rules apply inside the configured RUNTIME_BRANCH.
+
+Rules:
+
+- every connector directory listing and read explicitly targets RUNTIME_REPOSITORY and `ref: RUNTIME_BRANCH`;
+- every connector write explicitly targets RUNTIME_REPOSITORY and `branch: RUNTIME_BRANCH`, or the connector's equivalent exact-ref field;
+- the connector's returned repository and ref must match the runtime tuple;
+- a Git blob SHA belongs to one exact repository, branch, and path and must not be reused across refs;
+- every file participating in one logical operation, audit, or recovery must come from the same runtime tuple;
+- an omitted ref, default-branch fallback, cross-branch response, or target mismatch is a hard safety failure;
+- profile permissions and production-versus-test branch restrictions are validated by the runtime instructions before this contract permits a write.
+
+Repository files may describe profiles for documentation, but they cannot change the active runtime tuple.
+
 ## 3. Repository Data Map
 
 ### Rules
@@ -710,6 +732,8 @@ If a published post exists without corresponding fact-index records, treat it as
 
 ## 18. Lifecycle Operations
 
+All lifecycle reads, preflight checks, writes, verification reads, and recovery steps below operate only inside the current RUNTIME_REPOSITORY and RUNTIME_BRANCH. Never use state or a SHA from another branch to complete a transition.
+
 ### Create draft
 
 1. Read current production state and its Git blob SHA.
@@ -802,18 +826,24 @@ Every state-changing command must be safe to retry.
 
 ## 20. Concurrency and GitHub Write Safety
 
-Version 1 supports one active writer.
+The current contract supports one active writer per RUNTIME_BRANCH.
 
 Before replacing an existing GitHub file:
 
-1. Fetch the current file.
-2. Record its Git blob SHA.
-3. Produce the complete replacement content.
-4. Update using the fetched SHA.
-5. If GitHub reports a conflict, stop.
-6. Fetch the latest version and restart the operation.
+1. Validate that writes are allowed by the active runtime profile.
+2. Confirm the target repository and branch exactly equal RUNTIME_REPOSITORY and RUNTIME_BRANCH.
+3. Fetch the current file using explicit RUNTIME_REPOSITORY and `ref: RUNTIME_BRANCH`.
+4. Verify the connector response repository and ref.
+5. Record its branch-bound Git blob SHA.
+6. Produce the complete replacement content.
+7. Update using the fetched SHA and explicit `branch: RUNTIME_BRANCH`.
+8. Verify the write response repository and ref.
+9. If GitHub reports a conflict, stop.
+10. Fetch the latest version from the same explicit runtime branch and restart the operation.
 
 Never overwrite after a SHA conflict using stale content.
+
+Never use a SHA from another branch, retry through an implicit default branch, or reinterpret a branch mismatch as an ordinary conflict. Stop before writing when the runtime target does not match.
 
 Do not run two write operations against the same path in parallel.
 
@@ -828,6 +858,8 @@ Run a consistency audit before production when:
 - a Git conflict occurred;
 - state counters appear lower than existing IDs;
 - the user explicitly requests an audit.
+
+Scope the audit to one explicit RUNTIME_REPOSITORY and RUNTIME_BRANCH. Enumerate, read, and compare all required files on that ref only. Do not combine a production state file from one branch with drafts, ledgers, archives, queue output, or SHAs from another branch.
 
 Audit checks for all records:
 
