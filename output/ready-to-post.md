@@ -199,3 +199,23 @@ JPL’s CMOS image-sensor work helped make tiny battery-friendly phone cameras p
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000012 — Safe Practical Knowledge
+
+Did you know?
+
+Microwaves do not cook thick food inside-out; the center heats mainly by conduction
+
+Induction cooktops create heat inside compatible cookware using an electromagnetic field
+
+At 5,000 feet, water boils around 202.9°F, so hard-boiled eggs take longer
+
+Ceiling fans cool people rather than rooms, so empty rooms gain nothing from them
+
+Incandescent bulbs release about 90 percent of their energy as heat instead of light
+
+Heat pumps can move heat from cold outdoor air into a warmer home
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
