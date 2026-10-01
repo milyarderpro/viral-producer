@@ -469,7 +469,9 @@ generation_audit is compact evidence, not a candidate database. Do not persist r
 
 Legacy drafts without complete editorial metadata may remain in status draft. They must not transition to approved or ready.
 
-To upgrade a legacy draft:
+Fast Approval never upgrades a legacy or incomplete record. Approval must stop with zero writes and require a separate explicit revision, fact-replacement, or editorial-upgrade operation.
+
+To upgrade a legacy draft outside approval:
 
 1. re-read current sources and duplicate ledgers;
 2. evaluate all six facts under the current content DNA;
@@ -477,6 +479,35 @@ To upgrade a legacy draft:
 4. add the four editorial fields to every fact;
 5. add complete quality rationales and generation_audit;
 6. pass every current hard rule without changing existing IDs unless an underlying fact is replaced.
+
+### Fast Approval eligibility
+
+Fast Approval validates only persisted evidence in the latest active record. It does not establish new factual or editorial evidence.
+
+The target is eligible only when all of these conditions pass:
+
+- the user explicitly approves one canonical Post ID;
+- the latest record has status draft, exactly six facts, and null approved_at and ready_at;
+- every fact has complete required snapshot fields, at least one stored source object, an allowed surprise_operator, a viral_strength integer from 0 through 2, scope_check_passed true, and source_access_passed true;
+- quality contains all six integer scores, a total equal to their sum, hard_rules_passed true, and six non-empty rationales;
+- opening_strength, readability, and factual_confidence are 2 and total is at least 10;
+- generation_audit contains candidate_count of at least 18, only allowed rejected_counts keys, a rejection sum equal to candidate_count minus 6, operator_variety matching the final facts, and exactly two different valid weakest_fact_review positions;
+- the six stored facts contain at least four distinct operators, no operator more than twice, no more than two record_superlative facts, at least four viral-strength-2 facts, and no strength-0 fact;
+- Facts 1 and 6 both have viral_strength 2 and different surprise_operator values;
+- the current active data and derived ready queue have no unresolved partial lifecycle operation;
+- the runtime profile, connector response identity, and latest SHA preflight pass for every affected file.
+
+Eligibility checks may verify structure, allowed values, arithmetic, and cross-field consistency in the stored record. They must not:
+
+- open source URLs or use Web Search;
+- perform research, factual revalidation, freshness checking, or a Pre-Publish Freshness Gate;
+- perform global semantic deduplication or read fact ledgers for approval;
+- rescore quality or rewrite quality rationales;
+- rebuild generation_audit;
+- change facts, sources, wording, ordering, topic, country focus, or editorial metadata;
+- allocate or replace Post IDs or Fact IDs.
+
+Any missing, false, invalid, or inconsistent eligibility evidence is a hard Fast Approval failure. The operation performs zero writes and reports the exact stored-data failure.
 
 Allowed active status values:
 
@@ -753,21 +784,22 @@ All lifecycle reads, preflight checks, writes, verification reads, and recovery 
 
 Reserved signatures live in the saved draft record.
 
-### Approve draft
+### Fast approve draft
 
-1. Confirm the post exists with status draft.
-2. Confirm all six facts contain complete editorial metadata.
-3. Confirm quality rationales and generation_audit are complete and internally consistent.
-4. Re-run current hard validation, including source access and claim-scope checks.
-5. If the record is legacy, upgrade it before approval; do not bypass missing fields.
-6. Change status to approved and set approved_at.
-7. Change status to ready and set ready_at.
-8. Regenerate output/ready-to-post.md from active drafts whose status is ready.
-9. Confirm the post appears exactly once in the Markdown queue.
-10. Increment state revision.
-11. Report success only after all writes are confirmed.
+1. Confirm one explicit approval intent and canonical Post ID.
+2. Fetch the latest complete data/active-drafts.jsonl, output/ready-to-post.md, and data/production-state.json from explicit RUNTIME_BRANCH with their current blob SHAs.
+3. Verify the runtime profile, connector response repository/ref, current queue parity, target status draft, and absence of an unresolved partial lifecycle operation.
+4. Evaluate every Fast Approval eligibility rule above from stored evidence only. Do not open sources, browse, research, revalidate facts, deduplicate globally, rescore, rebuild audit evidence, replace content, allocate IDs, or run a freshness gate.
+5. Preserve an in-memory copy of the original target record and state for exact postcondition comparison.
+6. Use one operation timestamp. Calculate the draft to approved to ready transition entirely in memory, producing one final record with status ready, approved_at and ready_at equal to the operation timestamp, and updated_at equal to the operation timestamp.
+7. Replace data/active-drafts.jsonl exactly once using its preflight SHA. Never persist an intermediate approved record.
+8. Rebuild the complete output/ready-to-post.md once from the resulting in-memory active records and replace it exactly once using its preflight SHA.
+9. Replace data/production-state.json exactly once using its preflight SHA. Increase revision by exactly one and set updated_at to the operation timestamp. Preserve next_post_number, next_fact_number, rotation fields, timezone, single_writer_mode, schema version, and every other state field.
+10. Reread all three files from explicit RUNTIME_BRANCH and verify repository/ref identity.
+11. Confirm the target is ready exactly once; approved_at and ready_at match; the queue is ordered and byte-exact from authoritative records; revision increased once; next-ID counters did not change; and post IDs, fact IDs, facts, sources, quality, and generation_audit are unchanged.
+12. Report success and display only the stored script and any already stored publishing package. Do not regenerate copy or publish it.
 
-active-drafts.jsonl is authoritative. If queue regeneration fails after the status becomes ready, report a partial failure and regenerate the derived Markdown queue before starting another state-changing operation.
+active-drafts.jsonl is authoritative. If the active write succeeds but a later write fails, report the confirmed partial state. Repair only the deterministic queue or finish the same state-revision update with the original operation timestamp and preserved counters before another state-changing operation.
 
 ### Revise wording
 
@@ -947,5 +979,7 @@ For every newly created or editorial-version-2-upgraded draft, also do not save,
 - generation_audit contains full rejected candidate wording.
 
 A legacy draft may remain stored as draft without the additive fields. Missing editorial version 2 fields become a hard transition failure when approval or ready status is requested.
+
+Fast Approval must also fail before any write when stored evidence is incomplete or internally inconsistent. It must not repair, research, rescore, upgrade, or otherwise manufacture eligibility inside the approval operation.
 
 Report the failing condition clearly and leave existing valid data unchanged.
