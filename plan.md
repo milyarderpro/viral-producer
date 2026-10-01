@@ -363,7 +363,7 @@ Status: COMPLETE
 
 Specification status: COMPLETE
 
-Execution status: NOT RUN — scheduled for Stage 10 after private GPT installation.
+Execution status: COMPLETE — AT-01 through AT-23 passed during Stage 10.
 
 Created:
 
@@ -388,7 +388,7 @@ Test coverage:
 15. Partial-write consistency recovery.
 16. Final full-database consistency audit.
 
-Every test defines its prompt, expected chat behavior, repository assertions, and pass condition. Results remain NOT RUN until executed and evidenced during Stage 10.
+Every test defines its prompt, expected chat behavior, repository assertions, and pass condition. Execution evidence is recorded in the same test specification.
 
 Completed commit:
 
@@ -679,8 +679,8 @@ Progress:
 - Stage 11.2 — Concise user guide: COMPLETE.
 - Stage 11.3 — Complete prompt library: COMPLETE.
 - Stage 11.4 — README navigation: COMPLETE.
-- Stage 11.5 — Documentation QA: NEXT.
-- Stage 11.6 — User acceptance test: PENDING.
+- Stage 11.5 — Documentation QA: COMPLETE.
+- Stage 11.6 — User acceptance test: NEXT.
 
 Deliverables:
 
@@ -693,6 +693,8 @@ Evidence:
 - `57865d69994280c3d623c27c43e7dbbb9efd0b9e` — Add concise Viral Producer user guide.
 - `3c7d9f8b6b033a58a053acdc96192b6f25d55a17` — Add complete copy-ready prompt library.
 - `d98027a1a110a320bf5f87818da568f79afed29e` — Turn README into a concise documentation landing page.
+- `c933a4c688b6f61504bf1942cdcce4a008352e33` — Replace the obsolete Stage 10.7 handoff with post-launch maintenance guidance.
+- `a15b1bcb9dbf730b0ecec3e662a98ba1da98c565` — Align installation and smoke-test guidance with the live `main` workflow.
 
 ## 6. Definition of Done
 
@@ -753,3 +755,4 @@ Do not rely on conversation history as the only record of the plan.
 - Started Stage 11 on `docs/user-guide` and added a concise Indonesian user guide without changing production data.
 - Added the Stage 11.3 prompt library with clearly labeled read-only and repository-writing commands.
 - Completed Stage 11.4 with concise README navigation and two-way links between the user guide and prompt library.
+- Completed Stage 11.5 documentation QA: verified navigation, links, prompt intent coverage, Markdown structure, branch references, and production isolation; removed obsolete Stage 10.7 instructions and restricted mutative acceptance tests to isolated test branches.
