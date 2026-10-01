@@ -623,3 +623,25 @@ Priority rules:
 8. Use post_id ascending as the final deterministic tie-breaker.
 
 Recommendation never weakens eligibility or editorial gates. A scheduled post that is no longer ready is an integrity failure, not a candidate to skip silently. Report the inconsistency without mutating repository state.
+
+## 21. Subject and Angle Cooldown
+
+Duplicate prevention and cooldown solve different problems:
+
+- duplicate prevention permanently blocks reuse of the same underlying claim;
+- cooldown temporarily blocks a different claim about a recently used subject or an overused semantic subject cluster.
+
+For every newly researched fact, create a stable `subject_key` for the central entity or phenomenon, such as `grand_canyon`, `polar_bear`, or `microwave_oven`. The key identifies the subject, not the angle, country, topic, or wording.
+
+Before selection:
+
+- reject the same subject_key when it appears in any active reservation, another post in the current requested batch, or any of the 20 most recently published posts;
+- treat a legacy fact without subject_key by deriving an in-memory fallback from subject, relationship, canonical claim, and tags without rewriting the record;
+- compare subject_key, subject, relationship, canonical claim, tags, and semantic meaning to identify related subject clusters;
+- allow one semantic subject cluster to appear in at most two distinct posts across all active reservations, the current batch, and the 20 most recently published posts;
+- count a cooldown rejection under generation_audit rejected_counts.repetitive;
+- update the virtual cooldown window after each selected post in a multi-post batch.
+
+A named-series override may bypass only the temporary subject or cluster cooldown. It requires an explicit user request naming the series and compact persisted evidence in generation_audit. The override never permits an exact or semantic claim duplicate, weak fact, inaccessible source, scope drift, unsafe content, or any other failed gate.
+
+Do not bulk-add subject_key to legacy records. Preserve missing fields and use the fallback only while reading or comparing them.
