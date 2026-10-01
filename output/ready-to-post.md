@@ -499,3 +499,23 @@ Most food 'use-by' dates signal best quality, not safety; infant formula is an e
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000027 — Geography and History
+
+Did you know?
+
+Near Tuktoyaktuk, pingos are ice-cored hills pushed upward by freezing groundwater
+
+Sable Island stretches 42 kilometers long but never exceeds 1.3 kilometers wide
+
+Burgess Shale fossils preserve eyes, guts, even brains from over 500 million years ago
+
+Torngat Mountains record mountain-building events spanning about 3.9 billion years of history
+
+Norse explorers were smelting iron at L'Anse aux Meadows around AD 1000
+
+Gros Morne's Tablelands expose Earth's mantle, normally hidden far beneath the crust
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
