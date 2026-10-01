@@ -259,3 +259,23 @@ Some egg-laying caecilian babies peel off their mother’s skin and drink her mi
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000015 — Body and Everyday Science
+
+Did you know?
+
+Your kidneys filter about 150 quarts of blood each day, but only 1 to 2 become urine
+
+Mint feels cool and chili burns because nerve endings create a separate common chemical sense
+
+Your salivary glands produce about 1 to 1.5 liters of saliva every day
+
+The familiar lub-dub heartbeat comes from two different sets of heart valves snapping shut
+
+Your left lung is smaller than your right because your heart takes up space beside it
+
+Without smell, familiar foods can lose so much flavor that chocolate and oranges become harder to distinguish
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
