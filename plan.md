@@ -656,6 +656,42 @@ Evidence:
 - `bbb08d718c89162515ffc09a86d8a47b22c8b289` — Complete P-000008 state recovery and final validated production snapshot.
 - `af3c09b6a69ebb3926aaf8ce529a39b096baf1eb` — Record body-science regression and final consistency evidence in the acceptance results.
 
+## 5B. Stage 11 — User Documentation
+
+Status: IN PROGRESS
+
+Branch boundary:
+
+- documentation work uses `docs/user-guide`;
+- production continues on `main`;
+- documentation changes must not modify `data/**` or `output/**`.
+
+Writing standard:
+
+- concise, natural Indonesian;
+- technical terms remain in English when clearer;
+- short steps and copy-ready prompts;
+- no unnecessary schema detail.
+
+Progress:
+
+- Stage 11.1 — Information architecture: COMPLETE.
+- Stage 11.2 — Concise user guide: COMPLETE.
+- Stage 11.3 — Complete prompt library: NEXT.
+- Stage 11.4 — README navigation: PENDING.
+- Stage 11.5 — Documentation QA: PENDING.
+- Stage 11.6 — User acceptance test: PENDING.
+
+Deliverables:
+
+- `docs/user-guide.md`
+- `docs/prompt-library.md`
+- updated `README.md`
+
+Evidence:
+
+- `57865d69994280c3d623c27c43e7dbbb9efd0b9e` — Add concise Viral Producer user guide.
+
 ## 6. Definition of Done
 
 The implementation is complete when:
@@ -712,3 +748,4 @@ Do not rely on conversation history as the only record of the plan.
 - Completed the P-000008 body-science regression, verified its six direct sources and v2 editorial metadata, compared it with legacy P-000003, reran the full consistency audit, and marked Stage 10.7 complete.
 - Opened and reviewed pull request #1, confirmed it was mergeable with no blocking findings, merged the validated implementation into `main`, and marked Stage 10 complete.
 - Promoted `main` to the sole production runtime branch, retired operational use of `build/viral-content-gpt`, and prepared the renamed Viral Producer 1.0.0 plugin package.
+- Started Stage 11 on `docs/user-guide` and added a concise Indonesian user guide without changing production data.
