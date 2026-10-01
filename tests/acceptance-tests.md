@@ -1335,8 +1335,8 @@ Reject any remaining temporary draft through the GPT if cleanup is desired. Do n
 
 ## 7. Results Table
 
-Validation date: 2026-09-30  
-Validated production snapshot: `bbb08d718c89162515ffc09a86d8a47b22c8b289`  
+Validation date: 2026-09-30
+Validated production snapshot: `bbb08d718c89162515ffc09a86d8a47b22c8b289`
 Production state at final audit: revision 15, next post 9, next fact 51.
 
 | Test | Result | Evidence or commit | Notes |
