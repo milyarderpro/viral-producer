@@ -1,6 +1,6 @@
 # Viral Trivia Content DNA
 
-Editorial version: 2.0 — Stage 10.2
+Editorial version: 3.0 — Stage 12
 
 ## 1. Purpose
 
@@ -66,9 +66,16 @@ Global topics such as animals, the human body, food, and everyday science do not
 
 Do not select the same country focus for more than two consecutive country-specific posts unless the user explicitly requests it.
 
-## 5. Default Topic Distribution
+## 5. Default Format and Topic Distribution
 
-Use the following long-term topic mix:
+When the user does not request a format, target this long-term post-format mix:
+
+- Themed: 75%
+- Mixed: 25%
+
+Use recent post history to correct meaningful drift toward this target. A mixed post is approximately one of every four default selections, but an explicit user request overrides the rotation.
+
+Within themed posts, use the following long-term topic mix:
 
 - Geography and history: 30%
 - Animals and nature: 20%
@@ -323,9 +330,16 @@ Do not:
 - place more than two facts with the same sentence pattern next to each other;
 - use the same operator for Facts 1 and 6.
 
-## 12. Topic Coherence
+## 12. Post Format and Topic Coherence
 
-Each post should have one recognizable theme.
+Every new post has one explicit `post_format`:
+
+- `themed` — the post topic is one of the six standard fact topics and all six facts use that same topic;
+- `mixed` — the post topic is `mixed`, at least four distinct fact topics appear, and no topic appears more than twice.
+
+Missing `post_format` on an existing record means `themed`. Do not bulk-rewrite legacy records solely to add the field.
+
+Themed posts should have one recognizable theme.
 
 Good:
 
@@ -334,11 +348,19 @@ Good:
 - six things commonly stored incorrectly;
 - six inventions created for unexpected reasons.
 
-Weak:
+Weak for a themed post:
 
 - one animal fact, one political fact, one cleaning hack, one medical claim, one city fact, and one unrelated record.
 
-A mixed "random facts" post is allowed occasionally, but themed posts are the default because they are easier to title, recognize, save, and serialize.
+Mixed posts are deliberately varied, not random filler. Every selected fact must still earn its place under the same research, source, scope, safety, originality, word-count, surprise-operator, strength, opening-and-closing, audit, and quality gates. A mixed post:
+
+- uses only the six standard non-mixed topics at fact level;
+- contains at least four distinct fact topics;
+- contains no more than two facts from any one topic;
+- defaults to `GLOBAL` country focus;
+- may use a country-specific focus only when every selected fact explicitly supports that country.
+
+Themed posts remain the default because they are easier to title, recognize, save, and serialize. The long-term default rotation is 75% themed and 25% mixed.
 
 ## 13. Research and Accuracy Standard
 
@@ -546,7 +568,10 @@ Before a draft may be saved for approval, confirm:
 - Each fact communicates one complete idea.
 - Each fact is ideally 12 to 15 words and no more than 18 words.
 - The six lines have reasonably balanced visual length.
-- The topic is coherent.
+- The post has a valid `post_format`; a missing legacy value is interpreted as `themed`.
+- A themed post uses one standard topic for the post and all six facts.
+- A mixed post uses post topic `mixed`, at least four fact topics, and no more than two facts per topic.
+- A country-specific mixed post has explicit support for the requested country in every fact.
 - Every selected fact has one primary surprise operator.
 - At least four distinct operator families appear.
 - No operator appears more than twice.
