@@ -379,3 +379,23 @@ Great Basin bristlecone pines are the oldest known non-clonal tree species on Ea
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000021 — Body and Everyday Science
+
+Did you know?
+
+A 1,500-gram brain effectively weighs about 50 grams because surrounding fluid helps float it
+
+The cornea has no blood vessels; tears and internal eye fluid deliver its nutrients
+
+Your tears aren't just water—they form oily, watery, and mucus layers with different jobs
+
+Tiny mineral grains in your inner ear help your brain sense gravity and head position
+
+Unlike birds and amphibians, humans can't regrow damaged inner-ear hair cells
+
+Cells lining your stomach and intestines are continually replaced in a week or less
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
