@@ -179,3 +179,23 @@ Gray-white bloom on chocolate can be fat or sugar crystals without making it uns
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000011 — Inventions, Firsts, and Records
+
+Did you know?
+
+The first atomic clock used ammonia yet was no more accurate than existing clocks
+
+The first computer mouse was crafted from redwood in an SRI machine shop in 1964
+
+One official second equals exactly 9,192,631,770 cycles of cesium-133 microwave radiation
+
+GPS navigation works because satellites broadcast timing signals anchored by atomic clocks
+
+NASA’s abrasion-resistant coating for aerospace equipment was later adapted to make tougher commercial lenses
+
+JPL’s CMOS image-sensor work helped make tiny battery-friendly phone cameras practical
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
