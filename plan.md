@@ -658,7 +658,7 @@ Evidence:
 
 ## 5B. Stage 11 — User Documentation
 
-Status: IN PROGRESS
+Status: COMPLETE — READY FOR INTEGRATION
 
 Branch boundary:
 
@@ -680,7 +680,7 @@ Progress:
 - Stage 11.3 — Complete prompt library: COMPLETE.
 - Stage 11.4 — README navigation: COMPLETE.
 - Stage 11.5 — Documentation QA: COMPLETE.
-- Stage 11.6 — User acceptance test: NEXT.
+- Stage 11.6 — User acceptance test: COMPLETE.
 
 Deliverables:
 
@@ -695,6 +695,7 @@ Evidence:
 - `d98027a1a110a320bf5f87818da568f79afed29e` — Turn README into a concise documentation landing page.
 - `c933a4c688b6f61504bf1942cdcce4a008352e33` — Replace the obsolete Stage 10.7 handoff with post-launch maintenance guidance.
 - `a15b1bcb9dbf730b0ecec3e662a98ba1da98c565` — Align installation and smoke-test guidance with the live `main` workflow.
+- 2026-10-01 — User reviewed and accepted the documentation; Stage 11.6 passed without production writes.
 
 ## 6. Definition of Done
 
@@ -756,3 +757,4 @@ Do not rely on conversation history as the only record of the plan.
 - Added the Stage 11.3 prompt library with clearly labeled read-only and repository-writing commands.
 - Completed Stage 11.4 with concise README navigation and two-way links between the user guide and prompt library.
 - Completed Stage 11.5 documentation QA: verified navigation, links, prompt intent coverage, Markdown structure, branch references, and production isolation; removed obsolete Stage 10.7 instructions and restricted mutative acceptance tests to isolated test branches.
+- Completed Stage 11.6 after the user reviewed and accepted the concise Indonesian documentation; no production test or data mutation was required.
