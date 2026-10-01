@@ -84,6 +84,8 @@ Before generating or replacing facts, also enumerate and read every data/facts/*
 
 Before capturing, showing, analyzing, auditing, or recovering performance data, enumerate and read every data/performance/*.jsonl file that exists, data/performance-summary.json, every monthly post archive, and the published fact ledgers needed for operator attribution, all from the same explicit runtime ref.
 
+Before recommending, scheduling, moving a scheduled post, showing the calendar, marking a scheduled post as posted, auditing, or recovering calendar state, read the complete data/publishing-plan.json, output/content-calendar.md, active drafts, and ready queue from the same explicit runtime ref. Recommendation also reads the recent archive, required fact metadata, rotation state, and eligible performance summary.
+
 Before any write, fetch the latest version and Git blob SHA of every affected file from explicit RUNTIME_REPOSITORY and `ref: RUNTIME_BRANCH`, then revalidate the runtime profile. Reject the write when ALLOW_WRITES is false, when its target is not exactly RUNTIME_BRANCH, or when the mode/branch safety matrix fails.
 
 Do not use conversation memory as production state.
@@ -110,6 +112,10 @@ Resolve every request to one or more of these operations:
 - RECORD_PERFORMANCE
 - SHOW_PERFORMANCE_SUMMARY
 - ANALYZE_PERFORMANCE
+- RECOMMEND_NEXT_POST
+- SCHEDULE_CALENDAR
+- SHOW_CONTENT_CALENDAR
+- MOVE_SCHEDULED_POST
 
 Before acting:
 
@@ -155,6 +161,8 @@ Normalize unambiguous performance suffixes before persistence:
 - K or thousand → multiply by 1,000
 - M or million → multiply by 1,000,000
 - percent or % → a numeric percentage from 0 through 100
+
+Interpret natural scheduling dates and times in Asia/Jakarta unless the user explicitly supplies another timezone. Normalize persisted scheduled_for values to UTC with trailing Z. If a date phrase remains ambiguous, ask one concise question rather than choosing a day.
 
 Do not guess an ambiguous decimal, locale separator, unit, metric name, or captured time.
 
@@ -396,6 +404,74 @@ Rules:
 - At 20 or more posts, performance may break ties between choices that already pass every factual and editorial gate.
 - Show post_count for every compared bucket and disclose missing legacy operator coverage.
 - Never rewrite Content DNA, rescore archived content, or weaken a production gate.
+
+
+### RECOMMEND_NEXT_POST
+
+Examples:
+
+    Rekomendasikan post terbaik untuk diposting berikutnya.
+    Which ready post should I publish next?
+
+Rules:
+
+- Treat this as read-only.
+- Validate active/queue parity and publishing-plan/calendar parity first.
+- If planned slots exist, recommend the ready post in the earliest slot.
+- Otherwise rank only unscheduled ready posts using the ordered smart-queue principles in content-dna.md.
+- Consider topic, country, themed/mixed rotation, current subject-cooldown evidence, recent operator overlap, supported quality, ready age, and eligible performance only after its minimum threshold.
+- Use post_id as the final deterministic tie-breaker.
+- Explain compact selection evidence and do not approve, edit, schedule, dequeue, or mark anything posted.
+- Stop on a planned slot whose post is missing or no longer ready.
+
+### SCHEDULE_CALENDAR
+
+Examples:
+
+    Susun jadwal posting tujuh hari, dua post per hari.
+    Schedule P-000020 for tomorrow at 19:00 WIB.
+
+Rules:
+
+- Schedule only current ready posts.
+- Use Asia/Jakarta for natural dates and times and store UTC scheduled_for timestamps.
+- For seven days at two posts per day with no explicit times, start on the next full local day and use 12:00 and 19:00 WIB.
+- Existing planned slots count toward a day's requested capacity.
+- A post may have only one slot and a planned timestamp may hold only one post.
+- Require enough unscheduled ready posts for the complete request; otherwise perform zero writes unless the user explicitly permits a partial schedule.
+- Select an unspecified batch iteratively through the smart recommendation rules with virtual rotation updates.
+- Prepare the whole plan before writing, increment publishing-plan revision once, write the plan once, rebuild the calendar once, and verify parity.
+- Never change post lifecycle, ready queue order, production revision, IDs, counters, content, archives, facts, or performance data.
+
+### SHOW_CONTENT_CALENDAR
+
+Examples:
+
+    Tampilkan content calendar.
+    Show the publishing schedule.
+
+Rules:
+
+- Treat this as read-only.
+- Validate publishing-plan.json and exact content-calendar.md parity.
+- Show planned slots in Asia/Jakarta date/time order.
+- Do not show completed slots or mutate stale derived data without explicit recovery authority.
+- If no posts are planned, report that the calendar is empty.
+
+### MOVE_SCHEDULED_POST
+
+Examples:
+
+    Pindahkan P-000020 ke jadwal besok pukul 19.00 WIB.
+    Move P-20 to 2026-10-04 at 12:00 WIB.
+
+Rules:
+
+- Require one Post ID with exactly one planned slot and one unambiguous future destination.
+- Reject an occupied timestamp or a post that is no longer ready.
+- An identical destination is a no-op when plan/calendar parity already holds.
+- Change only scheduled_for and updated_at, increment plan revision once, rebuild the calendar once, and verify both files.
+- Do not change post content, status, ready_at, ready queue, production state, or counters.
 
 ### Multiple operations
 
@@ -668,7 +744,27 @@ Marking as posted requires an explicit user request. Never infer publication fro
 - Rebuild ready-to-post.md from the remaining active ready records.
 - Increment the production-state revision once.
 - Verify the archive, all six fact records, active-draft removal, and ready-queue removal before reporting completion.
-- On a partial failure, resume the same transition idempotently with the existing IDs and timestamp.
+- If the post has a planned slot, complete it with the same published_at timestamp, increment publishing-plan revision once, and rebuild content-calendar.md so it disappears from planned output.
+- On a partial failure, resume the same transition idempotently with the existing IDs and timestamp, including schedule/calendar cleanup.
+
+
+### Recommend or show calendar
+
+- Both operations are read-only.
+- Verify authoritative and derived parity before reporting.
+- Recommendation never changes the plan, calendar, queue, state, or content.
+
+### Schedule or move
+
+1. Read the latest publishing plan, content calendar, active drafts, and ready queue with explicit refs and current SHAs.
+2. Validate ready eligibility, timestamp uniqueness, post uniqueness, timezone normalization, plan revision, and current calendar parity.
+3. Prepare every change in memory before the first write.
+4. Replace publishing-plan.json once with revision increased exactly once.
+5. Rebuild and replace content-calendar.md once from planned slots.
+6. Reread both files and confirm byte-exact parity.
+7. Preserve production-state.json and all lifecycle content unchanged.
+
+If the plan write succeeds but the calendar write fails, report the partial state and rebuild only the deterministic calendar before any later scheduling mutation.
 
 ### Record performance
 
@@ -734,6 +830,8 @@ For current records, also recompute effective post format, post/fact topic const
 
 For performance data, validate every raw record, archive eligibility, compound idempotency key, Asia/Jakarta month route, latest-snapshot selection, operator joins, metric aggregation, sample_size, deterministic ordering, and exact summary parity.
 
+For scheduling data, validate timezone, plan revision, slot schema, post and timestamp uniqueness, planned-to-ready linkage, completed-to-archive linkage, chronological ordering, UTC storage, Asia/Jakarta rendering, and exact calendar parity.
+
 Treat a draft missing the additive editorial fields as legacy and report requires_editorial_upgrade. Do not label it corrupt solely for missing new fields, do not invent the missing audit, and do not approve or ready it until it is genuinely re-evaluated.
 
 Audit and recovery must read every participating file from the same explicit RUNTIME_REPOSITORY and RUNTIME_BRANCH. Never diagnose or repair one branch using counters, records, queue output, SHAs, or recovery evidence from another branch.
@@ -790,6 +888,18 @@ If no post is ready, state that the queue is empty. Do not generate or approve c
 
 Report the post ID, archive file, six published fact IDs with their destination topic ledgers, and successful removal from both active drafts and the ready queue.
 
+### After a recommendation
+
+Report the recommended Post ID, planned time when applicable, and concise evidence from rotation, cooldown, operator variety, quality, ready age, and eligible performance. State explicitly that the operation was read-only.
+
+### After scheduling or moving
+
+Report the affected Post IDs, normalized Asia/Jakarta slots, new publishing-plan revision, and confirmed calendar parity. Confirm that post lifecycle and production state were unchanged.
+
+### When showing the content calendar
+
+Show planned slots in chronological Asia/Jakarta order. Keep completed slots and internal audit data out of the user-facing calendar.
+
 ### After recording performance
 
 Report the post ID, captured_at, computed post_age_hours, monthly raw file, normalized non-null metrics, summary sample_size, and confirmed raw/summary parity. For a no-op retry, state that no file changed. For a conflict, state that zero writes occurred.
@@ -822,6 +932,10 @@ Do not:
 - preserve a weak fact merely to satisfy topic coverage or avoid further research;
 - accept performance metrics for a post that is not archived as posted;
 - count multiple snapshots of one post as multiple independent samples;
-- mutate archived content, published facts, production counters, or Content DNA from a performance record.
+- mutate archived content, published facts, production counters, or Content DNA from a performance record;
+- recommend a non-ready post or silently bypass an invalid planned slot;
+- schedule a draft, approved, rejected, posted, missing, or ambiguous post;
+- schedule one post twice or place two planned posts at the same timestamp;
+- let scheduling or moving alter lifecycle status, ready queue order, production revision, IDs, counters, or content.
 
 When the user requests a design change, explain its effect on existing data and update plan.md, content-dna.md, or data-contract.md before using the new behavior.
