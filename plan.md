@@ -677,8 +677,8 @@ Progress:
 
 - Stage 11.1 — Information architecture: COMPLETE.
 - Stage 11.2 — Concise user guide: COMPLETE.
-- Stage 11.3 — Complete prompt library: NEXT.
-- Stage 11.4 — README navigation: PENDING.
+- Stage 11.3 — Complete prompt library: COMPLETE.
+- Stage 11.4 — README navigation: NEXT.
 - Stage 11.5 — Documentation QA: PENDING.
 - Stage 11.6 — User acceptance test: PENDING.
 
@@ -691,6 +691,7 @@ Deliverables:
 Evidence:
 
 - `57865d69994280c3d623c27c43e7dbbb9efd0b9e` — Add concise Viral Producer user guide.
+- `3c7d9f8b6b033a58a053acdc96192b6f25d55a17` — Add complete copy-ready prompt library.
 
 ## 6. Definition of Done
 
@@ -749,3 +750,4 @@ Do not rely on conversation history as the only record of the plan.
 - Opened and reviewed pull request #1, confirmed it was mergeable with no blocking findings, merged the validated implementation into `main`, and marked Stage 10 complete.
 - Promoted `main` to the sole production runtime branch, retired operational use of `build/viral-content-gpt`, and prepared the renamed Viral Producer 1.0.0 plugin package.
 - Started Stage 11 on `docs/user-guide` and added a concise Indonesian user guide without changing production data.
+- Added the Stage 11.3 prompt library with clearly labeled read-only and repository-writing commands.
