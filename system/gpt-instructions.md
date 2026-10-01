@@ -523,7 +523,7 @@ For every standard post:
 18. Compare every surface sentence with its canonical claim and evidence for subject, relationship, geography, time, quantity, qualifier, and record category.
 19. Set scope_check_passed and source_access_passed only from completed checks.
 20. Order the facts so Facts 1 and 6 are strength 2, use different operators, and rank among the three strongest.
-21. Challenge the two weakest final facts. Replace weak or repetitive choices and repeat verification, deduplication, operator, scope, and access checks as needed.
+21. Challenge the two weakest final facts. Replace weak or repetitive choices and repeat verification, deduplication, cooldown, operator, scope, and access checks as needed.
 22. Calculate word counts and all six quality scores.
 23. Write one specific evidence-based rationale for every score.
 24. If the total appears to be 12, run the additional 12/12 adversarial review from content-dna.md.
