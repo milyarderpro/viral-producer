@@ -39,3 +39,23 @@ Mount Whitney, the lower 48’s tallest mountain, sits within 85 miles of North 
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000001 — Geography and History
+
+Did you know?
+
+An 1812 earthquake temporarily forced the Mississippi River to flow backward near New Madrid
+
+Great Sand Dunes can hum because tumbling sand grains push air through avalanches
+
+White Sands contains over 4.5 billion tons of gypsum sand across 275 square miles
+
+Devils Tower formed underground and was exposed as surrounding rock eroded away
+
+The Everglades’ sheet-flow river can slow to just 100 feet per day in winter
+
+Badwater Basin sits 282 feet below sea level, North America’s lowest point
+
+Enjoyed these facts? Like the video and follow for more!
+
+---
