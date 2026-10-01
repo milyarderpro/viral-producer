@@ -606,3 +606,20 @@ Rules:
 - Multiple snapshots for one post do not turn that post into multiple independent samples; the deterministic summary uses the latest snapshot per post.
 - A strong result from one post is anecdotal evidence, not a new rule.
 - Content DNA is never rewritten automatically from performance data. Any editorial-policy change requires an explicit reviewed update.
+
+## 20. Smart Queue Recommendation Principles
+
+A next-post recommendation chooses only from posts already in ready status. It never approves, edits, schedules, posts, or removes content.
+
+Priority rules:
+
+1. Honor the earliest valid planned calendar slot when one exists.
+2. Otherwise prefer a post that improves recent topic, country, and themed/mixed rotation.
+3. Prefer subjects that do not repeat or closely overlap recent published subjects, using the current cooldown contract and legacy fallback fields.
+4. Prefer lower surprise-operator overlap with the most recently published content.
+5. Prefer the stronger supported quality score.
+6. Prefer the older ready_at timestamp.
+7. Use eligible performance data only as a late tie-breaker after its minimum sample threshold.
+8. Use post_id ascending as the final deterministic tie-breaker.
+
+Recommendation never weakens eligibility or editorial gates. A scheduled post that is no longer ready is an integrity failure, not a candidate to skip silently. Report the inconsistency without mutating repository state.
