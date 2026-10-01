@@ -1,14 +1,13 @@
 {
   "schema_version": 1,
-  "revision": 78,
-  "next_post_number": 37,
-  "next_fact_number": 243,
+  "revision": 79,
+  "next_post_number": 38,
+  "next_fact_number": 249,
   "operational_timezone": "Asia/Jakarta",
   "single_writer_mode": true,
-  "last_topic": "geography-history",
-  "last_country_focus": "UK",
+  "last_topic": "food-home",
+  "last_country_focus": "GLOBAL",
   "recent_topics": [
-    "geography-history",
     "animals-nature",
     "geography-history",
     "body-science",
@@ -17,10 +16,10 @@
     "geography-history",
     "animals-nature",
     "body-science",
-    "geography-history"
+    "geography-history",
+    "food-home"
   ],
   "recent_country_focuses": [
-    "CA",
     "GLOBAL",
     "US",
     "GLOBAL",
@@ -29,7 +28,8 @@
     "US",
     "GLOBAL",
     "GLOBAL",
-    "UK"
+    "UK",
+    "GLOBAL"
   ],
-  "updated_at": "2026-10-01T09:10:00Z"
+  "updated_at": "2026-10-01T09:12:00Z"
 }
