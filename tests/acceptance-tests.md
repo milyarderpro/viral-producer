@@ -1904,7 +1904,7 @@ Branch: `test/viral-producer-v1.1`.
 - `P-000099` is a package-complete mixed ready fixture. `P-000028` and `P-000029` were modified during earlier fixture setup and must not be used as byte-unchanged legacy evidence for AT-47 or AT-54.
 - No raw performance snapshot exists, the performance summary remains empty, fact ledgers and the monthly archive remain unchanged from the test-branch baseline, and no scheduled slot is completed.
 - Earlier test-branch mutations are retained as disposable fixtures but are not credited as acceptance PASS evidence because the interrupted run did not record per-test results.
-- Stage 12.10 resumed on 2026-10-02. Twenty-six of AT-24 through AT-55 now have recorded PASS evidence; six remain PENDING: AT-24, AT-26, AT-27, AT-38, AT-48, and AT-50. No test data may be merged or copied to the feature branch or `main`.
+- Stage 12.10 resumed on 2026-10-02. Twenty-nine of AT-24 through AT-55 now have recorded PASS evidence; three remain PENDING: AT-24, AT-26, and AT-27. No test data may be merged or copied to the feature branch or `main`.
 - Interim full consistency audit after the recorded mutations passed with revision 148, counters 100/621, 96 active posts, 28 ready posts, 2 archives, 12 published facts, 14 planned slots, 1 completed slot, 3 performance snapshots, and deterministic queue/calendar/performance-summary parity.
 
 
@@ -1951,7 +1951,7 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-35 Performance idempotent retry | PASS | key P-000004 + 2026-10-02T02:00:00Z | Canonical retry matched the sole stored record exactly; raw and summary SHAs stayed `f18aab3` and `df5ec8c`, with zero writes. |
 | AT-36 Performance conflict | PASS | key P-000004 + 2026-10-02T02:00:00Z | Attempted views 1,300,000 conflicted with stored 1,200,000; raw/summary and all production artifacts remained unchanged with zero writes. |
 | AT-37 Deterministic performance summary | PASS | fixture `dbd554a`/`629a6ad` and `701d338`/`75ddb6b`; final raw `392b454`, summary `2287746` | Three snapshots across two posts selected the latest P-000004 record, retained null handling, produced sample_size 2 and sorted buckets, and two independent rebuilds matched stored JSON byte-for-byte. |
-| AT-38 Small-sample restraint | PENDING | Stage 12.10 | Performance influence must respect the 15/20-post thresholds and remain read-only. |
+| AT-38 Small-sample restraint | PASS | isolated fixture `4f2a07e`; read-only prompt run 2026-10-02 | Valid fixtures at sample sizes 14, 17, and 20 enforced descriptive-only, cautious-directional, and tie-break-only behavior respectively; `post_count` and missing operator coverage were disclosed, both prompts changed zero production files, and fixture SHA remained `9b3fe88`. |
 | AT-39 Read-only smart recommendation | PASS | read-only plan revision 3 on 2026-10-02 | Earliest planned slot deterministically selected ready P-000006 at 2026-10-03T05:00:00Z; all tracked SHAs remained unchanged and zero writes occurred. |
 | AT-40 Seven-day schedule | PASS | independently evidenced plan revision 3; recovery checkpoint | Fourteen planned slots covered seven consecutive WIB dates at 12:00/19:00, all posts/times were unique and ready, calendar rendering was byte-exact, and the identical schedule rerun was a no-op. |
 | AT-41 Ready-only scheduling | PASS | read-only P-000030 and 100-slot capacity attempt | Draft P-000030 and a request exceeding 14 unscheduled ready posts were both rejected before every write; plan, calendar, lifecycle, queue, and state stayed unchanged. |
@@ -1987,4 +1987,4 @@ The version-3 implementation is ready to merge only when:
 - legacy baseline records remain unchanged unless explicitly revised through the normal lifecycle;
 - no test-only corruption remains on the branch.
 
-Current result: AT-01 through AT-23 and the body-science v2 regression retain historical PASS evidence. Stage 12.10 has recorded PASS evidence for 26 of AT-24 through AT-55; AT-24, AT-26, AT-27, AT-38, AT-48, and AT-50 remain PENDING. The interim repository consistency audit passes, but Stage 12 is not acceptance-ready until those six tests and the final post-test audit complete.
+Current result: AT-01 through AT-23 and the body-science v2 regression retain historical PASS evidence. Stage 12.10 has recorded PASS evidence for 29 of AT-24 through AT-55; AT-24, AT-26, and AT-27 remain PENDING. The interim repository consistency audit passes, but Stage 12 is not acceptance-ready until those three runtime-boundary tests and the final post-test audit complete.
