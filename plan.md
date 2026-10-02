@@ -700,7 +700,7 @@ Evidence:
 
 ## 5C. Stage 12 — Viral Producer 1.1
 
-Status: IN PROGRESS — STAGE 12.11 COMPLETE; AT-24 POST-CUTOVER
+Status: COMPLETE
 
 Branch implementasi:
 
@@ -1518,7 +1518,7 @@ Completion evidence:
 
 ### Stage 12.12 — Pull Request, Cutover, and Backfill
 
-Status: IN PROGRESS — AT-24 PASS; CONTROLLED BACKFILL PENDING
+Status: COMPLETE
 
 Before PR:
 
@@ -1586,6 +1586,16 @@ Caption/hashtag backfill:
 - prepares and validates all captions/hashtags before the first write;
 - writes active records, rebuilds ready queue, increments revision once, and verifies parity.
 
+Completion checkpoint — 2026-10-02:
+
+- Controlled backfill completed for all 96 active posts: 70 draft and 26 ready.
+- The operation wrote each authoritative target exactly once: active drafts commit `52721a1eb8b58c0aca2e9d8debee9f0e234234b4`, ready queue commit `00af2764ebd5ef650c02a64a8118b03b1500f5ca`, and production state commit `1cdc7aa78de5350e1b81a0ce36a4c5e0dd2e08a8`.
+- Production revision advanced exactly once from 139 to 140; next Post/Fact counters remained 98/609 and all other protected state fields remained unchanged.
+- All 96 active posts now have valid captions and 4–6 hashtags. All 26 ready posts have exact active-to-queue parity with one ON-SCREEN SCRIPT block and one FACEBOOK CAPTION block; no on-screen script contains a hashtag.
+- Facts, IDs, statuses, sources, quality metadata, generation audits, historical timestamps, active-record order, archives, fact ledgers, and missing legacy post_format fields were preserved.
+- The final production consistency audit passed 17/17 checks read-only with zero writes, zero Web Search/source calls, valid empty additive stores, and no duplicate, orphan, malformed, parity, counter, or partial-failure finding.
+- Stage 12 Definition of Done is satisfied. Production resumed on `main` with Viral Producer v1.1.0.
+
 ### Definition of Done for Stage 12
 
 Stage 12 is complete only when:
@@ -1609,6 +1619,8 @@ Stage 12 is complete only when:
 - documentation and plugin guides are complete;
 - production backfill completes successfully;
 - production resumes on main.
+
+Completion result: **PASS — Stage 12 COMPLETE on 2026-10-02.**
 
 ### Execution Protocol for a New Chat
 
