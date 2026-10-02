@@ -1969,6 +1969,7 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-55 Empty additive stores | PASS | setup `cfc1371`/`ff59993`; restore `4c1487b`/`9dd0d61` | Isolated fixture accepted sample_size 0, absent raw metrics, revision-0 empty plan, and deterministic empty calendar with zero test-operation writes; prior 14-slot plan restored byte-exact. |
 | Body-science v2 regression | PASS | `P-000008`; `bbb08d7` | 24 candidates, 18 rejected, five operator families, six strength-2 facts, complete rationales, and directly supportive sources; materially stronger than legacy P-000003. |
 | Stage 12.10 isolated final consistency audit | PASS | `test/viral-producer-v1.1`, 2026-10-02 | Final pre-cutover branch audit passed after the 31 Stage 12.10 tests; test-only state remains disposable and must not be merged. |
+| Stage 12.12 final production consistency audit | PASS | `main`, revision 140, 2026-10-02 | Read-only audit passed 17/17 checks with zero writes: 97 unique posts, 582 unique facts/signatures, counters 98/609, 96 package-complete active posts, exact 26-post two-block queue parity, unchanged archive/ledgers, valid empty additive stores, and no partial failure or orphan record. |
 | Historical version-2 final consistency audit | PASS | `bbb08d718c89162515ffc09a86d8a47b22c8b289` | Historical Stage 10 evidence: 7 active posts, 42 active fact snapshots, 6 published facts, 1 archive, and 1 ready post; counters, rotation, uniqueness, publication linkage, v2 gates, and ready-queue parity passed. |
 
 ## 8. Acceptance Decision
@@ -1988,4 +1989,4 @@ The version-3 implementation is ready for the cutover merge when:
 
 AT-24 was deliberately excluded from the pre-merge gate because it validates the refreshed production runtime on merged `main`. It passed in Stage 12.12 with production plugin v1.1.0 before backfill or normal production resumed.
 
-Current result: Stage 12.10 is COMPLETE as the pre-cutover gate, AT-25 through AT-55 are PASS (31/31), the isolated test-branch final consistency audit is PASS, and post-cutover AT-24 is PASS. Stage 12 remains in progress until controlled backfill, the final production consistency audit, and production resumption complete.
+Current result: Stage 12 is COMPLETE. Stage 12.10 pre-cutover evidence is PASS, AT-25 through AT-55 are PASS (31/31), the isolated test-branch audit is PASS, post-cutover AT-24 is PASS, controlled production backfill completed at revision 140, the final production consistency audit passed 17/17 checks with zero writes, and production resumed on `main`.
