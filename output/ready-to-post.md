@@ -1119,3 +1119,35 @@ Nature becomes even more engaging through an unexpected perspective.
 ```
 
 ---
+
+## P-000037 — Food and Household Knowledge
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Cacao trees grow tiny flowers directly from their trunks, where chocolate-bearing pods later develop
+
+Avocados can mature on the tree, but they only begin softening after being picked
+
+Each saffron crocus produces just three red stigmas, and those become the spice threads
+
+Egg yolk lecithin helps mayonnaise keep oil and water mixed instead of separating
+
+Bread rises because yeast releases carbon dioxide that gets trapped inside its stretchy gluten network
+
+Apples float in water because air makes up roughly one-quarter of their volume
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Food and home knowledge can make familiar moments feel fresh.
+
+#FoodFacts #HomeKnowledge #EverydayLearning #CuriousMinds #DidYouKnow
+```
+
+---
