@@ -1375,3 +1375,35 @@ History and geography feel richer through an unexpected perspective.
 ```
 
 ---
+
+## P-000047 — Animals and Nature
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Antarctic icefish have no hemoglobin, the protein that normally makes red blood cells red
+
+Female Von der Decken hornbills seal themselves into nest cavities, leaving one narrow feeding slit
+
+Two-toed sloth fur has grooves where algae grows green, camouflaging the animal among leaves
+
+Each whale shark’s spot pattern is unique, much like a human fingerprint
+
+Ostrich eyes are about two inches wide and can be larger than their brains
+
+Giant Pacific octopus mothers can guard tens of thousands of eggs for six months without eating
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature becomes even more engaging through an unexpected perspective.
+
+#AnimalFacts #NatureFacts #WildlifeKnowledge #CuriousMinds #DidYouKnow
+```
+
+---
