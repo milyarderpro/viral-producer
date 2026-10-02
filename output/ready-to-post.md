@@ -1471,3 +1471,35 @@ Innovation and record stories become memorable through unexpected perspectives.
 ```
 
 ---
+
+## P-000053 — Animals and Nature
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Frogfish can swallow prey in about six milliseconds as their mouth cavity expands twelvefold
+
+Three-banded armadillos are the only armadillos that can roll completely into a protective ball
+
+Nautiluses use shell chambers like submarine ballast tanks, moving fluid and gas to control buoyancy
+
+Beavers pack dam mud with their front paws, not their broad flat tails
+
+Male kori bustards can inflate their esophagus to four times normal size during courtship
+
+Nearly a third of a naked mole-rat’s touch-processing brain region is dedicated to its incisors
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature becomes even more engaging through an unexpected perspective.
+
+#AnimalFacts #NatureFacts #WildlifeKnowledge #CuriousMinds #DidYouKnow
+```
+
+---
