@@ -1279,3 +1279,35 @@ Nature becomes even more engaging through an unexpected perspective.
 ```
 
 ---
+
+## P-000044 — Food and Household Knowledge
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Older eggs can float because their enlarging air cell eventually makes them buoyant
+
+Pistachio shells naturally split as the nuts ripen, while the protective hull stays intact
+
+Under U.S. rules, white chocolate must contain at least 20 percent cocoa butter
+
+Cornstarch and water make Oobleck, a fluid that thickens when force is applied
+
+Brown sugar often starts as white sugar, then molasses is added back for color and moisture
+
+High-overrun ice cream can double its starting volume because so much air is whipped in
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Food and home knowledge can make familiar moments feel fresh.
+
+#FoodFacts #HomeKnowledge #EverydayLearning #CuriousMinds #DidYouKnow
+```
+
+---
