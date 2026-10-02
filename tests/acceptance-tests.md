@@ -1963,7 +1963,7 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-48 Named-series override | PENDING | Stage 12.10 | Explicit override must be narrowly applied, persisted, and unable to bypass duplicate or quality gates. |
 | AT-49 Publishing package generation | PENDING | Stage 12.10 | Must persist a valid caption and 4–6 hashtags and render two separate copy blocks. |
 | AT-50 Publishing package recheck triggers | PENDING | Stage 12.10 | Wording may preserve valid packaging; fact/topic/country/format changes must recheck it. |
-| AT-51 Fast Approval package preservation | PENDING | Stage 12.10 | Must preserve stored caption/hashtags exactly with zero package regeneration. |
+| AT-51 Fast Approval package preservation | PASS | P-000028 approval `54d8881`/`f4d9c54`/`12d02cf`; P-000031 rejection | Caption and ordered hashtags were preserved byte-exact through one active/queue/state write; the package-incomplete draft was rejected with zero writes; counters remained 100/621. |
 | AT-52 Ready/chat two-block parity | PENDING | Stage 12.10 | Active, queue, and chat surfaces must match exactly with no hashtags in the script. |
 | AT-53 Archive publishing package parity | PENDING | Stage 12.10 | Posted archive must preserve the final caption and ordered hashtags exactly. |
 | AT-54 Legacy publishing-package compatibility | PASS | P-000001 active and P-000004 archive, read-only 2026-10-02 | Missing caption/hashtags, post_format, and subject_key remained compatible and absent; 13 tracked artifact SHAs were unchanged. |
