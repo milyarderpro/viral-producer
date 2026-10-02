@@ -1695,3 +1695,35 @@ History and geography feel richer through an unexpected perspective.
 ```
 
 ---
+
+## P-000065 — Animals and Nature
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Nine-banded armadillos usually produce four genetically identical babies from a single fertilized egg.
+
+Turkey and black vultures cool themselves by excreting down their legs for evaporation.
+
+Meller's chameleons can launch their tongues up to 20 inches to capture prey.
+
+Sharks sense electromagnetic fields using tiny electroreceptor organs clustered around their noses and mouths.
+
+Kangaroo rats rarely drink because dry seeds can supply all the water they need.
+
+Northern red salamanders can extend and retract their projectile tongues in just 11 milliseconds.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature becomes even more engaging through an unexpected perspective.
+
+#AnimalFacts #NatureFacts #WildlifeKnowledge #CuriousMinds #DidYouKnow
+```
+
+---
