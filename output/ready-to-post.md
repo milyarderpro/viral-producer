@@ -1631,3 +1631,35 @@ History and geography feel richer through an unexpected perspective.
 ```
 
 ---
+
+## P-000063 — Inventions, Firsts, and Records
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Early hard hats were inspired by World War I helmets and made from steamed canvas and glue
+
+Zamboni’s machine cut a five-person, 90-minute rink-resurfacing job to just 15 minutes
+
+The world’s first home video game console, Magnavox Odyssey, debuted in 1972
+
+Gary Starkweather built an early laser printer around a Xerox 7000 copier
+
+The Apple I shipped without a case or power supply and used a home television
+
+Edison promised a minor invention every 10 days and a “big trick” every six months
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Innovation and record stories become memorable through unexpected perspectives.
+
+#InventionFacts #WorldRecords #InnovationHistory #CuriousMinds #DidYouKnow
+```
+
+---
