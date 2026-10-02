@@ -1944,7 +1944,7 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-29 Fast Approval SHA conflict restart | PASS | Writer B `83ca414`/`167c746`/`4bdcafe`; Writer A `54d8881`/`f4d9c54`/`12d02cf` | Writer A detected all three stale SHAs, refetched, preserved P-000029, approved P-000028 once, advanced revision 146→147, and preserved counters 100/621. |
 | AT-30 Mixed-topic generation | PENDING | Stage 12.10 | Must prove at least four fact topics, at most two per topic, and all ordinary quality gates. |
 | AT-31 Mixed multi-ledger publication | PENDING | Stage 12.10 | Must route each fact by its own topic and never create a mixed ledger. |
-| AT-32 Themed backward compatibility | PENDING | Stage 12.10 | Missing post_format must mean themed without an inspection-time rewrite. |
+| AT-32 Themed backward compatibility | PASS | read-only P-000030 on 2026-10-02 | Missing `post_format` resolved to themed; all six fact topics matched body-science and 13 tracked artifact SHAs remained unchanged. |
 | AT-33 Valid performance snapshot | PENDING | Stage 12.10 | Must persist one canonical posted-only snapshot and rebuild the summary. |
 | AT-34 Posted-only performance | PENDING | Stage 12.10 | Active, missing, or non-posted IDs must fail with zero writes. |
 | AT-35 Performance idempotent retry | PENDING | Stage 12.10 | Identical compound-key retry must be a no-op. |
