@@ -1055,3 +1055,35 @@ Innovation and record stories become memorable through unexpected perspectives.
 ```
 
 ---
+
+## P-000033 — Geography and History
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+The U.S. Capitol's familiar white dome is actually a fireproof cast-iron structure
+
+The Liberty Bell's famous wide gap was intentionally widened during an 1846 repair attempt
+
+The Washington Monument's aluminum tip once cost about as much per ounce as silver
+
+Golden Gate Bridge's orange color was chosen to contrast with ocean and sky
+
+Hoover Dam's concrete contains more than 582 miles of pipe once used for ice-water cooling
+
+Congress bought Thomas Jefferson's 6,487-book library in 1815 after the Capitol's collection burned
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #USA
+```
+
+---
