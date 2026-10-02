@@ -1023,3 +1023,35 @@ Food and home knowledge can make familiar moments feel fresh.
 ```
 
 ---
+
+## P-000032 — Inventions, Firsts, and Records
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+The Super Soaker began when a heat-pump experiment blasted water across Lonnie Johnson's bathroom
+
+Josephine Cochran's dishwasher cleaned with water pressure, replacing scrubbers used in earlier machines
+
+Willis Carrier's first air-conditioning system stabilized a printing plant's paper by controlling humidity
+
+An early escalator was displayed as a Coney Island ride, reportedly carrying 75,000 people in two weeks
+
+Gideon Sundback made zippers practical by increasing fastening elements from four to ten per inch
+
+Garrett Morgan's traffic signal added an all-stop interval so intersections could clear before traffic moved
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Innovation and record stories become memorable through unexpected perspectives.
+
+#InventionFacts #WorldRecords #InnovationHistory #CuriousMinds #DidYouKnow
+```
+
+---
