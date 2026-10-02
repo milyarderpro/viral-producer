@@ -2143,3 +2143,387 @@ History and geography feel richer through an unexpected perspective.
 ```
 
 ---
+
+## P-000084 — Food and Household Knowledge
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+About 4,000 saffron flowers are needed to produce just one ounce of spice.
+
+Whipping egg whites unfolds proteins that build a network around trapped air bubbles.
+
+Ice cream gets smoother when it freezes faster because large ice crystals have less time to form.
+
+Ketchup thins when shaken because shear makes its apparent viscosity drop as it starts moving.
+
+Raw cacao beans lack typical chocolate flavor; fermentation and roasting help create it.
+
+Coconuts are botanically drupes, meaning the familiar nut is actually a stone fruit.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Food and home knowledge can make familiar moments feel fresh.
+
+#FoodFacts #HomeKnowledge #EverydayLearning #CuriousMinds #DidYouKnow
+```
+
+---
+
+## P-000085 — Inventions, Firsts, and Records
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+The first digital image was a 176-by-176-pixel scan of a researcher's three-month-old son.
+
+The first IBM floppy disk stored 80 kilobytes, roughly equal to 3,000 punched cards.
+
+The first commercial hard drive stored 3.75 megabytes across fifty 24-inch spinning disks.
+
+Can openers arrived nearly fifty years after cans, which were originally opened with hammer and chisel.
+
+UNIVAC I became the first successful civilian computer and helped tabulate U.S. Census data.
+
+NIST's first diamond-anvil cell used diamonds confiscated from smugglers because buying them was too expensive.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Innovation and record stories become memorable through unexpected perspectives.
+
+#InventionFacts #WorldRecords #InnovationHistory #CuriousMinds #DidYouKnow
+```
+
+---
+
+## P-000087 — Geography and History
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Australia is almost 4,000 kilometres wide, wider than the Moon’s 3,476-kilometre diameter.
+
+The Twelve Apostles never had twelve rock stacks; Parks Victoria says seven remain today.
+
+Coober Pedy’s summer heat can reach 47°C, so many residents live in underground dugouts.
+
+Australia’s capital region was selected in 1908 by a parliamentary ballot margin of six votes.
+
+Sydney Opera House’s roof contains exactly 1,056,006 tiles arranged across its famous shells.
+
+Lake Eyre is Australia’s lowest point, sitting about 15 metres below sea level.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #Australia
+```
+
+---
+
+## P-000088 — Animals and Nature
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+One spotted sandpiper female may lay for up to four males, who handle most parental care.
+
+No two tigers have identical stripe patterns, letting researchers identify individuals like fingerprints.
+
+Pacific Northwest killer-whale pods learn unique sound sets that act like family badges.
+
+Poison frogs fed non-poisonous insects in human care are not poisonous themselves.
+
+Kit foxes have dense fur between their toes and footpads for traction on loose sand.
+
+Wood ducklings can jump from nest trees up to 290 feet high without injury.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature becomes even more engaging through an unexpected perspective.
+
+#AnimalFacts #NatureFacts #WildlifeKnowledge #CuriousMinds #DidYouKnow
+```
+
+---
+
+## P-000089 — Body and Everyday Science
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Your skin has no known wetness receptor; your brain infers wetness from touch and temperature.
+
+Your body makes about 500 milliliters of cerebrospinal fluid daily, while only 125–150 milliliters circulate at once.
+
+You are harder to tickle yourself because your brain predicts and dampens self-generated touch.
+
+The same ABCC11 gene variant helps determine both your earwax type and underarm odor.
+
+Cold can activate adult brown fat to burn fuel and generate heat without shivering.
+
+Human fingertips distinguished surface wrinkles just 10 nanometers high in an active-touch study.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Everyday science feels more fascinating when viewed from another angle.
+
+#ScienceFacts #HumanBody #EverydayScience #CuriousMinds #DidYouKnow
+```
+
+---
+
+## P-000090 — Geography and History
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Alexandria was once inside Washington’s federal district before Congress returned it to Virginia in 1847.
+
+Washington Monument changes color because later construction used marble from a different quarry.
+
+The Statue of Liberty’s copper skin is only 3/32 inch thick—about two pennies.
+
+Boston’s Back Bay was literally tidal water before nineteenth-century land filling created today’s neighborhood.
+
+Boston Common, established in 1634, is considered the oldest public park in the United States.
+
+Jefferson Pier was meant to anchor a U.S. prime meridian, but that system was never legally adopted.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #USA
+```
+
+---
+
+## P-000091 — Food and Household Knowledge
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+A cloudy egg white is a sign the egg is very fresh, not spoiled.
+
+A chicken eggshell contains roughly 7,000 to 17,000 tiny pores that exchange gases and moisture.
+
+Whipped cream stays foamy because proteins and linked fat globules stabilize its air bubbles.
+
+Granulated sugar can absorb strong odors even through plastic packaging, changing how stored sugar smells.
+
+Crushing mustard brings enzymes and glucosinolates together, creating the compounds behind its pungent bite.
+
+About 400 cacao beans are needed to make just one pound of chocolate.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Food and home knowledge can make familiar moments feel fresh.
+
+#FoodFacts #HomeKnowledge #EverydayLearning #CuriousMinds #DidYouKnow
+```
+
+---
+
+## P-000093 — Geography and History
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Hans Island's new land boundary follows a natural ravine between Canadian and Greenlandic territory
+
+Canada's current maple-leaf flag was first raised on Parliament Hill in 1965
+
+Wood Buffalo National Park spans over 44,000 square kilometres, making it larger than Switzerland
+
+Most of Saskatchewan stays on Central Standard Time year-round instead of switching for daylight saving
+
+Nahanni's Virginia Falls drops nearly twice the height of Niagara Falls
+
+CFS Alert is the world's northernmost permanently inhabited location, 817 kilometres from the North Pole
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #Canada
+```
+
+---
+
+## P-000094 — Animals and Nature
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Frogs pull their eyes into the roofs of their mouths to help swallow food
+
+Some parrotfish sleep inside mucus cocoons that protect them from bloodsucking parasites
+
+Cuttlefish have W-shaped pupils, while octopuses have rectangular pupils and squids have circular ones
+
+Prairie rattlesnakes have facial pits between each nostril and eye that detect heat
+
+Pangolins are the only mammals entirely covered in scales, and they curl into balls when frightened
+
+Killdeer fake broken wings to lure intruders away from their exposed ground nests
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature becomes even more engaging through an unexpected perspective.
+
+#AnimalFacts #NatureFacts #WildlifeKnowledge #CuriousMinds #DidYouKnow
+```
+
+---
+
+## P-000095 — Body and Everyday Science
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Lightning can heat nearby air to 50,000°F, and its rapid expansion creates thunder
+
+When water freezes, its density drops about nine percent, which is why ice floats
+
+Sound moves about four times faster through seawater than through air
+
+A roughly 20-degree angle matters most when you want a skipping stone to bounce repeatedly
+
+Stars twinkle because Earth's turbulent atmosphere bends their point-like light, while planets usually shine steadily
+
+A rainbow is actually a full circle, but the ground usually hides its lower half
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Everyday science feels more fascinating when viewed from another angle.
+
+#ScienceFacts #HumanBody #EverydayScience #CuriousMinds #DidYouKnow
+```
+
+---
+
+## P-000096 — Food and Household Knowledge
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Birch syrup can require 150–200 gallons of sap to produce just one gallon
+
+Vanilla comes from an orchid fruit, and each flower blooms for less than a day
+
+Whole cloves are dried flower buds harvested from the evergreen tree Syzygium aromaticum
+
+Fortune cookies are baked flat, folded around paper while warm, then harden as they cool
+
+Marshmallows got their name because marsh mallow root was the confection's original plant ingredient
+
+Black pepper can trigger sneezing because piperine irritates nerve endings inside your nose
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Food and home knowledge can make familiar moments feel fresh.
+
+#FoodFacts #HomeKnowledge #EverydayLearning #CuriousMinds #DidYouKnow
+```
+
+---
+
+## P-000097 — Inventions, Firsts, and Records
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+WD-40 means Water Displacement, perfected on the fortieth formula attempt in 1953
+
+Pyrex grew from heat-resistant glass first developed to keep railroad lantern globes from shattering
+
+The flexible drinking straw bends because corrugations let its mouthpiece angle without collapsing
+
+A 3×3 Rubik's Cube has 43,252,003,274,489,856,000 possible arrangements but only one solved state
+
+LEGO bricks grip securely because internal tubes combine with studs to create clutch power
+
+Early daguerreotypes were one-of-a-kind photographs made directly on highly polished, silver-plated copper sheets
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Innovation and record stories become memorable through unexpected perspectives.
+
+#InventionFacts #WorldRecords #InnovationHistory #CuriousMinds #DidYouKnow
+```
+
+---
