@@ -1823,3 +1823,35 @@ Food and home knowledge can make familiar moments feel fresh.
 ```
 
 ---
+
+## P-000071 — Body and Everyday Science
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+A human egg is the body’s largest cell and is barely visible without magnification.
+
+Your recorded voice sounds different partly because recordings leave out skull-borne bone conduction.
+
+Red blood cells about 7.5 micrometers wide can squeeze through capillaries only 2–3 micrometers across.
+
+Your eye lens keeps growing throughout life because new cells pile over older ones.
+
+A removed liver lobe does not regrow; the remaining lobes enlarge to replace lost mass.
+
+The placenta is a fetal organ whose genetic makeup normally matches the developing baby.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Everyday science feels more fascinating when viewed from another angle.
+
+#ScienceFacts #HumanBody #EverydayScience #CuriousMinds #DidYouKnow
+```
+
+---
