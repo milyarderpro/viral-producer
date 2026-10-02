@@ -34,7 +34,3 @@
 
 - 12:00 WIB — P-000002 — Animals and Nature — GLOBAL
 - 19:00 WIB — P-000007 — Inventions, Firsts, and Records — GLOBAL
-
-## 2099-01-01
-
-- 19:00 WIB — P-000099 — Mixed Trivia — GLOBAL
