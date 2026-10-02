@@ -927,3 +927,35 @@ Everyday materials and extreme places can overturn ordinary assumptions.
 ```
 
 ---
+
+## P-000028 — Animals and Nature
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Domestic cats lack a functional sweet-taste receptor, so they cannot taste sweet stimuli
+
+Electric eels can generate up to 800 volts using three specialized electric organs
+
+African ball-rolling dung beetles can navigate on moonless nights using the Milky Way
+
+Researchers found wombat cube-shaped feces form inside the last meter of the intestine
+
+Horseshoe crabs fluoresce under ultraviolet light, with younger crabs glowing brighter than adults
+
+A star-nosed mole's centimeter-wide nose is wired with more than 100,000 nerve fibers
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature becomes even more engaging through an unexpected perspective.
+
+#AnimalFacts #NatureFacts #WildlifeKnowledge #CuriousMinds #DidYouKnow
+```
+
+---
