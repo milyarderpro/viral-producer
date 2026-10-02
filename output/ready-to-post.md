@@ -1151,3 +1151,35 @@ Food and home knowledge can make familiar moments feel fresh.
 ```
 
 ---
+
+## P-000038 — Inventions, Firsts, and Records
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Teflon was discovered by accident in 1938 while Roy Plunkett searched for a new refrigerant
+
+The first shopping cart used a folding-chair-like frame with wheels and two removable baskets
+
+The first commercial Band-Aids were 18-inch strips users cut into smaller pieces themselves
+
+Scotchgard began after an accidental lab spill splashed synthetic latex onto a canvas tennis shoe
+
+Mary Anderson's windshield wiper answered a problem: streetcar drivers leaning outside to see in bad weather
+
+A Slinky coils about 80 feet of wire into a spiral only two inches tall
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Innovation and record stories become memorable through unexpected perspectives.
+
+#InventionFacts #WorldRecords #InnovationHistory #CuriousMinds #DidYouKnow
+```
+
+---
