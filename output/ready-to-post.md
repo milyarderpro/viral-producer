@@ -529,7 +529,7 @@ Did you know?
 
 Cape Hatteras Lighthouse was moved 2,900 feet in just 23 days to escape erosion
 
-The Statue of Liberty was brown in 1886 and took about 30 years to turn green
+The Statue of Liberty began brown in 1886, taking about 30 years to turn green
 
 James Smithson funded the Smithsonian's founding despite never once setting foot on American soil
 
