@@ -2015,3 +2015,35 @@ Innovation and record stories become memorable through unexpected perspectives.
 ```
 
 ---
+
+## P-000079 — Animals and Nature
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Pallas’s cats have the densest fur of any cat, insulating them below -58°F.
+
+Scimitar-horned oryx can tolerate 116°F body temperatures, reducing how much water they lose sweating.
+
+African clawed frogs lack tongues, so their front fingers push food into their mouths.
+
+Fishing cats have dense inner fur that blocks water from reaching their skin.
+
+Lemurs have a second tongue beneath the first that cleans debris from their tooth comb.
+
+Clouded leopards can open their mouths to about 100 degrees, an extreme feline gape.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature becomes even more engaging through an unexpected perspective.
+
+#AnimalFacts #NatureFacts #WildlifeKnowledge #CuriousMinds #DidYouKnow
+```
+
+---
