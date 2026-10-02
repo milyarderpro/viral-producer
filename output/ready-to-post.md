@@ -1663,3 +1663,35 @@ Innovation and record stories become memorable through unexpected perspectives.
 ```
 
 ---
+
+## P-000064 — Geography and History
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Minots Ledge Light flashes 1-4-3, inspiring its nickname, the “I Love You Light”
+
+Mammoth Cave workers once piped water underground through hollowed tulip-poplar logs
+
+Many Blue Ridge Parkway stone arches are actually reinforced-concrete structures beneath the stonework
+
+Going-to-the-Sun Road surveyors climbed about 2,700 vertical feet before starting work each morning
+
+Forty-two men once carried Grand Canyon bridge cables down the trail “centipede style”
+
+Boston Light was originally funded by a harbor tax charging larger ships one penny per ton
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #USA
+```
+
+---
