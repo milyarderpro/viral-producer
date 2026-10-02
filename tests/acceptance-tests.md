@@ -1894,6 +1894,19 @@ Reject any remaining temporary draft through the GPT if cleanup is desired. Do n
 
 ## 7. Results Table
 
+### Stage 12.10 recovery checkpoint — 2026-10-02
+
+Branch: `test/viral-producer-v1.1`.
+
+- Resume baseline: revision 145, next_post_number 100, next_fact_number 621, 97 active records, and 28 ready records.
+- Test-only publishing plan: revision 1 with 14 planned slots; `output/content-calendar.md` is byte-exact from that plan.
+- Active/queue parity, six-fact counts, Post ID, Fact ID, claim-signature uniqueness, monotonic counters, JSON/JSONL parsing, and current calendar linkage passed.
+- `P-000099` is a package-complete mixed ready fixture. `P-000028` and `P-000029` were modified during earlier fixture setup and must not be used as byte-unchanged legacy evidence for AT-47 or AT-54.
+- No raw performance snapshot exists, the performance summary remains empty, fact ledgers and the monthly archive remain unchanged from the test-branch baseline, and no scheduled slot is completed.
+- Earlier test-branch mutations are retained as disposable fixtures but are not credited as acceptance PASS evidence because the interrupted run did not record per-test results.
+- AT-24 through AT-55 remain PENDING until rerun or independently evidenced. No test data may be merged or copied to the feature branch or `main`.
+
+
 Validation date: 2026-09-30
 Validated production snapshot: `bbb08d718c89162515ffc09a86d8a47b22c8b289`
 Production state at final audit: revision 15, next post 9, next fact 51.
