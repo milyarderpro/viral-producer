@@ -549,3 +549,35 @@ American landmarks hide stories that make familiar places feel new.
 
 #DidYouKnow #AmazingFacts #USHistory #AmericanLandmarks #LearnSomethingNew
 ```
+
+---
+
+## P-000098 — Mixed Trivia
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+The Sargasso Sea is the only sea whose boundaries are entirely ocean currents
+
+About 40 gallons of maple sap are needed to make one gallon of syrup
+
+Velcro began after George de Mestral studied burrs clinging to clothes and dog fur
+
+Lake Baikal holds about 20% of the world's unfrozen freshwater reserve
+
+Will Kellogg's accidental wheat flakes led him to develop corn flakes with his brother
+
+Limpet teeth have the highest recorded tensile strength for a biological material
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Curiosity gets better when every fact comes from somewhere unexpected.
+
+#DidYouKnow #AmazingFacts #MixedTrivia #ScienceFacts #WorldFacts #LearnSomethingNew
+```
