@@ -2111,3 +2111,35 @@ Nature becomes even more engaging through an unexpected perspective.
 ```
 
 ---
+
+## P-000082 — Geography and History
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Juneau is the only U.S. state capital inaccessible by road, relying on air and marine transport.
+
+Chicago engineers reversed the river's flow in 1900 by opening the Sanitary and Ship Canal.
+
+Behind Mount Rushmore, a rough 70-foot tunnel holds an inaccessible repository of historical records.
+
+USS Constitution remains the world's oldest commissioned warship afloat, launched in Boston in 1797.
+
+St. Augustine is the continental United States' oldest continuously occupied European settlement.
+
+Centralia's underground coal-mine fire has been burning beneath Pennsylvania since May 1962.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #USA
+```
+
+---
