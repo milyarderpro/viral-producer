@@ -1945,11 +1945,11 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-30 Mixed-topic generation | PENDING | Stage 12.10 | Must prove at least four fact topics, at most two per topic, and all ordinary quality gates. |
 | AT-31 Mixed multi-ledger publication | PASS | P-000099 publication `997e8da`/`2be9d8d`/`e89b331`/`3abb5fd`; archive `89e4801` | Six facts routed exactly once to four own-topic ledgers, the mixed archive was created once, no mixed ledger exists, and the identical retry made zero writes. |
 | AT-32 Themed backward compatibility | PASS | read-only P-000030 on 2026-10-02 | Missing `post_format` resolved to themed; all six fact topics matched body-science and 13 tracked artifact SHAs remained unchanged. |
-| AT-33 Valid performance snapshot | PENDING | Stage 12.10 | Must persist one canonical posted-only snapshot and rebuild the summary. |
-| AT-34 Posted-only performance | PENDING | Stage 12.10 | Active, missing, or non-posted IDs must fail with zero writes. |
-| AT-35 Performance idempotent retry | PENDING | Stage 12.10 | Identical compound-key retry must be a no-op. |
-| AT-36 Performance conflict | PENDING | Stage 12.10 | Different payload on the same compound key must fail before write. |
-| AT-37 Deterministic performance summary | PENDING | Stage 12.10 | Latest snapshot per post and all aggregate buckets must rebuild byte-identically. |
+| AT-33 Valid performance snapshot | PASS | raw `4cc9494`; summary `776ad7b` | P-000004 metrics normalized to seven canonical keys at 2026-10-02T02:00:00Z, post_age_hours computed as 37.85, sample_size became 1, and lifecycle/content SHAs stayed unchanged. |
+| AT-34 Posted-only performance | PASS | read-only P-000028 on 2026-10-02 | Active ready post was classified as non-archived and rejected before persistence; raw performance, summary, lifecycle, archive, ledger, queue, and state SHAs remained unchanged. |
+| AT-35 Performance idempotent retry | PASS | key P-000004 + 2026-10-02T02:00:00Z | Canonical retry matched the sole stored record exactly; raw and summary SHAs stayed `f18aab3` and `df5ec8c`, with zero writes. |
+| AT-36 Performance conflict | PASS | key P-000004 + 2026-10-02T02:00:00Z | Attempted views 1,300,000 conflicted with stored 1,200,000; raw/summary and all production artifacts remained unchanged with zero writes. |
+| AT-37 Deterministic performance summary | PASS | fixture `dbd554a`/`629a6ad` and `701d338`/`75ddb6b`; final raw `392b454`, summary `2287746` | Three snapshots across two posts selected the latest P-000004 record, retained null handling, produced sample_size 2 and sorted buckets, and two independent rebuilds matched stored JSON byte-for-byte. |
 | AT-38 Small-sample restraint | PENDING | Stage 12.10 | Performance influence must respect the 15/20-post thresholds and remain read-only. |
 | AT-39 Read-only smart recommendation | PENDING | Stage 12.10 | Must deterministically recommend only ready content with zero writes. |
 | AT-40 Seven-day schedule | PENDING | Stage 12.10 | Must create 14 valid WIB slots and exact calendar parity without lifecycle mutation. |
