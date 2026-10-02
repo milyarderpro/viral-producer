@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "timezone": "Asia/Jakarta",
-  "revision": 2,
+  "revision": 3,
   "slots": [
     {
       "scheduled_for": "2026-10-03T05:00:00Z",
@@ -118,10 +118,10 @@
     {
       "scheduled_for": "2099-01-01T12:00:00Z",
       "post_id": "P-000099",
-      "status": "planned",
+      "status": "completed",
       "created_at": "2026-10-02T04:03:35.281Z",
-      "updated_at": "2026-10-02T04:03:35.281Z",
-      "completed_at": null
+      "updated_at": "2026-10-02T04:04:21.842Z",
+      "completed_at": "2026-10-02T04:04:21.842Z"
     }
   ]
 }
