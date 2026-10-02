@@ -1343,3 +1343,35 @@ Innovation and record stories become memorable through unexpected perspectives.
 ```
 
 ---
+
+## P-000046 — Geography and History
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Macquarie Island exposes rocks from Earth’s mantle that normally sit deep below the ocean floor
+
+Australia’s tectonic plate carries the continent north by about seven centimetres every year
+
+The Great Artesian Basin is so vast it would rank seventeenth among countries
+
+Sydney Harbour Bridge was load-tested by lining up 96 locomotives across its tracks
+
+Nearly 460 ancient human footprints at Willandra Lakes date back 19,000 to 23,000 years
+
+Australia’s Overland Telegraph cut communication with Europe from months to just hours
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #Australia
+```
+
+---
