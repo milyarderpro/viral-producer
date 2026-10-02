@@ -1937,7 +1937,7 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-22 Opening and closing | PASS | archive `P-000004` | Both endpoints are strength 2 and use different operators. |
 | AT-23 Legacy compatibility | PASS | snapshot `8c3f5fe` unchanged | Three legacy drafts remained readable and could not bypass upgrade. |
 | AT-24 Production runtime boundary | PENDING | Stage 12.10 | Specification added in Stage 12.2; execute after the version-3 plugin profile is installed. |
-| AT-25 Test profile refuses main | PENDING | Stage 12.10 | Must pass with zero connector calls to main. |
+| AT-25 Test profile refuses main | PASS | test-branch recovery run 2026-10-02 | Override to main rejected before any main/default-ref/write call; all six tracked test-branch artifact SHAs remained unchanged. |
 | AT-26 Production profile refuses test | PENDING | Stage 12.10 | Must pass without research, allocation, or writes. |
 | AT-27 Explicit ref and mismatch rejection | PENDING | Stage 12.10 | Run only with the isolated connector test harness. |
 | AT-28 Incomplete Fast Approval rejection | PENDING | Stage 12.10 | Must fail with zero research and zero writes. |
