@@ -1503,3 +1503,35 @@ Nature becomes even more engaging through an unexpected perspective.
 ```
 
 ---
+
+## P-000057 — Geography and History
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Haleakalā’s famous crater is actually an erosional valley carved by water, not a true volcanic crater
+
+Water from Glacier’s Triple Divide Peak flows toward the Pacific, Gulf of Mexico, and Hudson Bay
+
+Grand Canyon’s Great Unconformity leaves about 1.2 billion years missing from the rock record
+
+Fort Jefferson is the Americas’ largest masonry structure, built from over 16 million bricks
+
+Zion tunnel windows let crews dump rock debris while also providing light and ventilation
+
+Badlands formations erode about one inch yearly and may disappear within 500,000 years
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #USA
+```
+
+---
