@@ -759,12 +759,13 @@ Stage 12.6 refreshed remote baseline (2026-10-01):
 - `data/publishing-plan.json` and `output/content-calendar.md` did not exist before this stage;
 - main itself was not modified.
 
-Stage 12.7 refreshed remote baseline (2026-10-01):
+Stage 12.7 refreshed remote baseline (2026-10-01 through 2026-10-02):
 
 - feature head before Stage 12.7: `8d2dc1bb0269c830784e09e3c109135898d9ae99`;
 - production state at stage start was revision 122, next_post_number 81, next_fact_number 507, single_writer_mode true, and 79 active records;
-- production advanced during implementation to GitHub main commit `55c10216f5cbfa7d0bc381a623a3b6f412458086`, revision 123, next_post_number 82, next_fact_number 513, and 80 active records;
-- the new production snapshot passed JSON/JSONL parsing, six-fact counts, active Post/Fact ID and claim-signature uniqueness, monotonic counters, and single-writer validation;
+- a live production batch continued during implementation and completed at GitHub main commit `af68f8db2d54e6c9d555e66a7c38045cf5f46501`, revision 139, next_post_number 98, next_fact_number 609, and 96 active records;
+- the final production snapshot passed JSON/JSONL parsing, six-fact counts, active Post/Fact ID and claim-signature uniqueness, monotonic counters, and single-writer validation;
+- the 576 existing active fact snapshots still omit subject_key and remain byte-preserved legacy-compatible data;
 - ready-to-post.md remained byte-identical, so only active drafts and production state required synchronization;
 - main itself was not modified.
 
@@ -1287,9 +1288,9 @@ Completion evidence:
 - Cooldown spans the current post and requested batch, every active reservation, and fact records linked to the 20 most recent archived posts.
 - Exact subject reuse is blocked and one narrow semantic cluster may appear in at most two distinct posts unless an explicit named-series override covers the required final positions.
 - Cooldown rejection uses rejected_counts.repetitive and new posts persist compact cooldown_audit evidence; no rejected candidate wording or private reasoning is stored.
-- `ab92215094723a2c7cb288a410d62d8e12e80b1d` and `56bbd4d1a8593fec9ae3e718957bc92bb9a2abd5` synchronize the protected feature snapshots with the latest production state without writing to main.
-- Protected feature snapshots are byte-identical to main: active drafts `63e5cc609407f951a83cf338d8d6e9042abd6982` and production state `588ef442472f2b3b91e3b8ae15daaa5bcdd34e39`.
-- Static validation passed for schema examples, sequential workflow numbering, duplicate-before-cooldown order, legacy non-migration, AT-45 through AT-48, JSON/JSONL parsing, whitespace, and protected-file parity.
+- Production advanced through intermediate snapshots while the stage was open; final synchronization commits `a2ab2ff5e64b124fb8dbe0a604cbba29f432c210` and `ee1c74abdec6de0e56d5d0870d21e7cf7d45600b` copy the completed batch snapshots to the feature branch without writing to main.
+- Protected feature snapshots are byte-identical to main: active drafts `192c3da563ebdb2e3b21d663b04ab21bfaefada3` and production state `6f4ab56799024273d6d63c7272b695c4a76e402e`.
+- Static validation passed for schema examples, sequential workflow numbering, duplicate-before-cooldown order, 576 legacy fact snapshots remaining unmodified, AT-45 through AT-48, JSON/JSONL parsing, whitespace, ready-queue parity, and protected-file parity.
 - AT-45 through AT-48 are specified but remain unexecuted until the isolated Stage 12.10 run.
 - Stage 12.8 remains pending and was not started.
 
