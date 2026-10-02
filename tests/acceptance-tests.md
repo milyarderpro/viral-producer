@@ -1940,7 +1940,7 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-25 Test profile refuses main | PASS | test-branch recovery run 2026-10-02 | Override to main rejected before any main/default-ref/write call; all six tracked test-branch artifact SHAs remained unchanged. |
 | AT-26 Production profile refuses test | PENDING | Stage 12.10 | Must pass without research, allocation, or writes. |
 | AT-27 Explicit ref and mismatch rejection | PENDING | Stage 12.10 | Run only with the isolated connector test harness. |
-| AT-28 Incomplete Fast Approval rejection | PENDING | Stage 12.10 | Must fail with zero research and zero writes. |
+| AT-28 Incomplete Fast Approval rejection | PASS | fixture `cb4f679`; cleanup `bb98834` | Missing `quality.rationales.shareability` blocked approval with zero active/queue/state writes; revision and counters stayed 145 / 100 / 621; fixture restored byte-exact. |
 | AT-29 Fast Approval SHA conflict restart | PENDING | Stage 12.10 | Must preserve the competing writer and restart from fresh SHAs. |
 | AT-30 Mixed-topic generation | PENDING | Stage 12.10 | Must prove at least four fact topics, at most two per topic, and all ordinary quality gates. |
 | AT-31 Mixed multi-ledger publication | PENDING | Stage 12.10 | Must route each fact by its own topic and never create a mixed ledger. |
