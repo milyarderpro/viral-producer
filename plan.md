@@ -1518,7 +1518,7 @@ Completion evidence:
 
 ### Stage 12.12 — Pull Request, Cutover, and Backfill
 
-Status: IN PROGRESS — PRE-PR AUDIT COMPLETE; CUTOVER NOT STARTED
+Status: IN PROGRESS — AT-24 PASS; CONTROLLED BACKFILL PENDING
 
 Before PR:
 
@@ -1550,6 +1550,15 @@ Pre-PR checkpoint — 2026-10-02:
 - AT-24 status remains **PENDING POST-CUTOVER**. It must run only after the PR is merged and the production plugin is refreshed to v1.1, and it must PASS before controlled backfill or production resumption.
 - Neither `main` nor `test/viral-producer-v1.1` was modified during the pre-PR audit.
 - Cutover, production-plugin refresh, AT-24 execution, backfill, final production audit, and production resumption have not started.
+
+Post-cutover checkpoint — 2026-10-02:
+
+- The reviewed PR #6 was merged to `main` with merge commit `6de76713d62056970c026feb153ba024f3344571`.
+- Protected production data remained unchanged through the merge: revision 139, counters 98/609, 96 active records, and 26 ready records with exact queue parity.
+- The existing private **Viral Producer** plugin was refreshed in place to version 1.1.0 with its GitHub binding and permissions preserved.
+- The production runtime profile was verified as `milyarderpro/viral-producer@main`, mode `production`, `ALLOW_WRITES=true`, and `ALLOW_MAIN_WRITES=true`.
+- AT-24 passed read-only: all GitHub requests used the explicit repository and `ref: main`, canonical response URLs matched the configured ref, tracked state/active SHAs were unchanged, and no write or commit call occurred.
+- Production remains paused. Controlled active caption/hashtag backfill, final production consistency audit, and production resumption are still pending.
 
 Cutover requires a short production-write pause:
 
