@@ -863,3 +863,35 @@ Borders, bodies, wildlife, and inventions reveal surprising connections across o
 ```
 
 ---
+
+## P-000099 — Mixed Trivia
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Pistol shrimp snaps create cavitation bubbles whose collapse produces their signature underwater bang.
+
+Butterflies use taste receptors in their feet to sample surfaces before feeding or laying eggs.
+
+Kiwiberries contain actinidin, a protein-cutting enzyme that can naturally tenderize meat.
+
+The Sargasso Sea is the only sea on Earth without a land boundary.
+
+Walter Morrison’s Frisbee idea began while tossing a popcorn-tin lid with his future wife.
+
+Lesotho is the only independent country located entirely more than 1,000 meters above sea level.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Tiny creatures and familiar objects hide mechanisms worth remembering.
+
+#CuriousMinds #KnowledgeDrop #FactMix #LearnDaily #UnexpectedFacts
+```
+
+---
