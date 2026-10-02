@@ -700,7 +700,7 @@ Evidence:
 
 ## 5C. Stage 12 — Viral Producer 1.1
 
-Status: IN PROGRESS — STAGE 12.8 COMPLETE
+Status: IN PROGRESS — STAGE 12.9 COMPLETE
 
 Branch implementasi:
 
@@ -1364,7 +1364,7 @@ Completion evidence:
 
 ### Stage 12.9 — Compatibility and Initial Files
 
-Status: PENDING
+Status: COMPLETE
 
 Compatibility rules:
 
@@ -1376,6 +1376,21 @@ Compatibility rules:
 - schema_version remains 1.
 
 Create the empty performance summary, publishing plan, content calendar, and test-plugin guide on the feature branch. Do not modify production snapshots.
+
+Completion evidence:
+
+- Latest production baseline observed during Stage 12.9 remained GitHub `main` commit `af68f8db2d54e6c9d555e66a7c38045cf5f46501`; before the closing plan write the feature branch was 62 commits ahead and 0 behind.
+- `f0d8e3a2f709b2d5ad2227612c95de5cd0f957bd` defines the explicit Stage 12.9 additive compatibility boundary in `system/data-contract.md`: missing `post_format` means themed, legacy missing `subject_key` uses fallback, permitted missing publishing-package fields remain readable, existing IDs/counters/content/audits/archives are preserved, empty additive stores are valid, and schema_version remains 1.
+- `d2fcd84b339ab19f62f2beee229dd91dfd6f97a4` implements the same compatibility and migration-safety behavior in `system/gpt-instructions.md`, including no implicit backfill, no compatibility-only renumbering/rescoring/rewriting, and valid empty performance/scheduling baselines.
+- `d98b4caf3af0bd4cd81fdedd2ec681696ec52fa4` adds AT-54 and AT-55 for legacy publishing-package compatibility and empty additive-store validity. Both remain PENDING until Stage 12.10.
+- `9b8602506b6543925200bcecf21fa92f21109680` creates `docs/test-plugin-installation.md` with the isolated test runtime profile, explicit-ref rules, Plugin Creator bootstrap prompt, version/read/write smoke checks, explicit main-rejection check, acceptance-test ordering, troubleshooting, cleanup boundaries, and the instruction never to merge the test branch.
+- The existing empty initial files were reused without churn: `data/performance-summary.json` blob `7015c52e15104099a6b1d84a30664b6f9e6ce96b`, `data/publishing-plan.json` blob `a3843d9c7737d37f83a5928a3dd8c4f26bc82d10`, and `output/content-calendar.md` blob `d548070e221e5157692b76edb9fdfd2fff423377` exactly match their canonical empty structures.
+- JSON parsing passed for `data/production-state.json`, `data/performance-summary.json`, and `data/publishing-plan.json`. JSONL parsing passed for 96 active records, all six fact ledgers with 6 published fact records total, and the one monthly archive record.
+- Static validation passed for every Stage 12.9 compatibility rule, empty-store canonical bytes, test runtime profile, no feature-branch mutative testing, never-merge boundary, AT-54/AT-55 PENDING status, acceptance-range updates, and trailing whitespace.
+- Protected production paths remain absent from the feature diff: `data/production-state.json`, `data/active-drafts.jsonl`, `data/facts/**`, `data/posts/**`, and `output/ready-to-post.md`. Their verified blobs remained identical to `main`.
+- Search confirmed that `test/viral-producer-v1.1` does not yet exist. Stage 12.9 did not create the test branch or run any mutative acceptance test.
+- No caption/hashtag backfill was performed and `main` was not modified.
+- Stage 12.10 remains pending and was not started.
 
 ### Stage 12.10 — Isolated Acceptance Tests
 
@@ -1444,6 +1459,16 @@ Publishing package:
 - no hashtags in script;
 - active/queue/chat/archive parity;
 - approval preservation.
+
+Compatibility and initial stores:
+
+- permitted legacy missing caption/hashtags remains readable with zero implicit backfill;
+- missing post_format remains themed without rewrite;
+- missing subject_key continues to use legacy fallback;
+- empty performance summary is valid;
+- absent raw performance files before first metrics write are valid;
+- revision-0 empty publishing plan and deterministic empty calendar are valid;
+- existing IDs, counters, facts, sources, quality, audits, ledgers, and archives remain preserved.
 
 Regression:
 
