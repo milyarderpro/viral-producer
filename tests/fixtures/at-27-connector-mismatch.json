@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "test_id": "AT-27",
+  "runtime_profile": {
+    "repository": "milyarderpro/viral-producer",
+    "branch": "test/viral-producer-v1.1",
+    "mode": "test",
+    "allow_writes": true,
+    "allow_main_writes": false
+  },
+  "prompt": "Read production-state.json from the configured runtime and report the revision. Do not modify anything.",
+  "cases": [
+    {
+      "name": "ref_mismatch",
+      "request": {
+        "repository": "milyarderpro/viral-producer",
+        "path": "data/production-state.json",
+        "ref": "test/viral-producer-v1.1"
+      },
+      "connector_response": {
+        "repository": "milyarderpro/viral-producer",
+        "ref": "main",
+        "sha": "fixture-untrusted-main-sha",
+        "content": {
+          "schema_version": 1,
+          "revision": 999
+        }
+      },
+      "expected": {
+        "hard_failure": true,
+        "content_trusted": false,
+        "sha_trusted": false,
+        "revision_reported": false,
+        "fallback_without_ref": false,
+        "write_calls": 0
+      }
+    },
+    {
+      "name": "repository_mismatch",
+      "request": {
+        "repository": "milyarderpro/viral-producer",
+        "path": "data/production-state.json",
+        "ref": "test/viral-producer-v1.1"
+      },
+      "connector_response": {
+        "repository": "example/not-the-configured-repository",
+        "ref": "test/viral-producer-v1.1",
+        "sha": "fixture-untrusted-repository-sha",
+        "content": {
+          "schema_version": 1,
+          "revision": 888
+        }
+      },
+      "expected": {
+        "hard_failure": true,
+        "content_trusted": false,
+        "sha_trusted": false,
+        "revision_reported": false,
+        "fallback_without_ref": false,
+        "write_calls": 0
+      }
+    }
+  ],
+  "harness_rules": {
+    "compare_response_identity_before_parsing_content": true,
+    "stop_on_repository_or_ref_mismatch": true,
+    "never_retry_without_ref": true,
+    "never_use_default_branch_fallback": true,
+    "never_issue_write": true
+  }
+}
