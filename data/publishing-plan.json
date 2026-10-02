@@ -1,19 +1,11 @@
 {
   "schema_version": 1,
   "timezone": "Asia/Jakarta",
-  "revision": 3,
+  "revision": 4,
   "slots": [
     {
       "scheduled_for": "2026-10-03T05:00:00Z",
       "post_id": "P-000006",
-      "status": "planned",
-      "created_at": "2026-10-02T03:18:29Z",
-      "updated_at": "2026-10-02T03:18:29Z",
-      "completed_at": null
-    },
-    {
-      "scheduled_for": "2026-10-03T12:00:00Z",
-      "post_id": "P-000009",
       "status": "planned",
       "created_at": "2026-10-02T03:18:29Z",
       "updated_at": "2026-10-02T03:18:29Z",
@@ -122,6 +114,14 @@
       "created_at": "2026-10-02T04:03:35.281Z",
       "updated_at": "2026-10-02T04:04:21.842Z",
       "completed_at": "2026-10-02T04:04:21.842Z"
+    },
+    {
+      "scheduled_for": "2099-01-03T12:00:00Z",
+      "post_id": "P-000009",
+      "status": "planned",
+      "created_at": "2026-10-02T03:18:29Z",
+      "updated_at": "2026-10-02T04:13:14.358Z",
+      "completed_at": null
     }
   ]
 }
