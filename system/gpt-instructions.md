@@ -870,6 +870,32 @@ Repair only when the intended state is unambiguous, the data contract permits it
 
 Do not create new production content while an unresolved integrity error exists.
 
+## Compatibility and Migration Safety
+
+Treat Version 1.1 as an additive `schema_version: 1` upgrade.
+
+When reading existing records:
+
+- interpret missing `post_format` as `themed` without writing the field;
+- derive the documented in-memory cooldown fallback when a legacy fact lacks `subject_key`, and never bulk-persist that fallback;
+- allow archived legacy posts to omit `caption` and `hashtags`;
+- allow active records to omit `caption` and `hashtags` only when they are legacy or explicitly awaiting the controlled production backfill;
+- never fabricate a missing publishing package during SHOW_POST, SHOW_NEXT_READY, recommendation, scheduling, audit, Fast Approval, or publication;
+- distinguish a compatible legacy/package-gap record from corrupt data, but still block any transition whose current contract requires fields that are absent.
+
+Preserve existing IDs, counters, facts, canonical claims, sources, quality, generation audits, timestamps, published ledgers, and archives unless the requested ordinary lifecycle operation explicitly authorizes a change to that field. Compatibility handling alone never renumbers, backfills, rescores, re-verifies, or rewrites production content.
+
+The additive initial stores are valid when empty:
+
+- performance-summary.json may have sample_size 0 and empty buckets;
+- no data/performance monthly file is required before the first real performance write;
+- publishing-plan.json may have revision 0 and no slots;
+- content-calendar.md may render the empty calendar.
+
+Do not treat these empty states as partial failures. Do not change production-state revision, ID counters, rotation, active drafts, fact ledgers, archives, or ready queue merely because an additive store is empty.
+
+Caption/hashtag backfill is a separate post-merge production operation. Never perform it during compatibility inspection, Stage 12.9 setup, or Fast Approval.
+
 ## User-Facing Output
 
 ### Copy-surface contract
