@@ -831,3 +831,35 @@ History and geography feel richer through an unexpected perspective.
 ```
 
 ---
+
+## P-000098 — Mixed Trivia
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+France’s 730-kilometer border with Brazil is its longest land border with a neighboring country.
+
+Female greater bilbies have backward-facing pouches that keep sand out while they dig.
+
+Harry Brearley’s gun-barrel research led him toward chromium steel and stainless steel in 1913.
+
+Lake Baikal holds nearly 20 percent of the world’s unfrozen freshwater reserve.
+
+Southern cassowaries lay green eggs, then males incubate and raise the chicks.
+
+At hearing threshold, your eardrum moves about 100 times less than a hydrogen atom’s diameter.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Borders, bodies, wildlife, and inventions reveal surprising connections across our world.
+
+#CuriousMinds #KnowledgeDrop #FactMix #LearnDaily #UnexpectedFacts
+```
+
+---
