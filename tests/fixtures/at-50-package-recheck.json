@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "fixture_name": "AT-50 package recheck harness",
-  "fixture_revision": 2,
+  "fixture_revision": 3,
   "production_files_untouched": true,
   "subtests": {
     "topic_change": {
@@ -102,8 +102,33 @@
           "#LearnSomethingNew"
         ]
       },
-      "after": null,
-      "result": "pending"
+      "after": {
+        "topic": "animals-nature",
+        "post_format": "themed",
+        "country_focus": "GLOBAL",
+        "caption": "Unexpected connections make ordinary things feel completely different.",
+        "hashtags": [
+          "#DidYouKnow",
+          "#AmazingFacts",
+          "#AnimalFacts",
+          "#NatureFacts",
+          "#LearnSomethingNew"
+        ]
+      },
+      "result": "PASS",
+      "evidence": {
+        "content_recheck_before_persistence": true,
+        "preserved_fields": [
+          "caption"
+        ],
+        "regenerated_fields": [
+          "hashtags"
+        ],
+        "allocated_post_ids": 0,
+        "allocated_fact_ids": 0,
+        "final_package_valid": true,
+        "unsupported_tags": []
+      }
     }
   }
 }
