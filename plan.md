@@ -700,7 +700,7 @@ Evidence:
 
 ## 5C. Stage 12 — Viral Producer 1.1
 
-Status: IN PROGRESS — STAGE 12.10 COMPLETE; AT-24 POST-CUTOVER
+Status: IN PROGRESS — STAGE 12.11 COMPLETE; AT-24 POST-CUTOVER
 
 Branch implementasi:
 
@@ -1487,7 +1487,7 @@ Completion evidence:
 
 ### Stage 12.11 — Documentation and Plugin Guide
 
-Status: PENDING
+Status: COMPLETE
 
 Update README, user guide, prompt library, production installation guide, and plan. Add docs/test-plugin-installation.md with:
 
@@ -1502,6 +1502,19 @@ Update README, user guide, prompt library, production installation guide, and pl
 - instruction never to merge the test branch.
 
 Documentation language is concise natural Indonesian except technical identifiers.
+
+Completion evidence:
+
+- `c691969d5edb6b55063c9f2bbc67663238db8ddd` updates all Stage 12.11 documentation deliverables: `README.md`, `docs/user-guide.md`, `docs/prompt-library.md`, `docs/gpt-installation.md`, and `docs/test-plugin-installation.md`.
+- README, user guide, and prompt library now document the Version 1.1 production workflow: themed/mixed generation, Fast Approval, subject/angle cooldown, two-surface publishing package, smart recommendation, content calendar, performance feedback, legacy compatibility, and serialized write safety.
+- Production documentation clearly targets **Viral Producer** on `main`; test documentation clearly targets **Viral Producer v1.1 Test** on `test/viral-producer-v1.1`. Mutative acceptance testing is explicitly excluded from the production plugin.
+- Production installation guidance now reports Instruction, Editorial, and Test Specification versions as `3.0 — Stage 12`, keeps the production runtime profile on `main`, and points test-plugin setup to the separate test guide.
+- Test-plugin guidance is updated to Stage 12.11, records the completed Stage 12.10 result of AT-25 through AT-55 PASS (31/31), preserves the never-merge test-data boundary, and treats future test activity as an isolated authorized rerun.
+- AT-24 remains consistently classified as the mandatory Stage 12.12 post-cutover production smoke test: merge reviewed PR → refresh production plugin to v1.1 → new chat/version check → AT-24 PASS → controlled backfill → final production audit → resume production.
+- Documentation validation passed for balanced Markdown fences, final newlines, no trailing whitespace, production/test runtime separation, current Editorial version, Stage 12.10 evidence wording, and AT-24 ordering.
+- The documentation commit changes only the five documentation files above. No `data/**`, `output/**`, `system/**`, or acceptance-test file changed in Stage 12.11.
+- During validation, `main` remained at `af68f8db2d54e6c9d555e66a7c38045cf5f46501` and `test/viral-producer-v1.1` remained at `07eeb5831a852ff6df384c230f3a14ed85aa5c18`; neither branch was modified.
+- Stage 12.12 remains PENDING and was not started.
 
 ### Stage 12.12 — Pull Request, Cutover, and Backfill
 
