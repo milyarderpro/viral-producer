@@ -2079,3 +2079,35 @@ History and geography feel richer through an unexpected perspective.
 ```
 
 ---
+
+## P-000081 — Animals and Nature
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Kiwi are the only birds with nostrils at the tips of their beaks.
+
+Bombardier beetles mix chemicals inside their bodies to fire a near-boiling defensive spray.
+
+Sea otter fur can pack more than a million hairs into one square inch.
+
+Scorpions glow blue-green under ultraviolet light, though scientists still debate exactly why.
+
+Pronghorn are the world's only animals that shed their horn sheaths every year.
+
+Collared pikas store toxic plants as winter hay, waiting until toxins break down.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature becomes even more engaging through an unexpected perspective.
+
+#AnimalFacts #NatureFacts #WildlifeKnowledge #CuriousMinds #DidYouKnow
+```
+
+---
