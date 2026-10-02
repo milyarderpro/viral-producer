@@ -1941,7 +1941,7 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-26 Production profile refuses test | PENDING | Stage 12.10 | Must pass without research, allocation, or writes. |
 | AT-27 Explicit ref and mismatch rejection | PENDING | Stage 12.10 | Run only with the isolated connector test harness. |
 | AT-28 Incomplete Fast Approval rejection | PASS | fixture `cb4f679`; cleanup `bb98834` | Missing `quality.rationales.shareability` blocked approval with zero active/queue/state writes; revision and counters stayed 145 / 100 / 621; fixture restored byte-exact. |
-| AT-29 Fast Approval SHA conflict restart | PENDING | Stage 12.10 | Must preserve the competing writer and restart from fresh SHAs. |
+| AT-29 Fast Approval SHA conflict restart | PASS | Writer B `83ca414`/`167c746`/`4bdcafe`; Writer A `54d8881`/`f4d9c54`/`12d02cf` | Writer A detected all three stale SHAs, refetched, preserved P-000029, approved P-000028 once, advanced revision 146→147, and preserved counters 100/621. |
 | AT-30 Mixed-topic generation | PENDING | Stage 12.10 | Must prove at least four fact topics, at most two per topic, and all ordinary quality gates. |
 | AT-31 Mixed multi-ledger publication | PENDING | Stage 12.10 | Must route each fact by its own topic and never create a mixed ledger. |
 | AT-32 Themed backward compatibility | PENDING | Stage 12.10 | Missing post_format must mean themed without an inspection-time rewrite. |
