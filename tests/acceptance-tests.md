@@ -1904,7 +1904,8 @@ Branch: `test/viral-producer-v1.1`.
 - `P-000099` is a package-complete mixed ready fixture. `P-000028` and `P-000029` were modified during earlier fixture setup and must not be used as byte-unchanged legacy evidence for AT-47 or AT-54.
 - No raw performance snapshot exists, the performance summary remains empty, fact ledgers and the monthly archive remain unchanged from the test-branch baseline, and no scheduled slot is completed.
 - Earlier test-branch mutations are retained as disposable fixtures but are not credited as acceptance PASS evidence because the interrupted run did not record per-test results.
-- AT-24 through AT-55 remain PENDING until rerun or independently evidenced. No test data may be merged or copied to the feature branch or `main`.
+- Stage 12.10 resumed on 2026-10-02. Twenty-six of AT-24 through AT-55 now have recorded PASS evidence; six remain PENDING: AT-24, AT-26, AT-27, AT-38, AT-48, and AT-50. No test data may be merged or copied to the feature branch or `main`.
+- Interim full consistency audit after the recorded mutations passed with revision 148, counters 100/621, 96 active posts, 28 ready posts, 2 archives, 12 published facts, 14 planned slots, 1 completed slot, 3 performance snapshots, and deterministic queue/calendar/performance-summary parity.
 
 
 Validation date: 2026-09-30
@@ -1986,4 +1987,4 @@ The version-3 implementation is ready to merge only when:
 - legacy baseline records remain unchanged unless explicitly revised through the normal lifecycle;
 - no test-only corruption remains on the branch.
 
-Current result: AT-01 through AT-23, the body-science v2 regression, and the version-2 final consistency audit remain historical passing evidence. AT-24 through AT-55 are specified but not yet executed; the Stage 12 implementation is not acceptance-ready until Stage 12.10 completes.
+Current result: AT-01 through AT-23 and the body-science v2 regression retain historical PASS evidence. Stage 12.10 has recorded PASS evidence for 26 of AT-24 through AT-55; AT-24, AT-26, AT-27, AT-38, AT-48, and AT-50 remain PENDING. The interim repository consistency audit passes, but Stage 12 is not acceptance-ready until those six tests and the final post-test audit complete.
