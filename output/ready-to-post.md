@@ -1887,3 +1887,35 @@ Food and home knowledge can make familiar moments feel fresh.
 ```
 
 ---
+
+## P-000075 — Animals and Nature
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+American crocodiles can live on salty coasts because special glands remove excess salt.
+
+Bighorn sheep hooves can grip rocky ledges only two inches wide.
+
+Mature moose can grow about an inch of antler daily, adding roughly a pound.
+
+Ptarmigan grow brown feathers for summer and a separate white set for winter.
+
+Each Channel Island with foxes has its own genetically distinct island fox subspecies.
+
+Hummingbirds move their wings in figure eights, letting them fly backward, sideways, and upward.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature becomes even more engaging through an unexpected perspective.
+
+#AnimalFacts #NatureFacts #WildlifeKnowledge #CuriousMinds #DidYouKnow
+```
+
+---
