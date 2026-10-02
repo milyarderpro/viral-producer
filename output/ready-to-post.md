@@ -1215,3 +1215,35 @@ Nature becomes even more engaging through an unexpected perspective.
 ```
 
 ---
+
+## P-000040 — Geography and History
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Washington's first 2,000-tree cherry gift was ordered destroyed after inspectors found pests and disease
+
+About 90 percent of Mount Rushmore's carving was done using carefully placed dynamite
+
+Alcatraz's lighthouse became the first navigational light lit on the West Coast in 1854
+
+Apollo 14 astronauts visited Craters of the Moon in 1969 to study volcanic geology
+
+Petrified Forest is the only national park containing a segment of historic Route 66
+
+Novarupta's 1912 eruption filled a 44-square-mile Alaskan valley with ash up to 1,000 feet deep
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #USA
+```
+
+---
