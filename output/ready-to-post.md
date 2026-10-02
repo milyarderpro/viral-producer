@@ -2047,3 +2047,35 @@ Nature becomes even more engaging through an unexpected perspective.
 ```
 
 ---
+
+## P-000080 — Geography and History
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Portsmouth is the UK's only island city, sitting on England's south coast.
+
+Oxford had teaching by 1096 and is the English-speaking world's oldest university.
+
+Arthur's Seat exposes the eroded core of an ancient volcano above Edinburgh.
+
+Wales has over 600 castles, reflecting centuries of defense, conflict, and architectural change.
+
+Chester has Britain's largest Roman amphitheatre, once used for entertainment and military training.
+
+Britain's oldest door survives at Westminster Abbey, built sometime during the 1050s.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #UnitedKingdom
+```
+
+---
