@@ -2,7 +2,7 @@
 
 ## 2026-10-03
 
-- 12:00 WIB — P-000006 — Animals and Nature — GLOBAL
+- 19:00 WIB — P-000006 — Animals and Nature — GLOBAL
 
 ## 2026-10-04
 
