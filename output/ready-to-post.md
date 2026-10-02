@@ -1247,3 +1247,35 @@ History and geography feel richer through an unexpected perspective.
 ```
 
 ---
+
+## P-000041 — Animals and Nature
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Green crested basilisks can sprint across water and stay submerged for over ten minutes
+
+North American porcupines carry about 30,000 quills, but they cannot shoot them at predators
+
+Millions of microscopic hairs on gecko toes create the frictional forces that make them stick
+
+A giant anteater's two-foot tongue can flick in and out 150 times per minute
+
+Goats have rectangular pupils, giving their eyes an unmistakably horizontal-looking shape
+
+A red panda's thumb-like grip comes from a modified wrist bone, not an extra digit
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature becomes even more engaging through an unexpected perspective.
+
+#AnimalFacts #NatureFacts #WildlifeKnowledge #CuriousMinds #DidYouKnow
+```
+
+---
