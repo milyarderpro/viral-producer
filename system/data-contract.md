@@ -48,13 +48,15 @@ A future incompatible structure must increment the schema version. Do not silent
 
 ### Additive editorial compatibility
 
-Stage 10.3 and Stages 12.4 through 12.7 add compatible fields, records, and derived data without changing the meaning of existing records, so schema_version remains 1.
+Stage 10.3 and Stages 12.4 through 12.8 add compatible fields, records, and derived data without changing the meaning of existing records, so schema_version remains 1.
 
 Compatibility rules:
 
 - records created before editorial version 2 remain valid legacy records;
 - a missing `post_format` means `themed` for every existing record and must not trigger a bulk rewrite;
 - a missing `subject_key` on a legacy fact uses the cooldown fallback defined below and must not trigger a bulk rewrite;
+- missing `caption` or `hashtags` is compatible only for archived legacy content and active content awaiting the separately authorized controlled backfill; readers must not fabricate either field;
+- every newly created v1.1 post must persist a complete publishing package, and any revision that changes a fact, post topic, country focus, or effective post format must recheck that package before persistence;
 - a missing editorial audit field in a legacy draft is not a JSON or schema corruption;
 - every newly created draft must include all editorial version 2 fields defined below;
 - a legacy draft may remain unchanged while stored as draft;
@@ -428,6 +430,14 @@ Required structure for a newly created or editorial-version-2-upgraded draft:
       "hook": "Did you know?",
       "facts": [],
       "cta": "Enjoyed these facts? Like the video and follow for more!",
+      "caption": "Nature has a talent for making the impossible look ordinary.",
+      "hashtags": [
+        "#DidYouKnow",
+        "#AmazingFacts",
+        "#AnimalFacts",
+        "#NatureFacts",
+        "#LearnSomethingNew"
+      ],
       "quality": {
         "opening_strength": 2,
         "surprise_quality": 2,
@@ -497,6 +507,43 @@ Format invariants:
 - every mixed fact uses one allowed non-mixed fact topic;
 - a mixed record defaults to country_focus `GLOBAL`;
 - for a country-specific mixed record, every fact country_scope explicitly includes country_focus.
+
+### Publishing package rules
+
+Every newly created v1.1 active record must contain `caption` and `hashtags`.
+
+`caption` must:
+
+- be a non-empty string containing exactly one sentence;
+- normally contain 6 through 14 whitespace-delimited English words;
+- use natural, concise American English;
+- not be a generic question and never use "Which fact surprised you?";
+- not contain the word "trivia" in prose, case-insensitively;
+- not use "Here are six facts" or an equivalent generic six-fact introduction;
+- not restate or summarize the six stored facts;
+- not introduce a new factual claim requiring verification;
+- not duplicate the on-screen CTA or add another engagement CTA;
+- contain no citation and no emoji by default.
+
+`hashtags` must:
+
+- be an array of 4 through 6 strings;
+- contain unique values case-insensitively;
+- store exactly one hashtag token per element, beginning with `#` and containing no whitespace;
+- remain relevant to the final topic, effective post format, and supported country scope;
+- contain no misleading, unrelated, repetitive, or spam-like tag;
+- use PascalCase for readable multiword tags when appropriate;
+- permit `#Trivia`; the prose restriction on "trivia" does not apply to hashtag tokens.
+
+Hashtags never enter hook, facts[].surface_text, CTA, or the on-screen script renderer.
+
+Generate and validate the package only after the final six facts have passed every factual, editorial, cooldown, ordering, and quality gate. Persist the package in the same active-record write as the draft.
+
+A wording-only revision may preserve caption and hashtags when both remain valid and relevant. Any fact replacement or change to topic, country_focus, or effective post_format must recheck both fields against the resulting record before persistence. Preserve values that still pass; regenerate only package fields that no longer pass.
+
+Fast Approval must never generate or regenerate a publishing package. A package-complete draft must pass the stored package checks above and approval preserves caption text, hashtag values, array order, and field presence exactly. An active draft missing required package fields is incomplete for Fast Approval and fails with zero writes; controlled production backfill is a separate operation.
+
+Do not backfill existing production records while implementing this contract change.
 
 ### Quality rules
 
@@ -576,6 +623,7 @@ The target is eligible only when all of these conditions pass:
 - generation_audit contains candidate_count of at least 18, only allowed rejected_counts keys, a rejection sum equal to candidate_count minus 6, operator_variety matching the final facts, and exactly two different valid weakest_fact_review positions; when cooldown_audit is present, it is internally consistent, while compatible legacy absence is preserved;
 - the six stored facts contain at least four distinct operators, no operator more than twice, no more than two record_superlative facts, at least four viral-strength-2 facts, and no strength-0 fact;
 - Facts 1 and 6 both have viral_strength 2 and different surprise_operator values;
+- the stored caption and hashtag array are present and valid for any post governed by the v1.1 publishing-package requirement; Fast Approval does not create missing package fields;
 - the current active data and derived ready queue have no unresolved partial lifecycle operation;
 - the runtime profile, connector response identity, and latest SHA preflight pass for every affected file.
 
@@ -586,7 +634,8 @@ Eligibility checks may verify structure, allowed values, arithmetic, and cross-f
 - perform global semantic deduplication or read fact ledgers for approval;
 - rescore quality or rewrite quality rationales;
 - rebuild generation_audit;
-- change facts, sources, wording, ordering, topic, country focus, subject_key presence, cooldown audit, or other editorial metadata;
+- change facts, sources, wording, ordering, topic, country focus, subject_key presence, cooldown audit, caption, hashtags, or other editorial metadata;
+- generate, regenerate, reorder, or supplement the publishing package;
 - allocate or replace Post IDs or Fact IDs.
 
 Any missing, false, invalid, or inconsistent eligibility evidence is a hard Fast Approval failure. The operation performs zero writes and reports the exact stored-data failure.
@@ -686,6 +735,14 @@ Required structure for a post produced or upgraded under editorial version 2:
         }
       ],
       "cta": "Enjoyed these facts? Like the video and follow for more!",
+      "caption": "Nature has a talent for making the impossible look ordinary.",
+      "hashtags": [
+        "#DidYouKnow",
+        "#AmazingFacts",
+        "#AnimalFacts",
+        "#NatureFacts",
+        "#LearnSomethingNew"
+      ],
       "quality_total": 12,
       "quality_rationales": {
         "opening_strength": "Fact 1 is strength 2, immediate, and one of the three strongest facts.",
@@ -738,7 +795,7 @@ The facts array must preserve the exact wording and order used in the published 
 
 There must be at most one archive record per post_id across all monthly files.
 
-For an editorial-version-2 post, copy quality.rationales into quality_rationales and copy generation_audit unchanged into the archive. Preserve `post_format` when present; a missing legacy value remains implicitly themed. Legacy published posts may omit those additive fields.
+For an editorial-version-2 post, copy quality.rationales into quality_rationales and copy generation_audit unchanged into the archive. Preserve `post_format` when present; a missing legacy value remains implicitly themed. For a package-complete v1.1 post, copy `caption` and the ordered `hashtags` array unchanged from the final active record. Legacy published posts may omit those additive fields.
 
 Published archive records are immutable except to correct proven data corruption. A wording change after publication must be recorded as a new post.
 
@@ -774,10 +831,13 @@ Render topic values in headings using this fixed mapping:
 
 Render one block for every active record whose status is ready.
 
-Required block:
+Required block for a package-complete v1.1 ready post:
 
     ## P-000001 — Animals and Nature
 
+    ### ON-SCREEN SCRIPT
+
+    ```text
     Did you know?
 
     [Fact 1]
@@ -793,16 +853,29 @@ Required block:
     [Fact 6]
 
     Enjoyed these facts? Like the video and follow for more!
+    ```
+
+    ### FACEBOOK CAPTION
+
+    ```text
+    Nature has a talent for making the impossible look ordinary.
+
+    #DidYouKnow #AmazingFacts #AnimalFacts #NatureFacts #LearnSomethingNew
+    ```
 
     ---
 
-The heading identifies the post but is not part of the Facebook copy.
+The heading and the two labels identify copy surfaces but are not part of either Facebook text payload.
 
-The clean copy consists only of hook, six surface_text values in stored order, and CTA. Separate each component with exactly one blank line.
+The ON-SCREEN SCRIPT block consists only of hook, six surface_text values in stored order, and CTA. Separate each component with exactly one blank line. It contains no hashtags.
 
-Do not include sources, fact IDs, numbering, bullets, quality scores, internal status, audit notes, hashtags, or production guidance in the clean copy.
+The FACEBOOK CAPTION block consists of the stored caption, exactly one blank line, then the stored hashtag array joined in stored order with one ASCII space between tags.
 
-hook, every surface_text value, and cta must each be a single line without embedded carriage returns or line feeds.
+Do not include sources, fact IDs, numbering, bullets, quality scores, internal status, audit notes, or production guidance inside either code block.
+
+hook, every surface_text value, cta, and caption must each be a single line without embedded carriage returns or line feeds. Every hashtag is one token without whitespace.
+
+Stage 12.8 does not rewrite protected production snapshots or backfill existing ready posts. A normal v1.1 queue rebuild must not invent missing caption or hashtag values; legacy package gaps are handled by the separately authorized compatibility/backfill flow.
 
 ### Deterministic rendering
 
@@ -812,9 +885,9 @@ Rendering procedure:
 
 1. Read the latest active-drafts.jsonl and its Git blob SHA.
 2. Select only records whose status is ready.
-3. Validate that each selected record has a non-null ready_at, exactly six facts, and all required copy fields.
+3. Validate that each selected record has a non-null ready_at, exactly six facts, all required on-screen fields, and — for a package-complete v1.1 record — valid stored caption and hashtags.
 4. Sort by ready_at ascending, then post_id ascending as the tie-breaker.
-5. Render the required header, all ready blocks, and separators.
+5. Render the required header, both copy blocks for every package-complete v1.1 ready post, and separators.
 6. Use UTF-8, LF line endings, and exactly one final newline.
 7. Replace output/ready-to-post.md using its latest Git blob SHA.
 8. Fetch the result and confirm every ready post appears exactly once and no other post appears.
@@ -823,9 +896,9 @@ If validation fails, do not replace a currently valid queue. Report the inconsis
 
 ### Chat parity
 
-After approval or a SHOW_NEXT_READY request, reconstruct the clean copy from the authoritative active record. The hook, six facts, ordering, punctuation, and CTA shown in chat must exactly match the clean-copy portion of the corresponding queue block.
+After approval or a SHOW_NEXT_READY request, reconstruct both copy surfaces from the authoritative active record. The hook, six facts, ordering, punctuation, and CTA shown in chat must exactly match the ON-SCREEN SCRIPT queue block. The caption text, blank-line separator, hashtag values, and hashtag order must exactly match the FACEBOOK CAPTION queue block.
 
-Place the clean copy in one plain-text code block for convenient copying. Keep the post ID, status, and repository confirmation outside that code block.
+Place ON-SCREEN SCRIPT and FACEBOOK CAPTION in two separate plain-text code blocks. Keep both labels, the post ID, status, and repository confirmation outside the code blocks. Never move hashtags into the on-screen block.
 
 ## 16. Word Count Rule
 
@@ -879,13 +952,14 @@ All lifecycle reads, preflight checks, writes, verification reads, and recovery 
 6. Verify, normalize, deduplicate, derive subject_key, apply the complete subject/cluster cooldown, label operators, and rank candidate viral strength.
 7. Select six candidates that pass format/topic, cooldown, operator diversity, source access, scope, safety, and quality rules.
 8. Challenge the two weakest final facts and complete generation_audit, including cooldown_audit and any explicit named-series override evidence.
-9. Allocate one post ID and six fact IDs only after every hard gate passes.
-10. Add one complete current-format draft record to active-drafts.jsonl, including `post_format`.
-11. Increment next_post_number by one.
-12. Increment next_fact_number by six.
-13. Update topic and country rotation fields; store `mixed` in recent_topics for a mixed post.
-14. Increment state revision.
-15. Report the saved post ID only after GitHub confirms both writes.
+9. Generate and validate caption plus 4–6 hashtags from the final post without adding a factual claim.
+10. Allocate one post ID and six fact IDs only after every hard gate, including the publishing package, passes.
+11. Add one complete current-format draft record to active-drafts.jsonl, including `post_format`, `caption`, and `hashtags`.
+12. Increment next_post_number by one.
+13. Increment next_fact_number by six.
+14. Update topic and country rotation fields; store `mixed` in recent_topics for a mixed post.
+15. Increment state revision.
+16. Report the saved post ID only after GitHub confirms both writes.
 
 Reserved signatures live in the saved draft record.
 
@@ -901,8 +975,8 @@ Reserved signatures live in the saved draft record.
 8. Rebuild the complete output/ready-to-post.md once from the resulting in-memory active records and replace it exactly once using its preflight SHA.
 9. Replace data/production-state.json exactly once using its preflight SHA. Increase revision by exactly one and set updated_at to the operation timestamp. Preserve next_post_number, next_fact_number, rotation fields, timezone, single_writer_mode, schema version, and every other state field.
 10. Reread all three files from explicit RUNTIME_BRANCH and verify repository/ref identity.
-11. Confirm the target is ready exactly once; approved_at and ready_at match; the queue is ordered and byte-exact from authoritative records; revision increased once; next-ID counters did not change; and post IDs, fact IDs, facts, sources, quality, and generation_audit are unchanged.
-12. Report success and display only the stored script and any already stored publishing package. Do not regenerate copy or publish it.
+11. Confirm the target is ready exactly once; approved_at and ready_at match; the queue is ordered and byte-exact from authoritative records; revision increased once; next-ID counters did not change; and post IDs, fact IDs, facts, sources, quality, generation_audit, caption, hashtags, and hashtag order are unchanged.
+12. Report success and display the stored ON-SCREEN SCRIPT and stored FACEBOOK CAPTION in separate plain-text code blocks. Do not regenerate either surface or publish it.
 
 active-drafts.jsonl is authoritative. If the active write succeeds but a later write fails, report the confirmed partial state. Repair only the deterministic queue or finish the same state-revision update with the original operation timestamp and preserved counters before another state-changing operation.
 
@@ -911,6 +985,7 @@ active-drafts.jsonl is authoritative. If the active write succeeds but a later w
 - Keep the same fact ID when only surface_text changes.
 - Recalculate word_count, scope_check_passed, quality scores, and rationales.
 - Reverify that wording preserves the source claim.
+- Recheck the stored publishing package against the revised final script; preserve caption and hashtags when they still pass every package rule and remain relevant.
 - If the revision reruns the post-level editorial decision, upgrade a legacy record completely.
 - Regenerate the ready queue if the post is ready.
 
@@ -923,6 +998,7 @@ active-drafts.jsonl is authoritative. If the active write succeeds but a later w
 - Upgrade the complete post to editorial version 2.
 - Derive subject_key for the replacement and re-run duplicate, subject/cluster cooldown, operator-diversity, viral-strength, source-access, scope, and quality checks.
 - Rebuild generation_audit, including current cooldown_audit, without storing rejected candidate wording.
+- Recheck caption and hashtags against the replacement result and the final topic, country focus, and effective post format; preserve valid values and regenerate any package field that no longer passes.
 - Regenerate the ready queue when necessary.
 
 ### Reject draft
@@ -941,7 +1017,7 @@ Because the rejected fact snapshots were never added to the published fact index
 1. Confirm the post exists with status ready.
 2. Record one operation-wide published_at timestamp.
 3. Upsert its six fact snapshots into fact indexes selected independently by each fact's own non-mixed topic, using that timestamp and preserving editorial metadata. Never route a fact to a mixed ledger.
-4. Append one immutable post record to the correct monthly archive, preserving post_format when present, quality rationales, and generation_audit.
+4. Append one immutable post record to the correct monthly archive, preserving post_format when present, the exact stored caption and ordered hashtags when present, quality rationales, and generation_audit.
 5. If the post has one planned publishing slot, change it to completed with completed_at equal to published_at, update updated_at, and increment publishing-plan revision once. A missing slot is allowed.
 6. Remove the post from active-drafts.jsonl.
 7. Regenerate the complete ready queue from the remaining active ready records.
@@ -1024,6 +1100,8 @@ Audit checks for all records:
 - every country-specific mixed record has its country_focus explicitly present in every fact country_scope;
 - no data/facts/mixed.jsonl file exists;
 - every ready post appears exactly once in ready-to-post.md;
+- every package-complete v1.1 ready post has exactly one ON-SCREEN SCRIPT block and one FACEBOOK CAPTION block with byte-exact active-record parity;
+- no hashtag appears inside an on-screen script block;
 - no non-ready post appears in ready-to-post.md;
 - every archived post has six published fact records;
 - every published fact points to an existing archived post;
@@ -1044,7 +1122,9 @@ Audit checks for all records:
 - legacy facts missing subject_key remain readable through the documented in-memory fallback and are not silently rewritten;
 - cooldown_audit is structurally valid when present;
 - any series override names the series, identifies overridden fact positions, and records a concise reason;
-- active reservations and the 20 most recent archived posts contain no prohibited exact-subject reuse or third semantic-cluster post without valid override evidence.
+- active reservations and the 20 most recent archived posts contain no prohibited exact-subject reuse or third semantic-cluster post without valid override evidence;
+- every newly created v1.1 active post has a valid caption and 4–6 unique relevant hashtags;
+- every package-complete archived v1.1 post preserves the exact caption and ordered hashtag array from its final active record.
 
 Additional checks for a record containing editorial version 2 fields:
 
@@ -1124,6 +1204,7 @@ For every newly created or editorial-version-2-upgraded draft, also do not save,
 - operator_variety does not match the final six facts;
 - weakest_fact_review does not contain exactly two different valid final positions;
 - generation_audit contains full rejected candidate wording.
+- a newly created v1.1 post lacks caption or hashtags, or its stored package fails the publishing-package rules.
 
 For a newly created post after Stage 12.7, also do not save when:
 
@@ -1465,3 +1546,51 @@ Persist series_override_used, series_name, overridden_fact_positions, and a conc
 - Publication copies subject_key unchanged into the fact ledger when present.
 - Legacy active and published facts may omit subject_key indefinitely and use the read-time fallback.
 - Inspection, recommendation, approval, publication, and audit never bulk-backfill subject_key.
+
+## 27. Complete Publishing Package
+
+### Canonical active fields
+
+A package-complete active record stores:
+
+    "caption": "Nature has a talent for making the impossible look ordinary.",
+    "hashtags": [
+      "#DidYouKnow",
+      "#AmazingFacts",
+      "#AnimalFacts",
+      "#NatureFacts",
+      "#LearnSomethingNew"
+    ]
+
+The fields are authoritative content, not a derived view. Their exact values travel with the post through draft, revision, Fast Approval, ready rendering, and publication.
+
+### Validation
+
+Before a new or package-rechecked record may be persisted:
+
+1. Validate caption as exactly one sentence and normally 6–14 words.
+2. Reject generic questions, prose use of "trivia", generic six-fact introductions, fact restatements, new factual claims, duplicate CTA text, citations, and default emoji.
+3. Validate 4–6 hashtag strings, uniqueness case-insensitively, one token per entry, relevance to final topic/effective post format/supported country scope, and absence of misleading or spam tags.
+4. Allow `#Trivia` as a hashtag.
+5. Verify that no hashtag token appears in hook, facts[].surface_text, or CTA.
+6. Preserve stored hashtag order for all renderers and archives.
+
+### Recheck triggers
+
+A wording-only revision may preserve the package after validation. A fact replacement, post-topic change, country_focus change, or effective post_format change always triggers a package recheck against the complete resulting record before the write. The recheck does not require new factual research unless the content operation itself already requires it, because a valid caption must not introduce a factual claim.
+
+If the existing caption or hashtags remain valid, preserve them byte-for-byte. If one part fails, regenerate only that part and validate the complete package again.
+
+Fast Approval is not a recheck trigger. It validates stored package structure and rules only, performs no package generation, and preserves valid stored values exactly.
+
+### Archive and derived output
+
+Publication copies caption and hashtags unchanged into the monthly archive record. The ready queue and chat are derived from the active record and must render:
+
+- ON-SCREEN SCRIPT in one plain-text code block;
+- FACEBOOK CAPTION in a second plain-text code block containing caption, one blank line, then hashtags joined with one space in stored order.
+
+Any mismatch between active package, queue package, chat package, or archive package is an integrity failure.
+
+Stage 12.8 changes specification only. Existing production posts are not backfilled here.
+
