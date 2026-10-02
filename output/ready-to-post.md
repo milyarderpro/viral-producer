@@ -549,3 +549,35 @@ American landmarks hide stories that make familiar places feel new.
 
 #DidYouKnow #AmazingFacts #USHistory #AmericanLandmarks #LearnSomethingNew
 ```
+
+---
+
+## P-000099 — Mixed Trivia
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+The Sargasso Sea is the only sea whose boundaries are entirely ocean currents
+
+Laminated safety glass was inspired by a flask whose broken pieces stayed together
+
+Velcro's hook-and-loop design copied tiny burr hooks that clung to fabric and fur
+
+Lake Baikal holds about 20% of the world's unfrozen freshwater reserve
+
+Pencil lead is graphite mixed with clay and contains no actual lead
+
+Limpet teeth have the highest recorded tensile strength for a biological material
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Unexpected connections make ordinary things feel completely different.
+
+#DidYouKnow #AmazingFacts #MixedTrivia #ScienceFacts #WorldFacts #LearnSomethingNew
+```
