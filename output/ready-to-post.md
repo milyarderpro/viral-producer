@@ -991,3 +991,35 @@ History and geography feel richer through an unexpected perspective.
 ```
 
 ---
+
+## P-000031 — Food and Household Knowledge
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+White, green, oolong, and black teas can all come from Camellia sinensis leaves
+
+A fig's tiny flowers bloom hidden inside the hollow structure we eat as fruit
+
+The cashew apple is a swollen stalk, while the true fruit hangs beneath it
+
+Red cabbage anthocyanins turn pink in acid and green in basic solutions
+
+Fresh cranberries bounce when dropped, while softening berries gradually lose that springy behavior
+
+Tempering chocolate favors Form V cocoa-butter crystals that shape its texture, gloss, and shelf life
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Food and home knowledge can make familiar moments feel fresh.
+
+#FoodFacts #HomeKnowledge #EverydayLearning #CuriousMinds #DidYouKnow
+```
+
+---
