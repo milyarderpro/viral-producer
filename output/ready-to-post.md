@@ -1311,3 +1311,35 @@ Food and home knowledge can make familiar moments feel fresh.
 ```
 
 ---
+
+## P-000045 — Inventions, Firsts, and Records
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Walter Hunt invented the safety pin while trying to repay a $15 debt in 1849
+
+Margaret Knight's paper-bag machine could perform work previously requiring about 30 people
+
+As a teenager, Louis Braille transformed a 12-dot military night-writing code into six-dot braille
+
+Superglue's chemistry emerged from research seeking clear plastic for precision World War II gunsights
+
+Marion Donovan's waterproof diaper cover began with pieces cut from a shower curtain
+
+Stephanie Kwolek invented Kevlar, a fiber five times stronger than steel at equal weight
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Innovation and record stories become memorable through unexpected perspectives.
+
+#InventionFacts #WorldRecords #InnovationHistory #CuriousMinds #DidYouKnow
+```
+
+---
