@@ -1959,7 +1959,7 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-44 Scheduled publication cleanup | PENDING | Stage 12.10 | Posting must complete the slot and remove it from the active calendar exactly once. |
 | AT-45 Exact subject cooldown | PENDING | Stage 12.10 | A different claim about a recent or active subject must fail without explicit series override. |
 | AT-46 Semantic cluster limit | PENDING | Stage 12.10 | A narrow cluster must not enter a third distinct post. |
-| AT-47 Legacy subject fallback | PENDING | Stage 12.10 | Missing subject_key must use fallback without rewriting legacy data. |
+| AT-47 Legacy subject fallback | PASS | read-only `P-000001` / `F-000001` on 2026-10-02 | In-memory fallback mapped a non-duplicate Badwater Basin candidate to the legacy subject, rejected it on exact-subject cooldown before allocation, and preserved all 13 tracked artifact SHAs with no subject_key backfill. |
 | AT-48 Named-series override | PENDING | Stage 12.10 | Explicit override must be narrowly applied, persisted, and unable to bypass duplicate or quality gates. |
 | AT-49 Publishing package generation | PENDING | Stage 12.10 | Must persist a valid caption and 4–6 hashtags and render two separate copy blocks. |
 | AT-50 Publishing package recheck triggers | PENDING | Stage 12.10 | Wording may preserve valid packaging; fact/topic/country/format changes must recheck it. |
