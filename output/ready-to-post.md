@@ -1599,3 +1599,35 @@ Nature becomes even more engaging through an unexpected perspective.
 ```
 
 ---
+
+## P-000061 — Geography and History
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Derbyshire’s Fritchley Tunnel, built in 1793, is the world’s oldest surviving railway tunnel
+
+True, grid, and magnetic north aligned in England for the first recorded time in 2022
+
+London’s Thames Tunnel was built for carts but opened pedestrian-only because ramps were unaffordable
+
+Britain’s Ordnance Survey grew from military mapping after the Scottish rebellion of 1745
+
+Shropshire’s Iron Bridge, completed in 1779, was the world’s first bridge made of iron
+
+Henry VIII’s rounded coastal forts were shaped partly to make incoming cannonballs deflect away
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #UnitedKingdom
+```
+
+---
