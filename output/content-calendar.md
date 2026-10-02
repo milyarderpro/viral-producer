@@ -1,5 +1,3 @@
 # CONTENT CALENDAR
 
-## 2026-10-03
-
-- 19:00 WIB — P-000098 — Mixed Trivia — GLOBAL
+No posts are scheduled.
