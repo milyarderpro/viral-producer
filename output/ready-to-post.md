@@ -1727,3 +1727,35 @@ Nature becomes even more engaging through an unexpected perspective.
 ```
 
 ---
+
+## P-000066 — Geography and History
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+USS Cairo sank in 12 minutes, becoming the first armored warship sunk by an electrically detonated mine.
+
+Dry Falls was once four times larger than Niagara Falls, stretching 3.5 miles wide.
+
+Cumberland Gap became dry after its rising mountain forced Yellow Creek to change course.
+
+John Brown’s Fort was moved four times in 75 years, including once to Chicago.
+
+Mesa Verde’s Cliff Palace packed 150 rooms and 21 kivas around roughly 100 residents.
+
+Some Hovenweep stone structures still stand on irregular boulders more than 700 years later.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #USA
+```
+
+---
