@@ -1791,3 +1791,35 @@ Nature becomes even more engaging through an unexpected perspective.
 ```
 
 ---
+
+## P-000070 — Food and Household Knowledge
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+The almond we eat is actually a seed inside the pit of a drupe.
+
+An artichoke is an immature flower bud, and its heart is the flower's fleshy base.
+
+Swiss cheese holes form when bacterial carbon dioxide collects and pushes open pockets inside the cheese.
+
+Fresh olives are very bitter because of oleuropein, so curing removes that compound before eating.
+
+Those white strings in an egg are chalazae, protein cords that keep the yolk centered.
+
+Every potential corn kernel grows its own silk, and each silk needs pollination.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Food and home knowledge can make familiar moments feel fresh.
+
+#FoodFacts #HomeKnowledge #EverydayLearning #CuriousMinds #DidYouKnow
+```
+
+---
