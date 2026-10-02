@@ -66,6 +66,26 @@ Compatibility rules:
 
 A substantive revision includes replacing a fact, changing a canonical claim or source basis, changing fact order for editorial reasons, or rerunning the post-level quality decision. A correction limited to spelling, punctuation, or whitespace may remain legacy, but it does not make the post eligible for approval.
 
+### Stage 12.9 compatibility boundary
+
+Version 1.1 remains additive and backward-compatible under `schema_version: 1`.
+
+Apply these rules to every read, audit, recovery, lifecycle operation, and migration decision:
+
+- missing `post_format` means effective `themed`; do not persist the inferred value unless a separately authorized content operation requires the field;
+- missing `subject_key` on legacy facts uses the documented in-memory fallback and never triggers bulk migration;
+- missing `caption` or `hashtags` is valid for archived legacy posts and for active records explicitly awaiting the controlled production backfill; inspection, audit, recommendation, approval, scheduling, or publication must not invent those fields;
+- a newly created v1.1 post must contain the complete publishing package; an active record that should already be package-complete but is missing a package fails the relevant transition rather than being silently repaired;
+- preserve all existing Post IDs, Fact IDs, counters, fact snapshots, canonical claims, sources, quality scores and rationales, generation audits, timestamps, archived records, and published fact records unless the user invokes an ordinary lifecycle operation that is already authorized to change that exact field;
+- compatibility handling never decrements or renumbers counters, reallocates consumed IDs, rewrites immutable archives, or bulk-rewrites active or published records;
+- `data/performance-summary.json` may begin with sample_size 0 and empty buckets;
+- the absence of `data/performance/` or monthly performance JSONL files is valid until the first real performance snapshot is recorded;
+- `data/publishing-plan.json` may begin at revision 0 with an empty slots array;
+- `output/content-calendar.md` may begin with the deterministic empty-calendar rendering;
+- empty additive stores do not imply an integrity error and do not justify changing production-state revision, IDs, rotation, active records, archives, ledgers, or ready output.
+
+Controlled caption/hashtag backfill is a separate production operation after merge and cutover. Stage 12.9 does not perform it.
+
 ### Runtime repository boundary
 
 Every repository-backed operation runs inside one immutable runtime tuple:
