@@ -21,7 +21,8 @@ It verifies that the GPT:
 - prevents textbook filler and quality-score inflation;
 - persists compact generation audit evidence;
 - keeps legacy drafts readable while blocking unverified approval;
-- performs Fast Approval only from complete stored evidence with no fresh research, rescoring, or ID allocation.
+- performs Fast Approval only from complete stored evidence with no fresh research, rescoring, or ID allocation;
+- persists, renders, preserves, rechecks, and archives complete Facebook publishing packages without mixing hashtags into the on-screen script.
 
 Stages 8 and 10 created and executed the version-2 suite. Stage 12 extends the specification; execute and record the new version-3 tests during Stage 12.10 after the isolated test plugin is installed.
 
@@ -129,7 +130,9 @@ Every approval test must prove that:
 - revision increases exactly once while next_post_number, next_fact_number, and every unrelated state field remain unchanged;
 - post IDs, effective and stored post_format, post topic, fact IDs, facts, sources, quality, and generation_audit remain unchanged;
 - approved_at and ready_at use the same operation timestamp;
-- final active, queue, state, chat copy, and any already stored publishing package have exact parity;
+- final active, queue, state, chat copy, and any stored publishing package have exact parity;
+- package-complete v1.1 approvals preserve caption text, hashtag values, array order, and field presence exactly and never regenerate the package;
+- a required missing or invalid package fails Fast Approval before any write;
 - a stale SHA causes a complete refetch and eligibility restart rather than overwrite.
 
 ### Post format and topic routing
@@ -164,6 +167,32 @@ Every newly created or editorial-version-2-upgraded standard post must have:
 - factual_confidence of 2;
 - hard_rules_passed set to true;
 - one non-empty evidence-based rationale for each of the six quality dimensions.
+
+### Complete publishing package
+
+For every newly created v1.1 post:
+
+- caption is stored with the active draft;
+- caption is exactly one sentence and normally 6–14 whitespace-delimited English words;
+- caption uses concise natural American English;
+- caption is not a generic question and does not use "Which fact surprised you?";
+- caption does not use "trivia" in prose, "Here are six facts", or equivalent generic packaging language;
+- caption does not restate or summarize the six facts;
+- caption introduces no new factual claim;
+- caption does not duplicate the standard CTA or add another engagement CTA;
+- caption contains no citation and no emoji by default;
+- hashtags is an ordered array of 4–6 strings;
+- hashtag values are unique case-insensitively and each value is one hashtag token with no whitespace;
+- hashtags are relevant to the final topic, effective post format, and supported country scope;
+- hashtags are not misleading, unrelated, repetitive, or spam-like;
+- multiword hashtags use readable PascalCase when appropriate;
+- `#Trivia` is allowed even though "trivia" is prohibited in caption prose;
+- no hashtag appears in hook, any fact surface_text, CTA, or the ON-SCREEN SCRIPT rendering;
+- fact replacement or a change to post topic, country focus, or effective post format triggers package recheck before persistence;
+- a wording-only revision may preserve the package only when it still passes every rule and remains relevant;
+- publication preserves the exact final caption and hashtag array in the archive.
+
+Fast Approval validates stored package evidence only and preserves it exactly. It never generates, regenerates, reorders, supplements, or backfills caption or hashtags.
 
 ### Editorial diversity and strength
 
@@ -265,9 +294,13 @@ For every ready post:
 
 - output/ready-to-post.md contains it exactly once;
 - the queue is ordered by ready_at, then post_id;
-- hook, six fact texts, punctuation, ordering, and CTA match the active record;
-- the clean copy shown in chat matches the Markdown queue;
-- internal metadata remains outside the copy block.
+- for a package-complete v1.1 record, the queue contains exactly one ON-SCREEN SCRIPT block and one FACEBOOK CAPTION block;
+- ON-SCREEN SCRIPT contains only hook, six fact texts, and CTA with exact active-record punctuation and ordering;
+- FACEBOOK CAPTION contains the exact stored caption, one blank line, then stored hashtags joined in stored order with one space;
+- the two surfaces are rendered in separate plain-text code blocks and their labels remain outside the blocks;
+- no hashtag appears in the ON-SCREEN SCRIPT block;
+- chat output matches both Markdown queue blocks exactly;
+- internal metadata remains outside both copy blocks.
 
 ## 5. Test Cases
 
@@ -309,8 +342,8 @@ Expected chat behavior:
 - Produces one English six-fact script.
 - Shows the saved post ID; record it as {{POST_A}}.
 - Reports topic, country focus, supported quality, candidate count, operator variety, verification, scope, source access, duplicate check, and save status.
-- Presents clean copy in one plain-text code block.
-- Does not expose citations inside the copy block.
+- Presents ON-SCREEN SCRIPT and FACEBOOK CAPTION in two separate plain-text code blocks.
+- Does not expose citations inside either block and does not place hashtags in the on-screen block.
 
 Repository assertions:
 
@@ -318,6 +351,7 @@ Repository assertions:
 - It contains exactly six fact snapshots, valid sources, and all required per-fact editorial fields.
 - Its post format, post topic, and fact topics satisfy the global format gates.
 - It contains six quality rationales and a complete generation_audit.
+- It contains a valid caption and 4–6 valid unique relevant hashtags satisfying every global publishing-package gate.
 - candidate_count is at least 18 and rejected_counts sums to candidate_count minus 6.
 - operator_variety matches the final six facts.
 - next_post_number increases by 1.
@@ -344,6 +378,7 @@ Expected chat behavior:
 - Uses country_focus AU.
 - If themed, it has a clear Australian focus without forcing all six facts to be Australia-specific when that would weaken quality.
 - If mixed, every selected fact explicitly supports Australia.
+- Its caption and hashtags remain relevant to the Australian scope without implying unsupported geography.
 
 Repository assertions:
 
@@ -468,6 +503,7 @@ Repository assertions:
 - Fact 3 surface_text changes and remains 11–18 words.
 - Fact 3 scope_check_passed and source_access_passed remain true.
 - Quality scores and all six rationales are recalculated from the revised script.
+- The publishing package is rechecked against the revised wording; valid stored package fields remain byte-identical, and any changed package field independently passes every publishing-package gate.
 - next_post_number and next_fact_number do not change.
 - revision increases by 1.
 
@@ -500,7 +536,8 @@ Repository assertions:
 - The removed ID is not returned to the available pool.
 - The complete post is upgraded or remains compliant with all version-2 metadata fields.
 - generation_audit, operator_variety, weakest_fact_review, quality scores, and rationales are recomputed.
-- The complete post still passes global quality gates.
+- Caption and hashtags are rechecked against the replacement result before persistence; preserved values remain valid and any regenerated value passes every package rule.
+- The complete post still passes global quality and publishing-package gates.
 
 Pass: one new unique fact replaces the old claim safely.
 
@@ -508,7 +545,7 @@ Pass: one new unique fact replaces the old claim safely.
 
 Purpose: Verify the stored-evidence-only draft-to-ready transition, strict write budget, counter preservation, and copy-ready queue.
 
-Precondition: {{POST_A}} has status draft and complete current editorial metadata.
+Precondition: {{POST_A}} has status draft, complete current editorial metadata, and a complete valid stored publishing package.
 
 Prompt:
 
@@ -520,8 +557,9 @@ Expected chat behavior:
 - Uses only the latest stored validation evidence.
 - Does not open source URLs, call Web Search, research, revalidate facts, perform global semantic deduplication, rescore quality, rebuild generation_audit, replace content, allocate IDs, or run a freshness gate.
 - Reports ready status, not posted status.
-- Shows the stored on-screen copy and any already stored publishing package without regeneration.
-- Confirms exact queue parity.
+- Shows stored ON-SCREEN SCRIPT and stored FACEBOOK CAPTION in two separate plain-text code blocks.
+- Does not regenerate, rewrite, reorder, supplement, or backfill caption or hashtags.
+- Confirms exact queue parity for both surfaces.
 
 Repository and trace assertions:
 
@@ -534,8 +572,8 @@ Repository and trace assertions:
 - revision increases by exactly 1.
 - next_post_number and next_fact_number are unchanged.
 - Every other state field except updated_at is unchanged.
-- Post ID, six fact IDs, facts, sources, quality object, and generation_audit are byte-equivalent to their pre-approval values.
-- ready-to-post.md contains {{POST_A}} exactly once and passes every ready-copy parity gate.
+- Post ID, six fact IDs, facts, sources, quality object, generation_audit, caption, hashtag values, hashtag order, and package field presence are byte-equivalent to their pre-approval values.
+- ready-to-post.md contains {{POST_A}} exactly once and passes every ready-copy parity gate for both code blocks.
 - No monthly archive or published fact record is created.
 - No source URL, Web Search, fact-ledger, research, rescoring, audit-rebuild, replacement, or allocation call occurs after bootstrap.
 
@@ -552,7 +590,7 @@ Part A prompt:
 Part A assertions:
 
 - Returns {{POST_A}} if it is the oldest ready post.
-- Chat clean copy matches its queue block exactly.
+- Chat ON-SCREEN SCRIPT and FACEBOOK CAPTION match their queue blocks exactly.
 - No repository change occurs.
 
 Start a NEW CONVERSATION with the same GPT.
@@ -565,7 +603,7 @@ Part B assertions:
 
 - Finds the post from GitHub without relying on the previous conversation.
 - Reports status ready.
-- Shows the same persisted copy.
+- Shows the same persisted on-screen script, caption, and hashtags without regeneration.
 - No repository change occurs.
 
 Pass: both parts succeed with zero mutation.
@@ -581,7 +619,7 @@ Prompt:
 Expected chat behavior:
 
 - Treats the statement as explicit publication confirmation.
-- Reports the archive path and six published fact IDs.
+- Reports the archive path, six published fact IDs, and exact publishing-package preservation.
 - Confirms removal from active drafts and the ready queue.
 - Does not claim to publish directly to Facebook.
 
@@ -592,7 +630,8 @@ Repository assertions:
 - Exactly one posted record exists in data/posts/YYYY-MM.jsonl; record the path as {{ARCHIVE_FILE}}.
 - The archive month matches published_at in Asia/Jakarta.
 - Exactly six published fact records point to {{POST_A}}.
-- Archived text and fact ordering match the last ready copy.
+- Archived text and fact ordering match the last ready ON-SCREEN SCRIPT.
+- Archived caption and ordered hashtags exactly match the final active/ready publishing package.
 - The archive preserves quality_rationales and generation_audit.
 - All six published fact records preserve surprise_operator, viral_strength, scope_check_passed, and source_access_passed.
 - The same published_at is used across the post and six facts.
@@ -1582,6 +1621,148 @@ Repository assertions:
 
 Pass: only an explicit, auditable named series can bypass temporary cooldown.
 
+### AT-49 — Publishing package generation and validation
+
+Purpose: Verify that a newly created post receives one valid stored Facebook publishing package only after the final six facts pass.
+
+Prompt:
+
+    Create one new post and show the complete publishing package.
+
+Expected behavior:
+
+- Researches, verifies, selects, orders, audits, and scores the six facts before generating the package.
+- Shows ON-SCREEN SCRIPT and FACEBOOK CAPTION in two separate plain-text code blocks.
+- The Facebook caption is one concise American-English sentence, normally 6–14 words.
+- The caption avoids generic questions, "Which fact surprised you?", prose use of "trivia", "Here are six facts", fact restatement, new factual claims, duplicate CTA, citations, and default emoji.
+- Shows 4–6 stored relevant hashtags; `#Trivia` is allowed when relevant.
+- No hashtag appears in the on-screen block.
+
+Repository assertions:
+
+- The saved active record contains non-empty caption and an ordered hashtags array of length 4–6.
+- Hashtags are unique case-insensitively, one token each, and relevant to topic, effective post format, and supported country scope.
+- Caption and hashtags were persisted in the same completed draft operation, before any approval.
+- The stored script contains no hashtag token.
+- Post and Fact IDs are allocated only after the facts, audit, quality, and publishing package all pass.
+- All other global generation gates pass.
+
+Pass: a valid package is generated after content validation, stored with the draft, and rendered as two separate copy surfaces.
+
+### AT-50 — Publishing package recheck triggers
+
+Purpose: Verify package behavior after wording revision, fact replacement, and changes to topic, country focus, or effective post format.
+
+Setup: On the isolated test branch, prepare package-complete current-format drafts whose stored package is valid before each subtest. Record the original caption and ordered hashtags. Exercise each supported content-revision path independently; for topic, country-focus, or post-format changes, use an isolated Stage 12.10 fixture/harness that invokes the same authoritative revision/persistence logic rather than editing the final stored record after the operation.
+
+Subtests:
+
+1. Wording-only revision with a package that remains relevant.
+2. Fact replacement that makes one existing tag irrelevant.
+3. Authorized topic change.
+4. Authorized country-focus change.
+5. Authorized effective post-format change.
+
+Expected behavior:
+
+- Wording-only revision explicitly rechecks the package and preserves caption and hashtags byte-for-byte when they still pass.
+- Every fact replacement, topic change, country-focus change, and effective post-format change performs a package recheck before persistence.
+- A still-valid package field is preserved exactly.
+- Only a package field that no longer passes is regenerated.
+- No regenerated caption introduces a new factual claim.
+- No regenerated hashtag implies unsupported topic, format, or geography.
+
+Repository assertions:
+
+- Every resulting record satisfies all publishing-package gates.
+- The fact-replacement subtest allocates exactly the one replacement Fact ID required by the ordinary replacement contract; package regeneration allocates no IDs.
+- Topic/country/format package rechecks do not by themselves allocate IDs.
+- Package updates participate in the same SHA-guarded logical operation as the content change.
+- A ready fixture, when used, has its complete queue rebuilt with exact two-block parity.
+
+Pass: all required recheck triggers preserve valid package content and replace only invalid packaging without weakening lifecycle or ID rules.
+
+### AT-51 — Fast Approval preserves publishing package
+
+Purpose: Prove that approval never regenerates a complete stored package.
+
+Precondition: {{PACKAGE_APPROVAL_POST}} is a complete eligible draft on the isolated test branch. Record the exact caption string, hashtag array including order, relevant file SHAs, counters, and trace baseline.
+
+Prompt:
+
+    Approve {{PACKAGE_APPROVAL_POST}} using Fast Approval.
+
+Expected behavior:
+
+- Validates the stored package only from the latest active record.
+- Performs zero Web Search, source opening, factual revalidation, package generation, package rewriting, or hashtag supplementation.
+- Shows stored ON-SCREEN SCRIPT and stored FACEBOOK CAPTION in separate plain-text code blocks.
+
+Repository and trace assertions:
+
+- caption is byte-identical before and after approval.
+- hashtags are element-for-element and order-for-order identical.
+- Exactly one active write, one queue write, and one production-state write occur.
+- Counters remain unchanged and revision increases once.
+- Queue and chat package exactly match the approved active record.
+- A parallel fixture missing caption or hashtags fails before every write and does not manufacture the field.
+
+Pass: Fast Approval preserves valid stored packaging exactly and rejects incomplete packaging without regeneration.
+
+### AT-52 — Ready queue and chat two-block parity
+
+Purpose: Verify deterministic copy-ready rendering of both publishing surfaces.
+
+Precondition: At least two package-complete ready posts exist with known ready_at ordering.
+
+Prompt:
+
+    Show the next ready-to-post script.
+
+Expected behavior:
+
+- Returns the oldest ready post by ready_at, then post_id.
+- Shows label ON-SCREEN SCRIPT followed by one plain-text code block containing only hook, six facts, and CTA.
+- Shows label FACEBOOK CAPTION followed by a second plain-text code block containing stored caption, one blank line, and hashtags joined with one space in stored order.
+- Performs no repository write.
+
+Repository assertions:
+
+- Every package-complete ready post has exactly one queue block.
+- Each queue block has exactly one ON-SCREEN SCRIPT code block and one FACEBOOK CAPTION code block.
+- On-screen bytes match the active hook/facts/CTA and contain no hashtags.
+- Caption bytes and hashtag sequence match the active package.
+- Chat output matches the selected queue block exactly.
+- Queue order remains ready_at then post_id and no file changes occur.
+
+Pass: active record, queue, and chat have exact two-surface parity with zero mutation.
+
+### AT-53 — Archive publishing package parity
+
+Purpose: Verify that publication stores exactly the package that was approved and ready.
+
+Precondition: {{PACKAGE_ARCHIVE_POST}} is package-complete, ready, and has exact queue parity. Record its caption and ordered hashtags before publication.
+
+Prompt:
+
+    Mark {{PACKAGE_ARCHIVE_POST}} as posted.
+
+Expected behavior:
+
+- Performs the ordinary publication lifecycle and reports archive and fact-ledger destinations.
+- Reports that the stored caption and hashtags were archived without regeneration.
+
+Repository assertions:
+
+- Exactly one monthly archive record contains the same caption string and ordered hashtags array as the final active record.
+- Archived on-screen text/order match the final ready script.
+- Package content is not copied into published fact ledgers and does not affect fact routing.
+- The post is removed from active drafts and ready queue.
+- Any scheduled-slot cleanup follows the ordinary schedule contract.
+- Retrying publication creates no second archive package or other duplicate data.
+
+Pass: publication preserves the complete final package exactly and remains idempotent.
+
 ## 6. Final Consistency Audit
 
 After all applicable tests, prompt:
@@ -1599,6 +1780,9 @@ The final result passes only when:
 - every country-specific mixed post has explicit country support on all six facts;
 - no mixed fact topic or data/facts/mixed.jsonl file exists;
 - every ready post has exactly one queue block;
+- every package-complete v1.1 ready post has exactly one ON-SCREEN SCRIPT block and one FACEBOOK CAPTION block;
+- every active/queue/chat publishing package has exact caption, hashtag, and hashtag-order parity;
+- no ready ON-SCREEN SCRIPT contains hashtags;
 - every archived post has six published facts;
 - every published fact points to an archived post;
 - archive month routing is correct;
@@ -1612,9 +1796,12 @@ The final result passes only when:
 - the runtime profile passes its mode/branch safety matrix;
 - every repository call in the audit uses one explicit RUNTIME_REPOSITORY and RUNTIME_BRANCH;
 - no cross-branch SHA, data, queue, ledger, archive, or recovery evidence is used;
-- every Fast Approval preserves IDs, counters, facts, sources, quality, and generation_audit;
-- every Fast Approval uses one active write, one queue write, and one state write with exact parity;
-- no incomplete draft crossed into ready status;
+- every Fast Approval preserves IDs, counters, facts, sources, quality, generation_audit, caption, hashtags, and hashtag order;
+- every Fast Approval uses one active write, one queue write, and one state write with exact parity and zero package regeneration;
+- no incomplete draft, including a v1.1 draft missing required package fields, crossed into ready status;
+- every newly created v1.1 post has one valid caption sentence and 4–6 unique relevant hashtag tokens;
+- every required package recheck after fact/topic/country/format change passed before persistence;
+- every package-complete archived post preserves the exact final active caption and ordered hashtags;
 - every newly created or replaced fact after Stage 12.7 has a valid subject_key;
 - legacy facts without subject_key remain readable and unchanged through fallback comparison;
 - no prohibited exact-subject reuse or third semantic-cluster post exists without valid named-series override evidence;
@@ -1689,6 +1876,11 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-46 Semantic cluster limit | PENDING | Stage 12.10 | A narrow cluster must not enter a third distinct post. |
 | AT-47 Legacy subject fallback | PENDING | Stage 12.10 | Missing subject_key must use fallback without rewriting legacy data. |
 | AT-48 Named-series override | PENDING | Stage 12.10 | Explicit override must be narrowly applied, persisted, and unable to bypass duplicate or quality gates. |
+| AT-49 Publishing package generation | PENDING | Stage 12.10 | Must persist a valid caption and 4–6 hashtags and render two separate copy blocks. |
+| AT-50 Publishing package recheck triggers | PENDING | Stage 12.10 | Wording may preserve valid packaging; fact/topic/country/format changes must recheck it. |
+| AT-51 Fast Approval package preservation | PENDING | Stage 12.10 | Must preserve stored caption/hashtags exactly with zero package regeneration. |
+| AT-52 Ready/chat two-block parity | PENDING | Stage 12.10 | Active, queue, and chat surfaces must match exactly with no hashtags in the script. |
+| AT-53 Archive publishing package parity | PENDING | Stage 12.10 | Posted archive must preserve the final caption and ordered hashtags exactly. |
 | Body-science v2 regression | PASS | `P-000008`; `bbb08d7` | 24 candidates, 18 rejected, five operator families, six strength-2 facts, complete rationales, and directly supportive sources; materially stronger than legacy P-000003. |
 | Final consistency audit | PASS | `bbb08d718c89162515ffc09a86d8a47b22c8b289` | 7 active posts, 42 active fact snapshots, 6 published facts, 1 archive, and 1 ready post; counters, rotation, global uniqueness, publication linkage, v2 gates, and deterministic ready-queue parity all passed. |
 
@@ -1697,7 +1889,7 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 The version-3 implementation is ready to merge only when:
 
 - historical AT-01 through AT-23 remain valid or are rerun when affected;
-- AT-24 through AT-48 pass;
+- AT-24 through AT-53 pass;
 - all later Stage 12 feature and regression tests pass;
 - the final consistency audit passes;
 - failures are corrected in the instructions, contract, content DNA, or data model;
@@ -1707,4 +1899,4 @@ The version-3 implementation is ready to merge only when:
 - legacy baseline records remain unchanged unless explicitly revised through the normal lifecycle;
 - no test-only corruption remains on the branch.
 
-Current result: AT-01 through AT-23, the body-science v2 regression, and the version-2 final consistency audit remain historical passing evidence. AT-24 through AT-48 are specified but not yet executed; the Stage 12 implementation is not acceptance-ready until Stage 12.10 completes.
+Current result: AT-01 through AT-23, the body-science v2 regression, and the version-2 final consistency audit remain historical passing evidence. AT-24 through AT-53 are specified but not yet executed; the Stage 12 implementation is not acceptance-ready until Stage 12.10 completes.
