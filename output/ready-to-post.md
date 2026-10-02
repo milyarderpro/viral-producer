@@ -1439,3 +1439,35 @@ History and geography feel richer through an unexpected perspective.
 ```
 
 ---
+
+## P-000052 — Inventions, Firsts, and Records
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+An undertaker invented automatic telephone switching after operators allegedly misdirected his customers’ calls
+
+Zenith’s first practical wireless TV remote used ultrasound made by four struck aluminum rods
+
+George Antheil synchronized frequency hopping across 88 frequencies using the piano’s 88 keys
+
+Zip ties emerged after Maurus Logan saw aircraft workers injuring hands while tying wiring
+
+Sara Blakely’s Spanx idea began by cutting the feet off pantyhose for white pants
+
+Dorr Felt built his adding-machine prototype inside a macaroni box using skewers and rubber bands
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Innovation and record stories become memorable through unexpected perspectives.
+
+#InventionFacts #WorldRecords #InnovationHistory #CuriousMinds #DidYouKnow
+```
+
+---
