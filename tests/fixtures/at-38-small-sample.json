@@ -1,0 +1,560 @@
+{
+  "schema_version": 1,
+  "fixture_name": "AT-38 small-sample strategy thresholds",
+  "production_summary_unchanged": true,
+  "scenarios": {
+    "below_15": {
+      "schema_version": 1,
+      "updated_at": "2026-10-02T06:00:00Z",
+      "sample_size": 14,
+      "by_topic": {
+        "geography-history": {
+          "post_count": 14,
+          "metrics": {
+            "views": {
+              "measured_count": 14,
+              "total": 1400000,
+              "average": 100000
+            },
+            "reactions": {
+              "measured_count": 14,
+              "total": 0,
+              "average": null
+            },
+            "comments": {
+              "measured_count": 14,
+              "total": 0,
+              "average": null
+            },
+            "shares": {
+              "measured_count": 14,
+              "total": 0,
+              "average": null
+            },
+            "average_watch_time_seconds": {
+              "measured_count": 14,
+              "total": 0,
+              "average": null
+            },
+            "retention_percent": {
+              "measured_count": 14,
+              "total": 0,
+              "average": null
+            },
+            "followers_gained": {
+              "measured_count": 14,
+              "total": 0,
+              "average": null
+            }
+          }
+        }
+      },
+      "by_country": {
+        "GLOBAL": {
+          "post_count": 14,
+          "metrics": {
+            "views": {
+              "measured_count": 14,
+              "total": 1400000,
+              "average": 100000
+            },
+            "reactions": {
+              "measured_count": 14,
+              "total": 0,
+              "average": null
+            },
+            "comments": {
+              "measured_count": 14,
+              "total": 0,
+              "average": null
+            },
+            "shares": {
+              "measured_count": 14,
+              "total": 0,
+              "average": null
+            },
+            "average_watch_time_seconds": {
+              "measured_count": 14,
+              "total": 0,
+              "average": null
+            },
+            "retention_percent": {
+              "measured_count": 14,
+              "total": 0,
+              "average": null
+            },
+            "followers_gained": {
+              "measured_count": 14,
+              "total": 0,
+              "average": null
+            }
+          }
+        }
+      },
+      "by_post_format": {
+        "themed": {
+          "post_count": 14,
+          "metrics": {
+            "views": {
+              "measured_count": 14,
+              "total": 1400000,
+              "average": 100000
+            },
+            "reactions": {
+              "measured_count": 14,
+              "total": 0,
+              "average": null
+            },
+            "comments": {
+              "measured_count": 14,
+              "total": 0,
+              "average": null
+            },
+            "shares": {
+              "measured_count": 14,
+              "total": 0,
+              "average": null
+            },
+            "average_watch_time_seconds": {
+              "measured_count": 14,
+              "total": 0,
+              "average": null
+            },
+            "retention_percent": {
+              "measured_count": 14,
+              "total": 0,
+              "average": null
+            },
+            "followers_gained": {
+              "measured_count": 14,
+              "total": 0,
+              "average": null
+            }
+          }
+        }
+      },
+      "by_operator": {
+        "belief_reversal": {
+          "post_count": 12,
+          "metrics": {
+            "views": {
+              "measured_count": 12,
+              "total": 1200000,
+              "average": 100000
+            },
+            "reactions": {
+              "measured_count": 12,
+              "total": 0,
+              "average": null
+            },
+            "comments": {
+              "measured_count": 12,
+              "total": 0,
+              "average": null
+            },
+            "shares": {
+              "measured_count": 12,
+              "total": 0,
+              "average": null
+            },
+            "average_watch_time_seconds": {
+              "measured_count": 12,
+              "total": 0,
+              "average": null
+            },
+            "retention_percent": {
+              "measured_count": 12,
+              "total": 0,
+              "average": null
+            },
+            "followers_gained": {
+              "measured_count": 12,
+              "total": 0,
+              "average": null
+            }
+          }
+        }
+      },
+      "operator_metadata_coverage": {
+        "measured_posts": 14,
+        "posts_with_operator_metadata": 12,
+        "missing_posts": 2
+      },
+      "expected_policy": {
+        "analysis_level": "descriptive_only",
+        "strategy_conclusion_allowed": false,
+        "default_selection_change_allowed": false,
+        "performance_tie_break_allowed": false
+      }
+    },
+    "fifteen_to_nineteen": {
+      "schema_version": 1,
+      "updated_at": "2026-10-02T06:00:00Z",
+      "sample_size": 17,
+      "by_topic": {
+        "geography-history": {
+          "post_count": 17,
+          "metrics": {
+            "views": {
+              "measured_count": 17,
+              "total": 1700000,
+              "average": 100000
+            },
+            "reactions": {
+              "measured_count": 17,
+              "total": 0,
+              "average": null
+            },
+            "comments": {
+              "measured_count": 17,
+              "total": 0,
+              "average": null
+            },
+            "shares": {
+              "measured_count": 17,
+              "total": 0,
+              "average": null
+            },
+            "average_watch_time_seconds": {
+              "measured_count": 17,
+              "total": 0,
+              "average": null
+            },
+            "retention_percent": {
+              "measured_count": 17,
+              "total": 0,
+              "average": null
+            },
+            "followers_gained": {
+              "measured_count": 17,
+              "total": 0,
+              "average": null
+            }
+          }
+        }
+      },
+      "by_country": {
+        "GLOBAL": {
+          "post_count": 17,
+          "metrics": {
+            "views": {
+              "measured_count": 17,
+              "total": 1700000,
+              "average": 100000
+            },
+            "reactions": {
+              "measured_count": 17,
+              "total": 0,
+              "average": null
+            },
+            "comments": {
+              "measured_count": 17,
+              "total": 0,
+              "average": null
+            },
+            "shares": {
+              "measured_count": 17,
+              "total": 0,
+              "average": null
+            },
+            "average_watch_time_seconds": {
+              "measured_count": 17,
+              "total": 0,
+              "average": null
+            },
+            "retention_percent": {
+              "measured_count": 17,
+              "total": 0,
+              "average": null
+            },
+            "followers_gained": {
+              "measured_count": 17,
+              "total": 0,
+              "average": null
+            }
+          }
+        }
+      },
+      "by_post_format": {
+        "themed": {
+          "post_count": 17,
+          "metrics": {
+            "views": {
+              "measured_count": 17,
+              "total": 1700000,
+              "average": 100000
+            },
+            "reactions": {
+              "measured_count": 17,
+              "total": 0,
+              "average": null
+            },
+            "comments": {
+              "measured_count": 17,
+              "total": 0,
+              "average": null
+            },
+            "shares": {
+              "measured_count": 17,
+              "total": 0,
+              "average": null
+            },
+            "average_watch_time_seconds": {
+              "measured_count": 17,
+              "total": 0,
+              "average": null
+            },
+            "retention_percent": {
+              "measured_count": 17,
+              "total": 0,
+              "average": null
+            },
+            "followers_gained": {
+              "measured_count": 17,
+              "total": 0,
+              "average": null
+            }
+          }
+        }
+      },
+      "by_operator": {
+        "belief_reversal": {
+          "post_count": 15,
+          "metrics": {
+            "views": {
+              "measured_count": 15,
+              "total": 1500000,
+              "average": 100000
+            },
+            "reactions": {
+              "measured_count": 15,
+              "total": 0,
+              "average": null
+            },
+            "comments": {
+              "measured_count": 15,
+              "total": 0,
+              "average": null
+            },
+            "shares": {
+              "measured_count": 15,
+              "total": 0,
+              "average": null
+            },
+            "average_watch_time_seconds": {
+              "measured_count": 15,
+              "total": 0,
+              "average": null
+            },
+            "retention_percent": {
+              "measured_count": 15,
+              "total": 0,
+              "average": null
+            },
+            "followers_gained": {
+              "measured_count": 15,
+              "total": 0,
+              "average": null
+            }
+          }
+        }
+      },
+      "operator_metadata_coverage": {
+        "measured_posts": 17,
+        "posts_with_operator_metadata": 15,
+        "missing_posts": 2
+      },
+      "expected_policy": {
+        "analysis_level": "cautious_directional",
+        "strategy_conclusion_allowed": true,
+        "default_selection_change_allowed": false,
+        "performance_tie_break_allowed": false
+      }
+    },
+    "twenty_or_more": {
+      "schema_version": 1,
+      "updated_at": "2026-10-02T06:00:00Z",
+      "sample_size": 20,
+      "by_topic": {
+        "geography-history": {
+          "post_count": 20,
+          "metrics": {
+            "views": {
+              "measured_count": 20,
+              "total": 2000000,
+              "average": 100000
+            },
+            "reactions": {
+              "measured_count": 20,
+              "total": 0,
+              "average": null
+            },
+            "comments": {
+              "measured_count": 20,
+              "total": 0,
+              "average": null
+            },
+            "shares": {
+              "measured_count": 20,
+              "total": 0,
+              "average": null
+            },
+            "average_watch_time_seconds": {
+              "measured_count": 20,
+              "total": 0,
+              "average": null
+            },
+            "retention_percent": {
+              "measured_count": 20,
+              "total": 0,
+              "average": null
+            },
+            "followers_gained": {
+              "measured_count": 20,
+              "total": 0,
+              "average": null
+            }
+          }
+        }
+      },
+      "by_country": {
+        "GLOBAL": {
+          "post_count": 20,
+          "metrics": {
+            "views": {
+              "measured_count": 20,
+              "total": 2000000,
+              "average": 100000
+            },
+            "reactions": {
+              "measured_count": 20,
+              "total": 0,
+              "average": null
+            },
+            "comments": {
+              "measured_count": 20,
+              "total": 0,
+              "average": null
+            },
+            "shares": {
+              "measured_count": 20,
+              "total": 0,
+              "average": null
+            },
+            "average_watch_time_seconds": {
+              "measured_count": 20,
+              "total": 0,
+              "average": null
+            },
+            "retention_percent": {
+              "measured_count": 20,
+              "total": 0,
+              "average": null
+            },
+            "followers_gained": {
+              "measured_count": 20,
+              "total": 0,
+              "average": null
+            }
+          }
+        }
+      },
+      "by_post_format": {
+        "themed": {
+          "post_count": 20,
+          "metrics": {
+            "views": {
+              "measured_count": 20,
+              "total": 2000000,
+              "average": 100000
+            },
+            "reactions": {
+              "measured_count": 20,
+              "total": 0,
+              "average": null
+            },
+            "comments": {
+              "measured_count": 20,
+              "total": 0,
+              "average": null
+            },
+            "shares": {
+              "measured_count": 20,
+              "total": 0,
+              "average": null
+            },
+            "average_watch_time_seconds": {
+              "measured_count": 20,
+              "total": 0,
+              "average": null
+            },
+            "retention_percent": {
+              "measured_count": 20,
+              "total": 0,
+              "average": null
+            },
+            "followers_gained": {
+              "measured_count": 20,
+              "total": 0,
+              "average": null
+            }
+          }
+        }
+      },
+      "by_operator": {
+        "belief_reversal": {
+          "post_count": 18,
+          "metrics": {
+            "views": {
+              "measured_count": 18,
+              "total": 1800000,
+              "average": 100000
+            },
+            "reactions": {
+              "measured_count": 18,
+              "total": 0,
+              "average": null
+            },
+            "comments": {
+              "measured_count": 18,
+              "total": 0,
+              "average": null
+            },
+            "shares": {
+              "measured_count": 18,
+              "total": 0,
+              "average": null
+            },
+            "average_watch_time_seconds": {
+              "measured_count": 18,
+              "total": 0,
+              "average": null
+            },
+            "retention_percent": {
+              "measured_count": 18,
+              "total": 0,
+              "average": null
+            },
+            "followers_gained": {
+              "measured_count": 18,
+              "total": 0,
+              "average": null
+            }
+          }
+        }
+      },
+      "operator_metadata_coverage": {
+        "measured_posts": 20,
+        "posts_with_operator_metadata": 18,
+        "missing_posts": 2
+      },
+      "expected_policy": {
+        "analysis_level": "tie_break_only",
+        "strategy_conclusion_allowed": true,
+        "default_selection_change_allowed": false,
+        "performance_tie_break_allowed": true,
+        "tie_break_precondition": "all factual, safety, originality, scope, source, format, cooldown, and editorial gates already pass"
+      }
+    }
+  }
+}
