@@ -895,3 +895,35 @@ Tiny creatures and familiar objects hide mechanisms worth remembering.
 ```
 
 ---
+
+## P-000100 — Mixed Trivia
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Common swifts stay airborne more than 99 percent of their ten-month nonbreeding period.
+
+Most flour is raw, and milling does not kill every harmful bacterium inside it.
+
+Light frost can make carrots sweeter by triggering higher sugar levels in their roots.
+
+Before rubber erasers, writers used bread crumbs to remove pencil marks from paper.
+
+Antarctica is the world’s largest desert despite being covered almost entirely in ice.
+
+Chimborazo’s summit is farthest from Earth’s center because Earth bulges at the equator.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Everyday materials and extreme places can overturn ordinary assumptions.
+
+#CuriousMinds #KnowledgeDrop #FactMix #LearnDaily #UnexpectedFacts
+```
+
+---
