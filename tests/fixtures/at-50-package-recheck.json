@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "fixture_name": "AT-50 package recheck harness",
-  "fixture_revision": 0,
+  "fixture_revision": 1,
   "production_files_untouched": true,
   "subtests": {
     "topic_change": {
@@ -18,8 +18,33 @@
           "#LearnSomethingNew"
         ]
       },
-      "after": null,
-      "result": "pending"
+      "after": {
+        "topic": "body-science",
+        "post_format": "themed",
+        "country_focus": "GLOBAL",
+        "caption": "Everyday objects can hide remarkably clever science.",
+        "hashtags": [
+          "#DidYouKnow",
+          "#AmazingFacts",
+          "#BodyScience",
+          "#EverydayScience",
+          "#LearnSomethingNew"
+        ]
+      },
+      "result": "PASS",
+      "evidence": {
+        "content_recheck_before_persistence": true,
+        "preserved_fields": [
+          "caption"
+        ],
+        "regenerated_fields": [
+          "hashtags"
+        ],
+        "allocated_post_ids": 0,
+        "allocated_fact_ids": 0,
+        "final_package_valid": true,
+        "unsupported_tags": []
+      }
     },
     "country_change": {
       "before": {
