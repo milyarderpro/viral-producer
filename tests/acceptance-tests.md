@@ -279,14 +279,24 @@ For every performance operation:
 
 ### Legacy compatibility
 
-The pre-refinement records P-000001, P-000002, and P-000003 may omit the additive editorial fields while they remain unchanged drafts.
+The pre-refinement records P-000001, P-000002, and P-000003 may omit the additive editorial fields while they remain unchanged drafts. Other pre-1.1 active and archived records may also omit later additive fields.
 
-For those records:
+For compatible legacy records and empty additive stores:
 
 - missing version-2 fields must be reported as requires_editorial_upgrade, not corruption;
+- missing post_format means effective themed and must not be written merely by inspection;
+- missing subject_key uses the documented in-memory fallback and must not be backfilled by inspection, audit, approval, recommendation, scheduling, or publication;
+- missing caption or hashtags is valid for archived legacy posts and active records awaiting the controlled production backfill;
+- readers must report a package gap without fabricating caption or hashtags;
+- a current transition that requires a complete package must fail rather than silently backfill it;
 - no missing audit value may be invented;
-- no legacy draft may become approved or ready without a genuine re-evaluation and complete upgrade;
-- inspection alone must not change IDs, counters, content, status, or revision.
+- no legacy draft may become approved or ready without satisfying every current transition requirement;
+- existing IDs, counters, facts, sources, quality, audits, timestamps, fact ledgers, and archives must be preserved unless an ordinary lifecycle operation explicitly authorizes a field change;
+- performance-summary.json with sample_size 0 and empty buckets is valid;
+- absence of raw performance monthly files is valid before the first performance write;
+- publishing-plan.json with revision 0 and no slots is valid;
+- the deterministic empty content-calendar.md is valid;
+- inspection alone must not change IDs, counters, content, status, revision, additive stores, or production snapshots.
 
 ### Ready-copy parity
 
@@ -1763,6 +1773,64 @@ Repository assertions:
 
 Pass: publication preserves the complete final package exactly and remains idempotent.
 
+### AT-54 — Legacy publishing-package compatibility
+
+Purpose: Verify that missing caption/hashtags remains readable where the compatibility contract permits it and never triggers an implicit backfill.
+
+Setup: On the isolated test branch, identify one active legacy or awaiting-backfill record without caption/hashtags and one archived legacy post without those fields. Record their exact bytes and all production counters.
+
+Prompts:
+
+    Show the active legacy post and explain its publishing-package status. Do not modify anything.
+    Show the archived legacy post and explain whether missing caption/hashtags is compatible. Do not modify anything.
+    Audit compatibility for both records without repairing or backfilling anything.
+
+Expected behavior:
+
+- Reads both records successfully.
+- Reports the active package gap as legacy or awaiting controlled backfill, not JSON corruption.
+- Reports the archived missing package as compatible legacy content.
+- Does not invent caption or hashtags.
+- Does not add post_format or subject_key while inspecting compatibility.
+- Does not treat compatibility inspection as approval, publication, or migration.
+
+Repository assertions:
+
+- Both source records remain byte-for-byte unchanged.
+- production-state revision and both next-ID counters remain unchanged.
+- Fact ledgers, archives, ready queue, publishing plan, calendar, and performance data remain unchanged.
+- Zero write calls occur and no commit is created.
+
+Pass: permitted legacy package gaps remain readable without any implicit migration.
+
+### AT-55 — Empty additive stores are valid
+
+Purpose: Verify the deterministic Version 1.1 initial state for performance and scheduling data.
+
+Precondition: Use the clean Stage 12.9 baseline or an isolated fixture with no raw performance snapshots, sample_size 0, publishing-plan revision 0, no slots, and the empty calendar rendering.
+
+Prompts:
+
+    Show the performance summary. Do not modify anything.
+    Show the content calendar. Do not modify anything.
+    Audit the empty Version 1.1 additive stores. Do not repair anything.
+
+Expected behavior:
+
+- Accepts performance-summary.json with sample_size 0 and all four empty grouping objects.
+- Accepts the absence of data/performance monthly JSONL files before the first real metrics write.
+- Accepts publishing-plan.json with timezone Asia/Jakarta, revision 0, and slots [].
+- Accepts content-calendar.md containing the deterministic empty-calendar text.
+- Reports no partial failure merely because the additive stores are empty.
+
+Repository assertions:
+
+- No file changes and no commit is created.
+- production-state revision, counters, rotation, active drafts, fact ledgers, archives, and ready queue are unchanged.
+- Empty performance and scheduling data are not synthesized into fake records or timestamps.
+
+Pass: the additive stores may begin empty without mutating or invalidating production state.
+
 ## 6. Final Consistency Audit
 
 After all applicable tests, prompt:
@@ -1791,6 +1859,8 @@ The final result passes only when:
 - every version-2 quality total and rationale set is complete;
 - every version-2 generation_audit is internally consistent;
 - archived version-2 audit metadata matches its six published facts;
+- compatible legacy records missing post_format, subject_key, or permitted publishing-package fields remain readable without implicit migration;
+- active legacy/package-gap records and archived legacy package gaps are classified according to the Stage 12.9 compatibility boundary rather than corrupt;
 - legacy drafts are reported as requires_editorial_upgrade rather than corrupt;
 - no legacy draft has crossed into ready status without a complete upgrade;
 - the runtime profile passes its mode/branch safety matrix;
@@ -1816,6 +1886,8 @@ The final result passes only when:
 - content-calendar.md is byte-exact from planned slots in Asia/Jakarta;
 - recommendation traces show zero writes;
 - scheduling and moving did not mutate lifecycle content or production state;
+- an empty performance summary, absent raw performance files, revision-0 empty publishing plan, and deterministic empty calendar are accepted as valid initial states;
+- compatibility handling preserved existing IDs, counters, facts, sources, quality, audits, timestamps, ledgers, archives, and production snapshots;
 - no unresolved partial failure remains.
 
 Reject any remaining temporary draft through the GPT if cleanup is desired. Do not manually decrement counters, reuse test IDs, fabricate audit evidence, or rewrite legacy records merely to make the audit green.
@@ -1881,6 +1953,8 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-51 Fast Approval package preservation | PENDING | Stage 12.10 | Must preserve stored caption/hashtags exactly with zero package regeneration. |
 | AT-52 Ready/chat two-block parity | PENDING | Stage 12.10 | Active, queue, and chat surfaces must match exactly with no hashtags in the script. |
 | AT-53 Archive publishing package parity | PENDING | Stage 12.10 | Posted archive must preserve the final caption and ordered hashtags exactly. |
+| AT-54 Legacy publishing-package compatibility | PENDING | Stage 12.10 | Permitted missing package fields must remain readable with zero implicit backfill. |
+| AT-55 Empty additive stores | PENDING | Stage 12.10 | Empty performance and scheduling baselines must be valid and mutation-free. |
 | Body-science v2 regression | PASS | `P-000008`; `bbb08d7` | 24 candidates, 18 rejected, five operator families, six strength-2 facts, complete rationales, and directly supportive sources; materially stronger than legacy P-000003. |
 | Final consistency audit | PASS | `bbb08d718c89162515ffc09a86d8a47b22c8b289` | 7 active posts, 42 active fact snapshots, 6 published facts, 1 archive, and 1 ready post; counters, rotation, global uniqueness, publication linkage, v2 gates, and deterministic ready-queue parity all passed. |
 
@@ -1889,7 +1963,7 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 The version-3 implementation is ready to merge only when:
 
 - historical AT-01 through AT-23 remain valid or are rerun when affected;
-- AT-24 through AT-53 pass;
+- AT-24 through AT-55 pass;
 - all later Stage 12 feature and regression tests pass;
 - the final consistency audit passes;
 - failures are corrected in the instructions, contract, content DNA, or data model;
@@ -1899,4 +1973,4 @@ The version-3 implementation is ready to merge only when:
 - legacy baseline records remain unchanged unless explicitly revised through the normal lifecycle;
 - no test-only corruption remains on the branch.
 
-Current result: AT-01 through AT-23, the body-science v2 regression, and the version-2 final consistency audit remain historical passing evidence. AT-24 through AT-53 are specified but not yet executed; the Stage 12 implementation is not acceptance-ready until Stage 12.10 completes.
+Current result: AT-01 through AT-23, the body-science v2 regression, and the version-2 final consistency audit remain historical passing evidence. AT-24 through AT-55 are specified but not yet executed; the Stage 12 implementation is not acceptance-ready until Stage 12.10 completes.
