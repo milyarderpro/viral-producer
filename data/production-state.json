@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "revision": 174,
+  "revision": 175,
   "next_post_number": 101,
   "next_fact_number": 627,
   "operational_timezone": "Asia/Jakarta",
@@ -31,5 +31,5 @@
     "GLOBAL",
     "GLOBAL"
   ],
-  "updated_at": "2026-10-02T12:35:08.227Z"
+  "updated_at": "2026-10-02T12:35:58.846Z"
 }
