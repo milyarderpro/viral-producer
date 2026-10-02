@@ -1518,7 +1518,7 @@ Completion evidence:
 
 ### Stage 12.12 — Pull Request, Cutover, and Backfill
 
-Status: PENDING
+Status: IN PROGRESS — PRE-PR AUDIT COMPLETE; CUTOVER NOT STARTED
 
 Before PR:
 
@@ -1529,6 +1529,27 @@ Before PR:
 5. Open PR only from upgrade/viral-producer-v1.1 to main.
 6. Attach the PR to the task.
 7. Do not merge until the Stage 12.10 pre-cutover gate passes (AT-25 through AT-55 plus the isolated test-branch final consistency audit) and the user approves cutover. AT-24 is intentionally not a pre-merge gate.
+
+Pre-PR checkpoint — 2026-10-02:
+
+- Feature checkpoint before this plan update: `1f931b92d66e92e8cf7987a60b5418798cd3dbfa`.
+- Latest production `main`: `af68f8db2d54e6c9d555e66a7c38045cf5f46501`.
+- Latest isolated test branch observed read-only: `07eeb5831a852ff6df384c230f3a14ed85aa5c18`.
+- Git compare reports the feature branch 66 commits ahead and 0 behind `main`; `main` is the exact merge base, so no synchronization commit is required.
+- Full feature core files were re-read: `plan.md`, `system/gpt-instructions.md`, `system/content-dna.md`, `system/data-contract.md`, and `tests/acceptance-tests.md`.
+- The feature diff contains 13 implementation/documentation paths only: `README.md`, `data/performance-summary.json`, `data/publishing-plan.json`, `docs/gpt-installation.md`, `docs/prompt-library.md`, `docs/test-plugin-installation.md`, `docs/user-guide.md`, `output/content-calendar.md`, `plan.md`, `system/content-dna.md`, `system/data-contract.md`, `system/gpt-instructions.md`, and `tests/acceptance-tests.md`.
+- Protected production snapshots are absent from the diff: no changes to `data/production-state.json`, `data/active-drafts.jsonl`, `data/facts/**`, `data/posts/**`, or `output/ready-to-post.md`.
+- The three additive Stage 12 initial stores are canonical empty values: performance summary schema version 1 with sample_size 0, publishing plan schema version 1 with Asia/Jakarta/revision 0/no slots, and an empty deterministic content calendar.
+- No test fixture, test counter, test performance snapshot, test publishing plan, or test lifecycle data is present in the feature diff.
+- Latest `main` read-only consistency audit passed: revision 139, next_post_number 98, next_fact_number 609, single_writer_mode true, 96 active records, 26 ready records, 6 published facts, and 1 archive.
+- Main JSON/JSONL parsing, unique Post IDs, unique Fact IDs, unique claim signatures, six-fact active/archive records, counter monotonicity, and exact 26-post ready-queue ID parity all passed.
+- Compatibility audit passed with the current legacy baseline: 96 active records may omit post_format and publishing package fields pending controlled backfill, 576 active fact snapshots may omit subject_key, and the legacy archive/published facts remain readable without implicit migration.
+- Static merge audit passed for current Stage 12 versions, balanced Markdown fences, final newlines, no trailing whitespace, runtime-profile explicit-ref rules, production/test-plugin separation, and no operational `ref: main` hardcoding in active runtime instructions.
+- Stage 12.10 remains COMPLETE: AT-25 through AT-55 are PASS (31/31) and the isolated test-branch final consistency audit is PASS.
+- Stage 12.11 remains COMPLETE.
+- AT-24 status remains **PENDING POST-CUTOVER**. It must run only after the PR is merged and the production plugin is refreshed to v1.1, and it must PASS before controlled backfill or production resumption.
+- Neither `main` nor `test/viral-producer-v1.1` was modified during the pre-PR audit.
+- Cutover, production-plugin refresh, AT-24 execution, backfill, final production audit, and production resumption have not started.
 
 Cutover requires a short production-write pause:
 
