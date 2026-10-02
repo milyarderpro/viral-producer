@@ -1855,3 +1855,35 @@ Everyday science feels more fascinating when viewed from another angle.
 ```
 
 ---
+
+## P-000073 — Food and Household Knowledge
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+White asparagus stays pale only when growers keep sunlight away from its emerging spears.
+
+Raspberries turn hollow when picked because their fleshy receptacle stays behind on the plant.
+
+Hot peppers carry capsaicin in their seeds and whitish membranes, so removing both reduces heat.
+
+Botanically, bananas, grapes, and watermelons all qualify as berries from single-ovary flowers.
+
+A chicken egg takes a little over 24 hours to form before it is laid.
+
+Romanesco cauliflower grows repeating spiral patterns that form striking fractal shapes across each head.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Food and home knowledge can make familiar moments feel fresh.
+
+#FoodFacts #HomeKnowledge #EverydayLearning #CuriousMinds #DidYouKnow
+```
+
+---
