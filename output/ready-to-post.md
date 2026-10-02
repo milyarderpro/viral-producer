@@ -1951,3 +1951,35 @@ History and geography feel richer through an unexpected perspective.
 ```
 
 ---
+
+## P-000077 — Body and Everyday Science
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+About 330 billion cells die and are replaced in your body every day.
+
+Taste buds are not just on your tongue; they also occur deeper in your throat.
+
+The muscles controlling your pupil develop from ectoderm, unlike most muscles in your body.
+
+Your palms and soles have an extra epidermal layer that most skin lacks.
+
+Some cells in your brain and eyes can survive for your entire lifetime.
+
+One eye muscle moves through a tiny cartilaginous pulley before pulling on your eyeball.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Everyday science feels more fascinating when viewed from another angle.
+
+#ScienceFacts #HumanBody #EverydayScience #CuriousMinds #DidYouKnow
+```
+
+---
