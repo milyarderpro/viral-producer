@@ -700,7 +700,7 @@ Evidence:
 
 ## 5C. Stage 12 — Viral Producer 1.1
 
-Status: IN PROGRESS — STAGE 12.7 COMPLETE
+Status: IN PROGRESS — STAGE 12.8 COMPLETE
 
 Branch implementasi:
 
@@ -1296,7 +1296,7 @@ Completion evidence:
 
 ### Stage 12.8 — Update 6: Complete Publishing Package
 
-Status: PENDING
+Status: COMPLETE
 
 Add to active post records:
 
@@ -1347,6 +1347,20 @@ Chat and queue output use two separate plain-text code blocks:
 
 1. ON-SCREEN SCRIPT.
 2. FACEBOOK CAPTION containing the caption, one blank line, and the hashtags.
+
+Completion evidence:
+
+- Latest production baseline observed before completion remained GitHub `main` commit `af68f8db2d54e6c9d555e66a7c38045cf5f46501`; the feature branch was 57 commits ahead and 0 behind after the Stage 12.8 specification writes.
+- `e2ba23744b5b3da3ae3561cd920284ef3880f370` defines the complete publishing-package editorial rules in Content DNA, including caption/hashtag constraints, lifecycle preservation, recheck triggers, two-surface output, and the explicit no-backfill boundary.
+- `35c74dfbe80784998025cf656e6051250eefb0ce` extends the additive schema contract with active and archived `caption`/`hashtags`, Fast Approval preservation, deterministic two-block ready rendering, recheck rules, hard failures, audit coverage, and archive parity.
+- `b0660262e7f5374b3cbf0d80878a9659a29235e1` implements runtime generation, persistence, revision/replacement rechecks, Fast Approval no-regeneration behavior, archival preservation, consistency checks, and separate ON-SCREEN SCRIPT / FACEBOOK CAPTION chat output.
+- `9b8588bb01d317f78cc387c9885bdee02cc87e94` adds publishing-package global gates and AT-49 through AT-53 for generation/style validation, recheck triggers, Fast Approval preservation, ready/chat two-block parity, and archive parity.
+- Static validation passed for required package sections, generation-before-ID ordering, Fast Approval no-regeneration, fact/topic/country/format recheck coverage, separate code-block surfaces, archive preservation, no-backfill instructions, AT-49 through AT-53 PENDING status, acceptance-range updates, and trailing-whitespace checks.
+- JSON parsing passed for `data/production-state.json`, `data/performance-summary.json`, and `data/publishing-plan.json`. JSONL parsing passed for 96 active records, all six fact ledgers (6 published fact records total), and the one monthly archive record. No raw performance JSONL file exists yet.
+- Protected files remained byte-identical to `main`: production state blob `6f4ab56799024273d6d63c7272b695c4a76e402e`, active drafts blob `192c3da563ebdb2e3b21d663b04ab21bfaefada3`, ready queue blob `99249fa32468766e9380f0172ca22147b9f3d76a`, every fact-ledger blob, and archive blob `7dac2f275f23083c00d8f2b4ba5cc67a1def3515` all matched `main`.
+- The feature diff contains no `data/production-state.json`, `data/active-drafts.jsonl`, `data/facts/**`, `data/posts/**`, or `output/ready-to-post.md` changes.
+- No active production post was backfilled and no mutative acceptance test was executed. AT-49 through AT-53 remain specification-only until Stage 12.10.
+- `main` was not modified. Stage 12.9 remains pending and was not started.
 
 ### Stage 12.9 — Compatibility and Initial Files
 
