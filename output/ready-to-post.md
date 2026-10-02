@@ -1407,3 +1407,35 @@ Nature becomes even more engaging through an unexpected perspective.
 ```
 
 ---
+
+## P-000049 — Geography and History
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+The Pentagon kept its five-sided design even after planners moved it to a different site
+
+A marble star beneath the Capitol marks the point dividing Washington into four quadrants
+
+Carlsbad Cavern’s Big Room is North America’s largest single cave chamber by volume
+
+Mount Rainier holds more glacial ice than any other peak in the contiguous United States
+
+In the Capitol’s Statuary Hall, acoustics can make a distant speaker sound clearer than someone nearby
+
+A Golden Gate bridge was proposed in 1872, then not raised again for 47 years
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #USA
+```
+
+---
