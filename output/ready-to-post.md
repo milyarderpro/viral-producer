@@ -1759,3 +1759,35 @@ History and geography feel richer through an unexpected perspective.
 ```
 
 ---
+
+## P-000068 — Animals and Nature
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Przewalski's horses have 66 chromosomes, domestic horses 64, yet their 65-chromosome hybrids can be fertile.
+
+Asian small-clawed otters trap insulating air in their coats and groom to restore it.
+
+Seals can detect swimming prey through whisker vibrations, and blind seals can still hunt.
+
+Black howler monkeys are born blond, but males turn black around age two-and-a-half.
+
+Andean bears build platforms in trees for eating and nests there for sleeping.
+
+Uinta ground squirrels can spend about nine months of each year hibernating.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature becomes even more engaging through an unexpected perspective.
+
+#AnimalFacts #NatureFacts #WildlifeKnowledge #CuriousMinds #DidYouKnow
+```
+
+---
