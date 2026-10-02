@@ -1904,7 +1904,7 @@ Branch: `test/viral-producer-v1.1`.
 - `P-000099` is a package-complete mixed ready fixture. `P-000028` and `P-000029` were modified during earlier fixture setup and must not be used as byte-unchanged legacy evidence for AT-47 or AT-54.
 - No raw performance snapshot exists, the performance summary remains empty, fact ledgers and the monthly archive remain unchanged from the test-branch baseline, and no scheduled slot is completed.
 - Earlier test-branch mutations are retained as disposable fixtures but are not credited as acceptance PASS evidence because the interrupted run did not record per-test results.
-- Stage 12.10 resumed on 2026-10-02. Twenty-nine of AT-24 through AT-55 now have recorded PASS evidence; three remain PENDING: AT-24, AT-26, and AT-27. No test data may be merged or copied to the feature branch or `main`.
+- Stage 12.10 resumed on 2026-10-02. Thirty of AT-24 through AT-55 now have recorded PASS evidence; two remain PENDING: AT-24 and AT-26. No test data may be merged or copied to the feature branch or `main`.
 - Interim full consistency audit after the recorded mutations passed with revision 148, counters 100/621, 96 active posts, 28 ready posts, 2 archives, 12 published facts, 14 planned slots, 1 completed slot, 3 performance snapshots, and deterministic queue/calendar/performance-summary parity.
 - Post-AT-38/48/50 interim full consistency audit passed 525/525 checks at revision 152 with counters 101/628, 97 active posts, 28 ready posts, 2 archives, 12 published facts, 14 planned slots, 1 completed slot, 3 performance snapshots, valid P-000100 named-series/package evidence, and byte-exact queue, calendar, and performance-summary reconstruction.
 
@@ -1941,7 +1941,7 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-24 Production runtime boundary | PENDING | Stage 12.10 | Specification added in Stage 12.2; execute after the version-3 plugin profile is installed. |
 | AT-25 Test profile refuses main | PASS | test-branch recovery run 2026-10-02 | Override to main rejected before any main/default-ref/write call; all six tracked test-branch artifact SHAs remained unchanged. |
 | AT-26 Production profile refuses test | PENDING | Stage 12.10 | Must pass without research, allocation, or writes. |
-| AT-27 Explicit ref and mismatch rejection | PENDING | Stage 12.10 | Run only with the isolated connector test harness. |
+| AT-27 Explicit ref and mismatch rejection | PASS | isolated fixture `8938ba9`; read-only harness 2026-10-02 | Explicit repository/ref appeared in both captured requests; wrong-ref and wrong-repository responses were hard-failed before content/SHA trust, no revision was reported, no ref-less fallback or write occurred, fixture SHA `2f85b62`, and all tracked production SHAs stayed unchanged. |
 | AT-28 Incomplete Fast Approval rejection | PASS | fixture `cb4f679`; cleanup `bb98834` | Missing `quality.rationales.shareability` blocked approval with zero active/queue/state writes; revision and counters stayed 145 / 100 / 621; fixture restored byte-exact. |
 | AT-29 Fast Approval SHA conflict restart | PASS | Writer B `83ca414`/`167c746`/`4bdcafe`; Writer A `54d8881`/`f4d9c54`/`12d02cf` | Writer A detected all three stale SHAs, refetched, preserved P-000029, approved P-000028 once, advanced revision 146→147, and preserved counters 100/621. |
 | AT-30 Mixed-topic generation | PASS | independently evidenced P-000099 draft `4335265`; state `58b7e48` | Stored draft was mixed/GLOBAL with four non-mixed topics at counts 2/2/1/1, six operators, five strength-2 facts, quality 12/12, complete audits, IDs F-000615–620, and exact state movement revision 143→144 / post 99→100 / fact 615→621. |
@@ -1988,4 +1988,4 @@ The version-3 implementation is ready to merge only when:
 - legacy baseline records remain unchanged unless explicitly revised through the normal lifecycle;
 - no test-only corruption remains on the branch.
 
-Current result: AT-01 through AT-23 and the body-science v2 regression retain historical PASS evidence. Stage 12.10 has recorded PASS evidence for 29 of AT-24 through AT-55; AT-24, AT-26, and AT-27 remain PENDING. The interim repository consistency audit passes, but Stage 12 is not acceptance-ready until those three runtime-boundary tests and the final post-test audit complete.
+Current result: AT-01 through AT-23 and the body-science v2 regression retain historical PASS evidence. Stage 12.10 has recorded PASS evidence for 30 of AT-24 through AT-55; AT-24 and AT-26 remain PENDING. The interim repository consistency audit passes, but Stage 12 is not acceptance-ready until those two production-profile boundary tests and the final post-test audit complete.
