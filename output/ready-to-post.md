@@ -1919,3 +1919,35 @@ Nature becomes even more engaging through an unexpected perspective.
 ```
 
 ---
+
+## P-000076 — Geography and History
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Castillo de San Marcos is one of only two fortifications worldwide built from coquina limestone.
+
+Washington’s Lockkeeper’s House has its original foundation buried more than 12 feet below ground.
+
+Hamilton Grange was lifted 38 feet high before its nearly 200-ton house rolled to a new site.
+
+Cockspur Island Lighthouse is shaped like a ship’s prow to better resist wind and waves.
+
+The house at George Washington’s birthplace is a 1930s memorial, not a replica of his birth home.
+
+The Statue of Liberty stands on the surviving base of an 11-point harbor-defense fort.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #USA
+```
+
+---
