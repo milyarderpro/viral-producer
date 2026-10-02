@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "fixture_name": "AT-50 package recheck harness",
+  "fixture_revision": 0,
+  "production_files_untouched": true,
+  "subtests": {
+    "topic_change": {
+      "before": {
+        "topic": "food-home",
+        "post_format": "themed",
+        "country_focus": "GLOBAL",
+        "caption": "Everyday objects can hide remarkably clever science.",
+        "hashtags": [
+          "#DidYouKnow",
+          "#AmazingFacts",
+          "#FoodFacts",
+          "#HomeScience",
+          "#LearnSomethingNew"
+        ]
+      },
+      "after": null,
+      "result": "pending"
+    },
+    "country_change": {
+      "before": {
+        "topic": "geography-history",
+        "post_format": "themed",
+        "country_focus": "US",
+        "caption": "Familiar places can carry stories much bigger than expected.",
+        "hashtags": [
+          "#DidYouKnow",
+          "#AmazingFacts",
+          "#USHistory",
+          "#AmericanPlaces",
+          "#LearnSomethingNew"
+        ]
+      },
+      "after": null,
+      "result": "pending"
+    },
+    "format_change": {
+      "before": {
+        "topic": "mixed",
+        "post_format": "mixed",
+        "country_focus": "GLOBAL",
+        "caption": "Unexpected connections make ordinary things feel completely different.",
+        "hashtags": [
+          "#DidYouKnow",
+          "#AmazingFacts",
+          "#MixedTrivia",
+          "#WorldFacts",
+          "#LearnSomethingNew"
+        ]
+      },
+      "after": null,
+      "result": "pending"
+    }
+  }
+}
