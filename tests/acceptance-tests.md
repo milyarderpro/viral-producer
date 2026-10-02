@@ -1935,7 +1935,7 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-21 Persisted audit metadata | PASS | archive `P-000004` | Candidate accounting, operator variety, weakest review, rationales, and fact validation fields survived publication. |
 | AT-22 Opening and closing | PASS | archive `P-000004` | Both endpoints are strength 2 and use different operators. |
 | AT-23 Legacy compatibility | PASS | snapshot `8c3f5fe` unchanged | Three legacy drafts remained readable and could not bypass upgrade. |
-| AT-24 Production runtime boundary | PENDING POST-CUTOVER | Stage 12.12 | Mandatory smoke test after merge and production plugin v1.1 refresh; run before any backfill or production resumption. The pre-cutover Stage 10 production attempt is not a FAIL. |
+| AT-24 Production runtime boundary | PASS | production plugin v1.1.0 on `main`, 2026-10-02 | Reported all five canonical production runtime values; every GitHub read used explicit `milyarderpro/viral-producer` and `ref: main`; canonical response URLs matched `main`; state remained revision 139 with counters 98/609; tracked state/active SHAs were unchanged; zero write or commit calls occurred. |
 | AT-25 Test profile refuses main | PASS | test-branch recovery run 2026-10-02 | Override to main rejected before any main/default-ref/write call; all six tracked test-branch artifact SHAs remained unchanged. |
 | AT-26 Production profile refuses test | PASS | production-profile run 2026-10-02 | Override to `test/viral-producer-v1.1` was rejected at the production configuration boundary before research, repository access, ID allocation, write preparation, or commit; neither `main` nor the test branch was read or changed during the test. |
 | AT-27 Explicit ref and mismatch rejection | PASS | isolated fixture `8938ba9`; read-only harness 2026-10-02 | Explicit repository/ref appeared in both captured requests; wrong-ref and wrong-repository responses were hard-failed before content/SHA trust, no revision was reported, no ref-less fallback or write occurred, fixture SHA `2f85b62`, and all tracked production SHAs stayed unchanged. |
@@ -1986,6 +1986,6 @@ The version-3 implementation is ready for the cutover merge when:
 - legacy baseline records remain unchanged unless explicitly revised through the normal lifecycle;
 - no test-only corruption or test data is merged to the feature branch or `main`.
 
-AT-24 is deliberately excluded from the pre-merge gate because it validates the refreshed production runtime on merged `main`. It remains mandatory for the Stage 12 Definition of Done and must pass in Stage 12.12 after the production plugin is updated to v1.1 and before backfill or normal production resumes.
+AT-24 was deliberately excluded from the pre-merge gate because it validates the refreshed production runtime on merged `main`. It passed in Stage 12.12 with production plugin v1.1.0 before backfill or normal production resumed.
 
-Current result: Stage 12.10 is COMPLETE as the pre-cutover gate: AT-25 through AT-55 are PASS (31/31) and the isolated test-branch final consistency audit is PASS. AT-24 remains PENDING POST-CUTOVER and therefore Stage 12 as a whole is not yet complete.
+Current result: Stage 12.10 is COMPLETE as the pre-cutover gate, AT-25 through AT-55 are PASS (31/31), the isolated test-branch final consistency audit is PASS, and post-cutover AT-24 is PASS. Stage 12 remains in progress until controlled backfill, the final production consistency audit, and production resumption complete.
