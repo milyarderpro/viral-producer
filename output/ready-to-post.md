@@ -1567,3 +1567,35 @@ Innovation and record stories become memorable through unexpected perspectives.
 ```
 
 ---
+
+## P-000059 — Animals and Nature
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Hellbenders breathe entirely through their skin, while their lungs mainly help control buoyancy
+
+California sea lions’ teeth turn black from a protective bacterial coating, not cavities or rot
+
+Tamanduas have no teeth and mouths only as wide as a pencil eraser
+
+Prehensile-tailed skinks cannot shed their tails because those tails function as gripping limbs
+
+Striped skunks can spray at eight days old, about two weeks before their eyes open
+
+Tokay geckos have ear openings that let you see straight through their heads
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature becomes even more engaging through an unexpected perspective.
+
+#AnimalFacts #NatureFacts #WildlifeKnowledge #CuriousMinds #DidYouKnow
+```
+
+---
