@@ -1183,3 +1183,35 @@ Innovation and record stories become memorable through unexpected perspectives.
 ```
 
 ---
+
+## P-000039 — Animals and Nature
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+All clownfish start life as males, and some later change sex to become females
+
+Snakes cannot blink because they have no eyelids; transparent eye caps protect their eyes instead
+
+Butterflies can taste with their feet when they land on plants and flowers
+
+Axolotls can regrow entire limbs repeatedly and even regenerate severe spinal cord injuries
+
+Sea turtles seem to cry because glands near their eyes remove excess salt
+
+Archerfish can shoot insects off branches with water jets from up to four feet away
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature becomes even more engaging through an unexpected perspective.
+
+#AnimalFacts #NatureFacts #WildlifeKnowledge #CuriousMinds #DidYouKnow
+```
+
+---
