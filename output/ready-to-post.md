@@ -1535,3 +1535,35 @@ History and geography feel richer through an unexpected perspective.
 ```
 
 ---
+
+## P-000058 — Inventions, Firsts, and Records
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+The first workable sports bra prototype was made by sewing two jockstraps together
+
+Elisha Otis didn’t invent elevators; he made them safer with a brake tested by axe-cutting
+
+The first barcode design grew from Morse code and lines Joseph Woodland drew in sand
+
+Chester Carlson’s xerography was rejected by more than 20 companies before finding a backer
+
+Hearing aids became the first commercial products to use transistors, before transistor radios appeared
+
+Seymour Cray said his first computer exhausted the world’s supply of rejected radio transistors
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Innovation and record stories become memorable through unexpected perspectives.
+
+#InventionFacts #WorldRecords #InnovationHistory #CuriousMinds #DidYouKnow
+```
+
+---
