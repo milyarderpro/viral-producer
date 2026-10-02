@@ -1,6 +1,6 @@
 # Instalasi Viral Producer di ChatGPT
 
-Documentation version: 3.0 — Stage 12
+Documentation version: 3.0 — Stage 12.11
 
 ## 1. Tujuan
 
@@ -52,13 +52,15 @@ Profile produksi:
     ALLOW_WRITES=true
     ALLOW_MAIN_WRITES=true
 
-Profile test terisolasi:
+Profile test terisolasi, untuk referensi boundary saja:
 
     RUNTIME_REPOSITORY=milyarderpro/viral-producer
     RUNTIME_BRANCH=test/viral-producer-v1.1
     RUNTIME_MODE=test
     ALLOW_WRITES=true
     ALLOW_MAIN_WRITES=false
+
+Panduan ini memasang **production plugin**. Jangan memakai langkah instalasi production untuk membuat test plugin. Untuk test plugin gunakan `docs/test-plugin-installation.md`.
 
 Aturan profile:
 
@@ -306,7 +308,9 @@ Lulus jika draft tersimpan lengkap, counter dan revision diperbarui, serta commi
 
 ### 10.3 Acceptance test lanjutan
 
-Jangan menjalankan acceptance test mutatif dengan profile produksi. Jika perlu menguji lifecycle, konflik, atau recovery, gunakan profile test terisolasi dan ikuti `tests/acceptance-tests.md`.
+Jangan menjalankan acceptance test mutatif dengan profile produksi. Untuk AT-25 sampai AT-55 dan test mutatif lainnya, gunakan **Viral Producer v1.1 Test** pada configured test branch dan ikuti `docs/test-plugin-installation.md` serta `tests/acceptance-tests.md`.
+
+AT-24 adalah pengecualian: ia merupakan mandatory post-cutover smoke test read-only untuk production plugin v1.1. Jalankan hanya setelah PR Stage 12 di-merge ke `main` dan production plugin di-refresh, tetapi sebelum controlled backfill atau produksi dilanjutkan.
 
 ## 11. Memeriksa Perubahan di GitHub
 
@@ -454,7 +458,7 @@ Instalasi atau refresh siap digunakan jika semua jawaban adalah ya:
 - [ ] Nama, visibility, GitHub connection, dan permission tidak berubah tanpa alasan.
 - [ ] system/gpt-instructions.md terpasang lengkap.
 - [ ] Instruction version adalah 3.0 — Stage 12.
-- [ ] Editorial version adalah 2.0 — Stage 10.2.
+- [ ] Editorial version adalah 3.0 — Stage 12.
 - [ ] Test specification version adalah 3.0 — Stage 12.
 - [ ] Kelima runtime values tersimpan di konfigurasi lokal plugin.
 - [ ] RUNTIME_REPOSITORY adalah milyarderpro/viral-producer.
@@ -558,7 +562,7 @@ Kirim prompt:
 Hasil yang benar:
 
     Instruction version: 3.0 — Stage 12
-    Editorial version: 2.0 — Stage 10.2
+    Editorial version: 3.0 — Stage 12
     Test specification version: 3.0 — Stage 12
     Repository: milyarderpro/viral-producer
     Branch: main
@@ -645,7 +649,7 @@ Jika plugin meminta permission GitHub yang lebih luas:
 
 ## 17. Pemeliharaan Setelah Go-Live
 
-Runtime produksi menggunakan `main`.
+Runtime produksi menggunakan `main`. Test plugin tetap terpisah pada `test/viral-producer-v1.1` dan tidak dipakai untuk pekerjaan produksi.
 
 - Gunakan plugin Viral Producer untuk operasi harian.
 - Jalankan acceptance test mutatif hanya dengan profile test terisolasi.

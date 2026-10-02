@@ -1,230 +1,270 @@
 # Pustaka Prompt Viral Producer
 
-Gunakan prompt berikut di chat yang memakai plugin **Viral Producer**.
+Prompt di bawah ini untuk **production plugin Viral Producer** pada branch `main`, kecuali bagian administrator yang secara eksplisit menyebut test plugin.
 
-Belum memahami alurnya? Baca [Panduan Pengguna](user-guide.md).
-
-- `READ-ONLY`: hanya membaca repository.
-- `WRITE`: dapat mengubah repository.
-- Ganti contoh `P-000009`, nomor fakta, topik, atau negara sesuai kebutuhan.
+- `READ-ONLY`: tidak mengubah repository.
+- `WRITE`: dapat membuat commit pada branch runtime.
+- Ganti contoh `P-000009`, topic, negara, tanggal, atau metric sesuai kebutuhan.
 - Jalankan satu prompt `WRITE` pada satu waktu.
+
+Lihat juga [Panduan Pengguna](user-guide.md).
 
 ## 1. Pemeriksaan Awal
 
-### Periksa versi dan koneksi — READ-ONLY
+### Version dan runtime profile — READ-ONLY
 
 ```text
-Periksa versi sistem, repository, branch, production state, dan koneksi GitHub. Jangan mengubah file apa pun.
+Periksa instruction version, editorial version, test specification version, repository, branch, runtime mode, ALLOW_WRITES, ALLOW_MAIN_WRITES, dan production state. Jangan mengubah apa pun.
 ```
 
-### Ringkasan status produksi — READ-ONLY
+### Ringkasan produksi — READ-ONLY
 
 ```text
-Tampilkan revision, next Post ID, next Fact ID, jumlah post aktif, dan jumlah post ready. Jangan mengubah repository.
-```
-
-### Daftar seluruh post aktif — READ-ONLY
-
-```text
-Tampilkan seluruh post aktif beserta Post ID, topic, country focus, dan statusnya. Jangan mengubah repository.
+Tampilkan revision, next Post ID, next Fact ID, jumlah active post, jumlah ready post, publishing-plan revision, dan performance sample size. Jangan mengubah repository.
 ```
 
 ## 2. Membuat Post
 
-### Satu post dengan rotasi otomatis — WRITE
+### Rotasi default — WRITE
 
 ```text
-Buatkan satu post baru menggunakan rotasi topik dan country focus default. Simpan sebagai draft hanya setelah seluruh validasi lulus.
+Buatkan satu post baru menggunakan rotasi format, topic, dan country focus default. Simpan sebagai draft hanya setelah seluruh source, duplicate, cooldown, editorial, audit, dan publishing-package gate lulus.
 ```
 
-### Menentukan topik — WRITE
+### Themed — WRITE
 
 ```text
-Buatkan satu post baru tentang animals-nature. Gunakan country focus default dan simpan sebagai draft setelah seluruh validasi lulus.
+Buatkan satu post themed animals-nature dengan country focus GLOBAL. Simpan hanya jika seluruh gate lulus.
 ```
 
-### Menentukan negara — WRITE
+### Mixed — WRITE
 
 ```text
-Buatkan satu post baru untuk country focus AU. Pilih topik menggunakan rotasi default. Naskah akhir tetap menggunakan natural American English.
+Buatkan satu post mixed trivia dengan country focus GLOBAL. Gunakan sedikitnya empat fact topics dan maksimal dua fakta dari topic yang sama.
 ```
 
-### Menentukan topik dan negara — WRITE
+### Country-specific mixed — WRITE
 
 ```text
-Buatkan satu post geography-history dengan country focus US. Simpan sebagai draft setelah source, duplicate, scope, editorial, dan quality gate lulus.
+Buatkan satu post mixed untuk Australia. Setiap fakta harus secara eksplisit mendukung scope Australia dan seluruh gate biasa tetap berlaku.
 ```
 
-### Membuat beberapa post — WRITE
+### Beberapa post — WRITE
 
 ```text
-Buatkan tiga post menggunakan rotasi default. Kerjakan dan simpan secara berurutan, satu post pada satu waktu. Jangan melakukan parallel repository writes.
+Buatkan tiga post menggunakan rotasi default. Validasi seluruh batch, lalu persist secara serial satu logical operation pada satu waktu. Jangan melakukan parallel repository writes.
 ```
 
-Topik yang didukung:
+## 3. Named Series
 
-- `geography-history`
-- `animals-nature`
-- `body-science`
-- `food-home`
-- `inventions-records`
-- `practical`
+Gunakan hanya bila memang ingin seri bertema yang dapat meminta cooldown override terbatas.
 
-Country focus yang didukung: `US`, `CA`, `UK`, `AU`, dan `GLOBAL`.
+```text
+Buat satu post untuk seri bernama “Grand Canyon Week”. Gunakan series override hanya bila diperlukan untuk subject/cluster cooldown; duplicate claim, source, scope, safety, dan quality gate tetap tidak boleh dilewati.
+```
 
-## 3. Menampilkan dan Memeriksa Post
+## 4. Menampilkan Post dan Sumber
 
 ### Tampilkan post — READ-ONLY
 
 ```text
-Tampilkan P-000009 beserta status, topic, country focus, dan clean copy. Jangan mengubah repository.
+Tampilkan P-000009 beserta status, effective post format, topic, country focus, ON-SCREEN SCRIPT, dan FACEBOOK CAPTION. Jangan mengubah repository.
 ```
 
-### Tampilkan sumber — READ-ONLY
+### Sumber — READ-ONLY
 
 ```text
-Tampilkan seluruh sumber P-000009. Jelaskan klaim yang didukung setiap sumber dan qualifier penting yang harus dipertahankan. Jangan mengubah repository.
+Tampilkan seluruh sumber P-000009 dan jelaskan klaim serta qualifier yang didukung setiap sumber. Jangan melakukan riset baru dan jangan mengubah repository.
 ```
 
 ### Audit satu post — READ-ONLY
 
 ```text
-Audit P-000009 untuk source support, scope, duplicate, operator diversity, viral strength, quality rationale, dan generation audit. Jangan mengubah repository.
+Audit P-000009 untuk source support, scope, permanent duplicate, cooldown evidence, operator diversity, viral strength, quality rationale, generation audit, caption, dan hashtags. Jangan mengubah repository.
 ```
 
-## 4. Revisi Post
+## 5. Revisi
 
-### Memperbaiki wording — WRITE
-
-Gunakan jika fakta dan maknanya tetap sama.
+### Wording-only — WRITE
 
 ```text
-Buat Fact 3 pada P-000009 lebih punchy tanpa mengubah canonical claim, angka, lokasi, waktu, scope, qualifier, atau Fact ID. Simpan hanya jika seluruh gate tetap lulus.
+Buat Fact 3 pada P-000009 lebih punchy tanpa mengubah canonical claim, angka, lokasi, waktu, scope, qualifier, atau Fact ID. Recheck publishing package dan pertahankan caption/hashtags byte-for-byte jika masih valid.
 ```
 
-### Mengganti fakta — WRITE
-
-Gunakan jika menginginkan klaim yang benar-benar berbeda.
+### Ganti fakta — WRITE
 
 ```text
-Ganti Fact 4 pada P-000009 dengan fakta yang benar-benar berbeda. Riset dan verifikasi penggantinya, periksa seluruh duplicate ledger, lalu hitung ulang audit dan quality post.
+Ganti Fact 4 pada P-000009 dengan fakta yang benar-benar berbeda. Riset dan verifikasi penggantinya, jalankan permanent duplicate dan cooldown check, lalu perbarui audit serta publishing package yang terdampak.
 ```
 
-### Memperbaiki beberapa wording — WRITE
+## 6. Fast Approval
+
+### Approve — WRITE
 
 ```text
-Periksa wording keenam fakta P-000009. Perbaiki hanya kalimat yang kurang natural atau kurang punchy tanpa mengubah makna faktual. Tampilkan rencana perubahan sebelum menyimpan.
+Approve P-000009 menggunakan Fast Approval. Validasi hanya evidence yang sudah tersimpan; jangan membuka sumber, jangan Web Search, jangan rescore, jangan alokasikan ID baru, dan jangan regenerasi caption/hashtags yang masih valid.
 ```
 
-Perubahan angka, lokasi, waktu, qualifier, atau kesimpulan termasuk **ganti fakta**, bukan revisi wording.
-
-## 5. Approve atau Reject
-
-### Approve post — WRITE
+### Reject — WRITE
 
 ```text
-Audit ulang P-000009. Jika seluruh source, scope, duplicate, operator, strength, quality, dan generation audit lulus, approve post dan masukkan ke ready queue.
+Tolak P-000009 dan ikuti lifecycle rejection sesuai data contract. Jangan menggunakan kembali ID yang sudah dikonsumsi.
 ```
 
-### Reject post — WRITE
+## 7. Ready Queue dan Publishing Package
+
+### Post berikutnya — READ-ONLY
 
 ```text
-Tolak P-000009 dan ikuti lifecycle rejection sesuai data contract. Jangan menggunakan kembali Post ID atau Fact ID yang sudah dikonsumsi.
+Tampilkan post berikutnya yang siap saya copy dengan ON-SCREEN SCRIPT dan FACEBOOK CAPTION dalam dua blok terpisah. Jangan mengubah repository.
 ```
 
-## 6. Ready Queue
-
-### Tampilkan post berikutnya — READ-ONLY
+### Seluruh ready queue — READ-ONLY
 
 ```text
-Tampilkan post berikutnya yang siap saya copy. Jangan mengubah repository.
+Tampilkan seluruh ready queue sesuai urutan repository. Jangan mengubah status, schedule, atau queue.
 ```
 
-### Tampilkan seluruh ready queue — READ-ONLY
+### Parity satu ready post — READ-ONLY
 
 ```text
-Tampilkan seluruh post dalam ready queue, diurutkan sesuai repository. Jangan mengubah status atau menghapus post dari antrean.
+Periksa P-000009: pastikan active record, ready queue, caption, hashtag order, dan dua surface copy-ready sama persis. Jangan mengubah repository.
 ```
 
-### Periksa satu ready post — READ-ONLY
+## 8. Smart Recommendation
+
+### Rekomendasi berikutnya — READ-ONLY
 
 ```text
-Periksa apakah P-000009 berstatus ready, muncul tepat satu kali di ready queue, dan clean copy-nya sama dengan active record. Jangan mengubah repository.
+Rekomendasikan ready post terbaik untuk diposting berikutnya. Hormati planned slot jika ada dan jelaskan evidence pemilihan secara singkat. Jangan approve, edit, schedule, dequeue, atau mark posted.
 ```
 
-## 7. Setelah Posting ke Facebook
+## 9. Content Calendar
 
-### Tandai sebagai posted — WRITE
-
-Jalankan hanya setelah konten benar-benar diposting secara manual.
+### Jadwal tujuh hari — WRITE
 
 ```text
-Saya sudah memposting P-000009 ke Facebook. Tandai sebagai posted menggunakan waktu sekarang sesuai operational timezone, lalu verifikasi archive, published facts, active drafts, ready queue, dan production state.
+Susun jadwal posting tujuh hari, dua post per hari. Gunakan ready posts saja dan default 12:00 serta 19:00 WIB jika jam tidak saya tentukan.
 ```
 
-### Periksa status setelah posting — READ-ONLY
+### Jadwal satu post — WRITE
 
 ```text
-Periksa apakah P-000009 sudah berstatus posted, tidak ada di active drafts atau ready queue, dan memiliki enam published facts yang cocok dengan archive. Jangan mengubah repository.
+Jadwalkan P-000009 besok pukul 19.00 WIB.
 ```
 
-## 8. Audit Database
-
-### Audit lengkap tanpa perbaikan — READ-ONLY
+### Tampilkan calendar — READ-ONLY
 
 ```text
-Audit seluruh database untuk duplicate Post ID, duplicate Fact ID, duplicate claim signature, semantic duplicate, malformed JSON atau JSONL, orphan fact, archive mismatch, counter mismatch, lifecycle mismatch, dan ready-queue mismatch. Jangan mengubah apa pun.
+Tampilkan content calendar dalam waktu Asia/Jakarta dan verifikasi parity dengan publishing plan. Jangan mengubah repository.
 ```
 
-### Audit duplikasi saja — READ-ONLY
+### Pindahkan schedule — WRITE
 
 ```text
-Audit seluruh active reservations, published facts, blocked facts, dan archives untuk exact duplicate serta kemungkinan semantic duplicate. Jangan mengubah repository.
+Pindahkan P-000009 ke 4 Oktober 2026 pukul 12.00 WIB. Tolak jika slot terisi atau post tidak lagi ready.
 ```
 
-### Periksa partial operation — READ-ONLY
+## 10. Setelah Posting
+
+### Mark posted — WRITE
 
 ```text
-Periksa apakah ada partial lifecycle operation, recovery marker, atau derived-data inconsistency. Laporkan temuan dan tindakan yang disarankan tanpa melakukan repair.
+Saya sudah memposting P-000009 ke Facebook. Tandai sebagai posted, arsipkan publishing package yang sama persis, selesaikan planned slot bila ada, lalu verifikasi archive, fact ledgers, active drafts, ready queue, calendar, dan production state.
+```
+
+### Verifikasi — READ-ONLY
+
+```text
+Periksa P-000009 setelah posting: pastikan hanya ada satu archive record, enam published facts, tidak ada active/ready copy, package archive sama dengan final ready package, dan slot terjadwal sudah completed bila ada. Jangan mengubah repository.
+```
+
+## 11. Performance Feedback
+
+### Catat performa — WRITE
+
+```text
+Catat performa P-000009: 1.2M views, 84K reactions, 2,300 comments, 15K shares, average watch time 8.4 seconds, retention 42%, dan 3,200 followers gained.
+```
+
+Minimal satu metric harus diberikan. Hanya archived posted post yang eligible.
+
+### Ringkasan — READ-ONLY
+
+```text
+Tampilkan performance summary dan sample size. Verifikasi summary terhadap raw snapshots tanpa melakukan repair.
+```
+
+### Analisis — READ-ONLY
+
+```text
+Analisis performance berdasarkan topic, country, post format, dan operator. Tampilkan post_count tiap bucket dan terapkan batas sample size 15/20. Jangan mengubah repository.
+```
+
+## 12. Audit dan Recovery
+
+### Audit lengkap — READ-ONLY
+
+```text
+Audit complete repository state: JSON/JSONL, IDs, signatures, lifecycle, ready queue, publishing package, cooldown evidence, performance data/summary, publishing plan, content calendar, archive/fact linkage, counters, dan unresolved partial operation. Jangan memperbaiki apa pun.
+```
+
+### Partial operation — READ-ONLY
+
+```text
+Periksa apakah ada partial lifecycle, performance, schedule, atau derived-data operation yang belum selesai. Laporkan confirmed writes dan tindakan recovery tanpa melakukan write.
 ```
 
 ### Deterministic recovery — WRITE
 
-Gunakan hanya setelah audit menemukan masalah yang jelas.
-
 ```text
-Lakukan deterministic recovery untuk inconsistency yang sudah ditemukan. Jangan mengubah authoritative post atau fact content, jangan mengalokasikan ID baru, dan verifikasi ulang seluruh postcondition.
+Lakukan hanya deterministic recovery yang diizinkan data contract untuk inconsistency yang sudah dikonfirmasi. Gunakan state/SHA terbaru, jangan mengalokasikan ID baru kecuali contract memang mensyaratkannya, dan verifikasi seluruh postcondition.
 ```
 
-## 9. Konflik atau Hasil Tidak Jelas
+## 13. Konflik SHA
 
-### Periksa hasil write yang tidak pasti — READ-ONLY
-
-```text
-Operasi sebelumnya berhenti atau hasilnya tidak jelas. Periksa repository terbaru untuk menentukan write mana yang sudah berhasil. Jangan mengulang write dan jangan mengubah file.
-```
-
-### Muat ulang setelah SHA conflict — WRITE
+### Diagnosis — READ-ONLY
 
 ```text
-Muat ulang seluruh state dan SHA terbaru setelah conflict. Hitung ulang operasi dari awal, pertahankan ID yang sudah dikonsumsi, lalu lanjutkan hanya jika data contract mengizinkan.
+Operasi sebelumnya mengalami SHA conflict atau hasil tidak jelas. Baca ulang target branch dan tentukan write mana yang sudah berhasil. Jangan mengulang write dan jangan mengubah file.
 ```
 
-## 10. Acceptance Test untuk Administrator
-
-Jangan menjalankan acceptance test untuk produksi rutin.
-
-### Menjalankan satu test tertentu
+### Restart logical operation — WRITE
 
 ```text
-Baca specification terbaru dan jalankan hanya acceptance test AT-01. Ikuti scope test tersebut dan jangan menjalankan test lain.
+Muat ulang seluruh state dan SHA terbaru, hitung ulang logical operation dari awal, pertahankan competing writer dan ID yang sudah dikonsumsi, lalu lanjutkan hanya jika data contract mengizinkan.
 ```
 
-Beberapa acceptance test dapat mengubah repository. Jalankan hanya jika memahami expected mutation dan recovery-nya.
+## 14. Administrator — Acceptance Test
 
-## 11. Prompt yang Sebaiknya Dihindari
+Acceptance test mutatif **tidak** dijalankan dengan production plugin.
 
-Hindari prompt yang tidak jelas seperti:
+Gunakan plugin **Viral Producer v1.1 Test** pada `test/viral-producer-v1.1` untuk AT-25 sampai AT-55 dan test mutatif lainnya sesuai specification.
+
+### Menjalankan test pada test plugin
+
+```text
+Baca tests/acceptance-tests.md dari configured test branch dan jalankan hanya AT-XX sesuai precondition-nya. Jangan jalankan test lain.
+```
+
+### AT-24 — production post-cutover smoke test
+
+AT-24 adalah pengecualian karena menguji production runtime. Jalankan **hanya** setelah:
+
+1. PR Stage 12 di-merge ke `main`;
+2. production plugin diperbarui ke v1.1.0;
+3. production writers dipause;
+4. chat baru dimulai dan version/profile check read-only lulus.
+
+```text
+Jalankan hanya AT-24 sesuai tests/acceptance-tests.md. Jangan mengubah repository.
+```
+
+AT-24 harus PASS sebelum controlled backfill atau produksi dilanjutkan.
+
+## 15. Prompt yang Harus Dihindari
+
+Hindari permintaan ambigu seperti:
 
 ```text
 Perbaiki semuanya.
@@ -235,7 +275,7 @@ Posting sekarang.
 ```
 
 ```text
-Ganti dengan fakta yang lebih bagus.
+Pakai branch lain untuk kali ini.
 ```
 
-Sebutkan Post ID, posisi fakta, dan tindakan yang diinginkan. Untuk audit atau pemeriksaan, tambahkan kalimat **“Jangan mengubah repository.”**
+Untuk operasi record-specific, sebutkan Post ID dan tindakan yang jelas. Untuk read-only, tambahkan “Jangan mengubah repository.”

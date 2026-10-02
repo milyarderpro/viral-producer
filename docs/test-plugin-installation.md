@@ -1,12 +1,12 @@
 # Viral Producer v1.1 Test — Installation Guide
 
-Documentation version: 3.0 — Stage 12.9
+Documentation version: 3.0 — Stage 12.11
 
 ## 1. Tujuan
 
-Panduan ini menyiapkan plugin privat untuk acceptance test Viral Producer 1.1 tanpa menyentuh produksi.
+Panduan ini menjelaskan instalasi, boundary, dan penggunaan plugin privat **Viral Producer v1.1 Test** untuk acceptance test tanpa menyentuh produksi.
 
-Stage 12.9 hanya membuat panduan ini. Branch test dan plugin test baru dibuat atau dikonfigurasi saat Stage 12.10 dimulai.
+Stage 12.10 sudah selesai dengan AT-25 sampai AT-55 PASS (31/31) dan final consistency audit test branch PASS. Panduan ini tetap menjadi prosedur resmi bila test plugin perlu dipasang ulang atau test terisolasi perlu diulang.
 
 Jangan menjalankan mutative acceptance test pada:
 
@@ -40,16 +40,16 @@ Hard boundary:
 - SHA dari branch lain tidak boleh dipakai;
 - test mode harus menolak operasi yang menargetkan `main`.
 
-## 3. Prasyarat Stage 12.10
+## 3. Prasyarat Instalasi atau Rerun Test Plugin
 
-Sebelum membuat plugin test:
+Sebelum membuat ulang plugin test atau memulai rerun yang membutuhkan baseline baru:
 
-1. Pastikan Stage 12.9 berstatus COMPLETE di `plan.md`.
-2. Pastikan `upgrade/viral-producer-v1.1` tidak tertinggal dari `main`.
-3. Pastikan protected production files tidak muncul sebagai feature-owned diff.
-4. Buat `test/viral-producer-v1.1` dari HEAD feature branch yang sudah divalidasi.
-5. Jangan membuat test branch dari `main` langsung.
-6. Jangan membawa data dari test branch kembali ke feature branch atau `main`.
+1. Baca status Stage 12 terbaru di `plan.md`.
+2. Pastikan baseline feature branch yang akan diuji sudah divalidasi dan sesuai tujuan rerun.
+3. Pastikan protected production files tidak muncul sebagai feature-owned diff yang tidak disengaja.
+4. Jika membuat ulang test branch, buat dari HEAD feature branch yang memang akan diuji, bukan dari `main` langsung.
+5. Jangan mengubah existing test branch hanya untuk membuat dokumentasi terlihat bersih.
+6. Jangan membawa data, fixture, counter, snapshot, atau commit test kembali ke feature branch atau `main`.
 
 Protected production files:
 
@@ -119,7 +119,7 @@ Read-only smoke test:
 
 Pastikan seluruh read memakai explicit test ref dan tidak ada commit.
 
-Write smoke test hanya setelah Stage 12.10 resmi dimulai. Gunakan operasi test yang sudah ditentukan di `tests/acceptance-tests.md`, lalu verifikasi commit hanya muncul pada test branch.
+Write smoke test hanya dilakukan sebagai bagian rerun acceptance yang memang diotorisasi. Gunakan operasi test yang ditentukan di `tests/acceptance-tests.md`, lalu verifikasi commit hanya muncul pada test branch.
 
 Jangan memakai feature branch sebagai pengganti test branch untuk smoke write.
 
@@ -139,7 +139,7 @@ Kegagalan check ini menghentikan seluruh mutative acceptance run.
 
 ## 9. Acceptance-Test Sequence
 
-Saat Stage 12.10 dimulai:
+Untuk rerun acceptance terisolasi:
 
 1. Catat starting SHAs, revision, counters, active IDs, dan ready IDs.
 2. Jalankan AT-25 sampai AT-27 untuk runtime isolation. Jangan jalankan AT-24 dengan plugin test; AT-24 adalah smoke test produksi pasca-cutover di Stage 12.12.

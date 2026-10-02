@@ -1,71 +1,72 @@
 # Panduan Pengguna Viral Producer
 
-Viral Producer membantu membuat dan mengelola naskah trivia untuk Facebook Reels. Penjelasan diberikan dalam bahasa Indonesia, sedangkan naskah konten menggunakan natural American English.
+Panduan ini untuk **production plugin Viral Producer** pada branch `main`. Untuk acceptance test gunakan [Viral Producer v1.1 Test](test-plugin-installation.md), bukan plugin produksi.
 
-Butuh perintah siap salin? Buka [Pustaka Prompt](prompt-library.md).
+Naskah Facebook menggunakan natural American English. Penjelasan operasional dapat menggunakan bahasa Indonesia.
 
-## 1. Yang Dilakukan AI
+Butuh prompt siap salin? Buka [Pustaka Prompt](prompt-library.md).
 
-Setiap kali membuat post, AI akan:
-
-1. membaca aturan dan database terbaru dari GitHub;
-2. meriset minimal 18 kandidat fakta;
-3. membuka dan memeriksa sumber;
-4. menolak fakta lemah, berulang, tidak aman, atau tidak dapat diverifikasi;
-5. memeriksa agar fakta belum pernah digunakan;
-6. memilih enam fakta terbaik;
-7. menulis dan mengaudit naskah;
-8. menyimpan hasil yang lolos sebagai post baru.
-
-AI tidak memposting langsung ke Facebook. Anda tetap menyalin dan memposting naskah secara manual.
-
-## 2. Alur Produksi
+## 1. Alur Produksi
 
 ```text
 Buat draft
-→ Periksa naskah dan sumber
-→ Revisi wording atau ganti fakta
-→ Approve
-→ Copy dari ready queue
-→ Posting manual ke Facebook
-→ Tandai sebagai posted
+→ Review/revisi
+→ Fast Approval
+→ Pilih/jadwalkan ready post
+→ Copy script + caption
+→ Posting manual
+→ Tandai posted
+→ Catat performa
 ```
 
-## 3. Arti Status
+Viral Producer tidak memposting langsung ke Facebook.
 
-| Status | Artinya |
-|---|---|
-| `draft` | Post sudah tersimpan dan masih dapat direvisi. |
-| `ready` | Post sudah lolos pemeriksaan dan siap diposting. |
-| `posted` | Anda sudah mempostingnya dan AI sudah mengarsipkannya. |
+## 2. Pemeriksaan Awal
 
-`approved` adalah tahap internal sebelum post masuk ke `ready queue`.
-
-## 4. Memulai Percakapan
-
-Gunakan plugin **Viral Producer** dalam chat baru. Jalankan pemeriksaan berikut sebelum mulai bekerja:
+Mulai dari chat baru dengan production plugin **Viral Producer**.
 
 ```text
-Periksa versi sistem dan status repository pada branch main. Jangan mengubah file apa pun.
+Periksa versi sistem, runtime profile, branch, dan status repository. Jangan mengubah apa pun.
 ```
 
-Pemeriksaan ini bersifat `read-only` dan tidak mengubah database.
+Runtime produksi yang benar:
 
-## 5. Membuat Post
+- repository `milyarderpro/viral-producer`;
+- branch `main`;
+- mode `production`;
+- `ALLOW_WRITES=true`;
+- `ALLOW_MAIN_WRITES=true`.
 
-### Menggunakan rotasi topik otomatis
+Jika plugin menunjukkan branch test atau mode test, jangan lanjutkan operasi produksi.
+
+## 3. Membuat Post
+
+Setiap post memiliki enam fakta dan publishing package. AI melakukan riset, source checking, duplicate prevention, cooldown, editorial audit, lalu menyimpan draft hanya jika seluruh gate lulus.
+
+### Format default
+
+Jika format tidak ditentukan, sistem menjaga target jangka panjang:
+
+- 75% `themed`;
+- 25% `mixed`.
+
+`themed` memakai satu fact topic untuk enam fakta. `mixed` memakai sedikitnya empat fact topic dan maksimal dua fakta dari topic yang sama.
+
+### Contoh
 
 ```text
-Buatkan satu post baru menggunakan rotasi topik default. Simpan sebagai draft setelah seluruh validasi lulus.
+Buatkan satu post baru menggunakan rotasi default. Simpan sebagai draft hanya jika seluruh gate lulus.
 ```
-
-### Menentukan topik
 
 ```text
-Buatkan satu post tentang animals-nature dengan country focus GLOBAL. Simpan sebagai draft setelah seluruh validasi lulus.
+Buatkan satu post mixed trivia dengan country focus GLOBAL.
 ```
 
-Topik yang tersedia:
+```text
+Buatkan satu post geography-history untuk US.
+```
+
+Fact topic yang tersedia:
 
 - `geography-history`
 - `animals-nature`
@@ -74,145 +75,244 @@ Topik yang tersedia:
 - `inventions-records`
 - `practical`
 
-Country focus yang didukung:
+Country focus: `US`, `CA`, `UK`, `AU`, atau `GLOBAL`.
 
-- `US`
-- `CA`
-- `UK`
-- `AU`
-- `GLOBAL`
+## 4. Subject dan Angle Cooldown
 
-Jika tidak ditentukan, AI akan menggunakan rotasi terbaru dari database.
+Selain permanent duplicate prevention, post baru memakai cooldown untuk mengurangi pengulangan subjek dan cluster yang terlalu dekat.
 
-## 6. Memeriksa Post
+- klaim yang sama tetap dilarang permanen;
+- subjek yang baru dipakai dapat ditolak sementara walaupun klaimnya berbeda;
+- sistem membandingkan active reservations, batch saat ini, dan 20 post terarsip terbaru;
+- record lama tanpa `subject_key` tetap dapat dibaca melalui fallback tanpa ditulis ulang.
 
-Ganti ID pada contoh berikut dengan Post ID yang ingin diperiksa.
+Named-series override hanya boleh dipakai jika Anda secara eksplisit meminta seri bernama. Override tidak pernah membolehkan duplicate claim, sumber lemah, scope drift, atau kegagalan quality gate.
 
-```text
-Tampilkan P-000009 beserta status dan clean copy. Jangan mengubah repository.
-```
+## 5. Memeriksa dan Merevisi Post
 
-Untuk melihat sumber:
+Tampilkan post tanpa perubahan:
 
 ```text
-Tampilkan seluruh sumber P-000009 dan jelaskan klaim yang didukung setiap sumber. Jangan mengubah repository.
+Tampilkan P-000009 beserta status, format, topic, country focus, ON-SCREEN SCRIPT, dan FACEBOOK CAPTION. Jangan mengubah repository.
 ```
 
-Kedua perintah tersebut bersifat `read-only`.
+Tampilkan sumber:
 
-## 7. Revisi Wording atau Ganti Fakta
+```text
+Tampilkan seluruh sumber P-000009 dan jelaskan klaim yang didukung. Jangan mengubah repository.
+```
 
 ### Revisi wording
 
-Gunakan jika fakta tetap sama dan Anda hanya ingin memperbaiki kalimat.
+Gunakan jika klaim faktual tetap sama.
 
 ```text
-Buat Fact 3 pada P-000009 lebih punchy tanpa mengubah canonical claim, angka, scope, qualifier, atau Fact ID.
+Buat Fact 3 pada P-000009 lebih punchy tanpa mengubah canonical claim, angka, lokasi, waktu, scope, qualifier, atau Fact ID.
 ```
 
 ### Ganti fakta
 
-Gunakan jika Anda menginginkan fakta yang benar-benar berbeda.
+Gunakan jika klaim berubah.
 
 ```text
-Ganti Fact 4 pada P-000009 dengan fakta yang benar-benar berbeda. Riset dan verifikasi penggantinya, lalu hitung ulang audit post.
+Ganti Fact 4 pada P-000009 dengan fakta yang benar-benar berbeda. Riset dan verifikasi penggantinya, lalu perbarui audit yang diwajibkan.
 ```
 
-Mengubah arti fakta, angka, lokasi, waktu, atau kesimpulan termasuk **ganti fakta**, bukan revisi wording.
+Perubahan fakta, topic, country focus, atau format akan memicu recheck publishing package. Wording-only revision boleh mempertahankan caption/hashtag jika semuanya masih valid.
 
-## 8. Approve Post
+## 6. Fast Approval
 
-Approve hanya setelah Anda puas dengan keenam fakta.
+Approval di Version 1.1 adalah **Fast Approval**. Untuk draft yang lengkap, approval memvalidasi evidence yang sudah tersimpan dan **tidak**:
+
+- membuka sumber;
+- menjalankan Web Search;
+- meriset atau memverifikasi fakta dari awal;
+- menjalankan global deduplication baru;
+- rescore quality;
+- membangun ulang `generation_audit`;
+- mengalokasikan ID baru;
+- meregenerasi caption atau hashtag yang sudah valid.
+
+Prompt:
 
 ```text
-Audit ulang P-000009. Jika seluruh gate lulus, approve dan masukkan post tersebut ke ready queue.
+Approve P-000009 jika record tersimpan memenuhi seluruh Fast Approval gate dan masukkan ke ready queue.
 ```
 
-AI akan memeriksa ulang sumber, duplikasi, scope, kualitas, serta konsistensi data sebelum mengubah status menjadi `ready`.
+Draft legacy atau tidak lengkap harus berhenti sebelum write dan memerlukan revisi/upgrade terpisah.
 
-## 9. Mengambil Naskah Siap Posting
+## 7. Publishing Package dan Ready Queue
+
+Setiap post Version 1.1 baru menyimpan:
+
+- **ON-SCREEN SCRIPT** — hook, enam fakta, dan CTA;
+- **FACEBOOK CAPTION** — satu kalimat caption, satu baris kosong, lalu 4–6 hashtag dalam urutan tersimpan.
+
+Hashtag tidak pernah masuk ke on-screen script.
+
+Ambil post berikutnya:
 
 ```text
 Tampilkan post berikutnya yang siap saya copy. Jangan mengubah repository.
 ```
 
-AI akan menampilkan Post ID, status, dan clean copy dalam satu blok teks. Perintah ini tidak menghapus post dari antrean.
+Output copy-ready harus memakai dua blok teks terpisah dan sama dengan record/ready queue.
+
+## 8. Smart Recommendation
+
+Untuk memilih ready post tanpa mengubah state:
+
+```text
+Rekomendasikan post terbaik untuk diposting berikutnya. Jangan mengubah repository.
+```
+
+Jika ada planned slot, sistem memprioritaskan slot terawal. Jika tidak, pemilihan mempertimbangkan rotasi topic/country/format, cooldown, operator overlap, quality, umur ready post, dan performance hanya jika ambang sampelnya sudah cukup.
+
+Recommendation tidak approve, mengedit, menjadwalkan, dequeue, atau menandai post sebagai posted.
+
+## 9. Content Calendar
+
+Scheduling hanya memakai post berstatus `ready`.
+
+### Jadwal tujuh hari
+
+```text
+Susun jadwal posting tujuh hari, dua post per hari.
+```
+
+Tanpa jam eksplisit, default adalah 12:00 dan 19:00 WIB mulai hari lokal penuh berikutnya. Timestamp disimpan dalam UTC, sedangkan tampilan kalender menggunakan Asia/Jakarta.
+
+### Jadwalkan satu post
+
+```text
+Jadwalkan P-000009 besok pukul 19.00 WIB.
+```
+
+### Tampilkan kalender
+
+```text
+Tampilkan content calendar. Jangan mengubah repository.
+```
+
+### Pindahkan jadwal
+
+```text
+Pindahkan P-000009 ke 4 Oktober 2026 pukul 12.00 WIB.
+```
+
+Scheduling dan move tidak mengubah isi post, ready queue, production revision, ID, atau counter.
 
 ## 10. Setelah Posting ke Facebook
 
-Setelah Anda benar-benar memposting naskah ke Facebook, jalankan:
+Setelah konten benar-benar dipublikasikan:
 
 ```text
-Saya sudah memposting P-000009 ke Facebook. Tandai sebagai posted dan verifikasi archive, published facts, active drafts, ready queue, serta production state.
+Saya sudah memposting P-000009 ke Facebook. Tandai sebagai posted dan verifikasi archive, published facts, active drafts, ready queue, publishing plan, calendar, dan production state.
 ```
 
-Jangan menjalankan perintah ini sebelum konten benar-benar diposting.
+Jika post memiliki planned slot, slot menjadi `completed` dan hilang dari active content calendar.
 
-## 11. Menolak Post
+Jangan menandai post sebagai posted sebelum benar-benar dipublikasikan.
+
+## 11. Mencatat Performa
+
+Performance hanya boleh dicatat untuk post yang sudah berada di immutable posted archive.
+
+Metric yang didukung:
+
+- views;
+- reactions;
+- comments;
+- shares;
+- average watch time;
+- retention percent;
+- followers gained.
+
+Contoh:
+
+```text
+Catat performa P-000009: 1.2M views, 84K reactions, 2,300 comments, dan 15K shares.
+```
+
+Pencatatan performa tidak mengubah content lifecycle, fact ledger, ready queue, production revision, ID, atau counter.
+
+## 12. Ringkasan dan Analisis Performa
+
+Ringkasan:
+
+```text
+Tampilkan ringkasan performa konten. Jangan mengubah repository.
+```
+
+Analisis:
+
+```text
+Analisis pola performa berdasarkan topic, country, format, dan operator. Jangan mengubah repository.
+```
+
+Aturan interpretasi:
+
+- kurang dari 15 measured posts: deskriptif saja;
+- 15–19: directional observation dengan hati-hati;
+- 20 atau lebih: performance boleh menjadi tie-breaker, tetapi tidak boleh melemahkan factual/editorial gate.
+
+## 13. Reject dan Audit
+
+Reject:
 
 ```text
 Tolak P-000009 dan ikuti lifecycle rejection sesuai data contract.
 ```
 
-ID yang sudah digunakan tidak akan dipakai kembali.
+ID yang sudah dikonsumsi tidak digunakan kembali.
 
-## 12. Audit Database
-
-Audit tanpa perbaikan:
+Audit read-only:
 
 ```text
-Audit database untuk duplicate Fact ID, duplicate claim, archive mismatch, counter mismatch, orphan fact, dan ready-queue mismatch. Jangan mengubah apa pun.
+Audit database, ready queue, publishing package, performance summary, publishing plan, content calendar, dan lifecycle consistency. Jangan memperbaiki apa pun.
 ```
 
-Jika ditemukan masalah, minta AI menjelaskan temuan terlebih dahulu. Jalankan repair hanya setelah target perbaikannya jelas.
+Jika ditemukan masalah, lihat temuan terlebih dahulu. Repair hanya dilakukan ketika targetnya jelas dan contract mengizinkan.
 
-## 13. Aturan Penggunaan
+## 14. Kompatibilitas Record Lama
 
-- Gunakan hanya plugin **Viral Producer**, bukan plugin tes lama.
-- Jalankan satu perintah yang mengubah repository pada satu waktu.
+Record lama tetap dapat dibaca tanpa migrasi otomatis.
+
+- missing `post_format` berarti effective `themed`;
+- missing `subject_key` memakai read-time fallback;
+- archived legacy post boleh tidak memiliki caption/hashtag;
+- active legacy post yang menunggu controlled backfill tidak dianggap corrupt;
+- inspection/audit tidak boleh diam-diam menambah field lama.
+
+## 15. Production Plugin vs Test Plugin
+
+Untuk produksi harian gunakan **Viral Producer** pada `main`.
+
+Jangan gunakan **Viral Producer v1.1 Test** untuk produksi. Test plugin hanya untuk branch `test/viral-producer-v1.1`, dan test data tidak pernah dibawa kembali ke `main`.
+
+Acceptance test mutatif tidak dijalankan dengan production plugin.
+
+## 16. Catatan Administrator: AT-24
+
+AT-24 bukan bagian workflow harian. Ia adalah mandatory post-cutover smoke test Stage 12.12.
+
+Urutan wajib:
+
+1. PR Stage 12 sudah di-merge ke `main`.
+2. Production plugin diperbarui ke v1.1.0.
+3. Mulai chat baru dan lakukan version/profile check read-only.
+4. Jalankan AT-24.
+5. Jika AT-24 PASS, baru lakukan controlled caption/hashtag backfill.
+6. Jalankan final production consistency audit.
+7. Resume produksi.
+
+Jika AT-24 belum PASS, produksi tetap dipause dan backfill tidak dimulai.
+
+## 17. Aturan Penggunaan
+
+- Jalankan satu operasi write pada satu waktu.
 - Jangan membuat post dari dua chat secara bersamaan.
-- Perintah `Tampilkan`, `Periksa`, dan `Audit ... jangan mengubah` bersifat `read-only`.
-- Jangan mengedit file JSON atau JSONL secara manual.
-- Jangan meminta AI menandai post sebagai `posted` sebelum dipublikasikan.
-- Selalu gunakan Post ID lengkap, misalnya `P-000009`.
-
-## 14. Jika Terjadi Masalah
-
-### GitHub tidak terhubung
-
-Hubungkan official GitHub app dan beri akses read/write hanya ke repository `milyarderpro/viral-producer`.
-
-### AI dapat membaca tetapi tidak dapat menyimpan
-
-Periksa permission GitHub untuk repository contents. Jangan ulangi perintah write berkali-kali sebelum status operasi sebelumnya diperiksa.
-
-### Terjadi SHA conflict
-
-Minta AI memuat ulang state terbaru dan menghitung ulang operasi. Jangan meminta force overwrite.
-
-### Sumber tidak dapat dibuka
-
-Minta AI mengganti kandidat fakta atau mencari sumber authoritative lain. Jangan menyimpan fakta yang belum terverifikasi.
-
-### Post tidak muncul di ready queue
-
-Jalankan:
-
-```text
-Periksa status post dan konsistensi ready queue. Jangan melakukan repair.
-```
-
-### Hasil chat berbeda dari repository
-
-Anggap repository sebagai sumber utama. Minta AI menampilkan ulang post dari record terbaru.
-
-## 15. Ringkasan Workflow Harian
-
-1. Buat satu draft.
-2. Baca keenam fakta.
-3. Periksa sumber bila diperlukan.
-4. Revisi wording atau ganti fakta.
-5. Approve post.
-6. Ambil clean copy dari ready queue.
-7. Posting manual ke Facebook.
-8. Tandai post sebagai `posted`.
+- Jangan force overwrite saat SHA conflict.
+- Jangan edit JSON/JSONL secara manual.
+- Gunakan repository state terbaru, bukan ingatan percakapan.
+- Untuk perintah read-only, tulis jelas: “Jangan mengubah repository.”
