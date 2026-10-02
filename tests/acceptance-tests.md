@@ -1966,7 +1966,7 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-51 Fast Approval package preservation | PENDING | Stage 12.10 | Must preserve stored caption/hashtags exactly with zero package regeneration. |
 | AT-52 Ready/chat two-block parity | PENDING | Stage 12.10 | Active, queue, and chat surfaces must match exactly with no hashtags in the script. |
 | AT-53 Archive publishing package parity | PENDING | Stage 12.10 | Posted archive must preserve the final caption and ordered hashtags exactly. |
-| AT-54 Legacy publishing-package compatibility | PENDING | Stage 12.10 | Permitted missing package fields must remain readable with zero implicit backfill. |
+| AT-54 Legacy publishing-package compatibility | PASS | P-000001 active and P-000004 archive, read-only 2026-10-02 | Missing caption/hashtags, post_format, and subject_key remained compatible and absent; 13 tracked artifact SHAs were unchanged. |
 | AT-55 Empty additive stores | PENDING | Stage 12.10 | Empty performance and scheduling baselines must be valid and mutation-free. |
 | Body-science v2 regression | PASS | `P-000008`; `bbb08d7` | 24 candidates, 18 rejected, five operator families, six strength-2 facts, complete rationales, and directly supportive sources; materially stronger than legacy P-000003. |
 | Final consistency audit | PASS | `bbb08d718c89162515ffc09a86d8a47b22c8b289` | 7 active posts, 42 active fact snapshots, 6 published facts, 1 archive, and 1 ready post; counters, rotation, global uniqueness, publication linkage, v2 gates, and deterministic ready-queue parity all passed. |
