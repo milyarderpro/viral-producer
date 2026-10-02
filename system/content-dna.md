@@ -586,7 +586,10 @@ Before a draft may be saved for approval, confirm:
 - Every absolute or superlative term has direct support for its exact scope.
 - No fact is duplicated in the current batch or fact ledger.
 - No unsafe or high-risk instruction is present.
-- The final copy contains no citations, bullets, hashtags, emojis, or audit notes.
+- The on-screen script contains no citations, bullets, hashtags, emojis, or audit notes.
+- A complete publishing package is stored for every newly created v1.1 post.
+- The caption is exactly one sentence, normally 6–14 words, contains no new factual claim, generic trivia prose, duplicate CTA, citation, or default emoji.
+- Hashtags contain 4–6 unique relevant tags and never appear inside the on-screen script.
 - Every quality dimension has an evidence-based rationale.
 - The quality score is at least 10 out of 12 and all required dimensions score 2.
 - A 12/12 score passes the additional calibration review.
@@ -645,3 +648,67 @@ Before selection:
 A named-series override may bypass only the temporary subject or cluster cooldown. It requires an explicit user request naming the series and compact persisted evidence in generation_audit. The override never permits an exact or semantic claim duplicate, weak fact, inaccessible source, scope drift, unsafe content, or any other failed gate.
 
 Do not bulk-add subject_key to legacy records. Preserve missing fields and use the fallback only while reading or comparing them.
+
+## 22. Complete Publishing Package
+
+Every newly created Viral Producer 1.1 post stores a publishing package alongside the on-screen script after the final six facts have passed all factual and editorial gates.
+
+The package contains:
+
+- `caption` — one Facebook caption sentence;
+- `hashtags` — an ordered array of 4–6 hashtag strings.
+
+### Caption rules
+
+A generated caption must:
+
+- be exactly one sentence;
+- target 6–14 English words;
+- use natural, concise American English;
+- be clear and attractive without hype;
+- avoid a generic question, including "Which fact surprised you?";
+- never use the word "trivia" in prose;
+- never use "Here are six facts" or equivalent generic packaging language;
+- not restate or summarize the six facts;
+- add no factual claim that would require separate verification;
+- not repeat the on-screen CTA or add another engagement CTA;
+- contain no citation;
+- contain no emoji by default.
+
+The caption is packaging copy, not a seventh fact. If a candidate caption implies a new claim, rewrite it as non-factual framing.
+
+### Hashtag rules
+
+The stored hashtag array must:
+
+- contain 4–6 entries;
+- be unique case-insensitively;
+- use one hashtag token per entry with no embedded whitespace;
+- be relevant to the post topic, effective post format, and supported country scope;
+- avoid misleading, unrelated, repetitive, or spam-like tags;
+- use PascalCase when a multiword tag benefits from readability;
+- allow `#Trivia` even though "trivia" is prohibited in prose caption text.
+
+Country-specific hashtags must not imply a country scope the final post does not support. Mixed posts may use a mixed-format tag only when it remains relevant to the actual final post.
+
+Hashtags are never part of the on-screen script.
+
+### Generation and lifecycle behavior
+
+- Generate and validate the publishing package only after the final six facts, order, scope, sources, cooldown, and quality gates pass.
+- Persist caption and hashtags in the same active post record as the draft.
+- Fast Approval validates the stored package and preserves it exactly; approval never regenerates, rewrites, reorders, or supplements caption or hashtags.
+- A wording-only revision may preserve the stored package when it remains relevant and still passes every package rule.
+- Any fact replacement or change to post topic, country focus, or effective post format must recheck both caption and hashtags against the resulting post before persistence. Preserve valid values when still correct; regenerate only the package fields that no longer pass.
+- Publication copies the exact stored caption and hashtag array into the immutable archive record.
+- Do not backfill existing production posts as part of the Stage 12.8 specification change. Controlled production backfill is a separate cutover operation.
+
+### User-facing package
+
+Whenever a complete package is shown for copy, keep the two surfaces separate:
+
+1. **ON-SCREEN SCRIPT** — hook, six facts, and CTA only.
+2. **FACEBOOK CAPTION** — caption, one blank line, then the stored hashtags joined in stored order with one space between tags.
+
+Render each surface in its own plain-text code block. Labels remain outside the blocks. Caption text and hashtags never enter the on-screen script block.
+
