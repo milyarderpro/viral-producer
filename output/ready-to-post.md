@@ -1087,3 +1087,35 @@ History and geography feel richer through an unexpected perspective.
 ```
 
 ---
+
+## P-000034 — Animals and Nature
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Barreleye fish see through transparent foreheads, and their upward-pointing eyes can rotate forward
+
+Beavers' orange incisors get their color from iron concentrated in their protective enamel
+
+A platypus bill carries about 40,000 electroreceptors that detect electrical signals from moving prey
+
+Pacific hagfish have five hearts but no jaws, true eyes, or stomach
+
+Giant isopods have 14 legs and can grow up to 16 inches long
+
+Elephants actually walk on their toes, cushioned by thick pads that absorb each step
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature becomes even more engaging through an unexpected perspective.
+
+#AnimalFacts #NatureFacts #WildlifeKnowledge #CuriousMinds #DidYouKnow
+```
+
+---
