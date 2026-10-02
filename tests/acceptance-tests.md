@@ -24,7 +24,7 @@ It verifies that the GPT:
 - performs Fast Approval only from complete stored evidence with no fresh research, rescoring, or ID allocation;
 - persists, renders, preserves, rechecks, and archives complete Facebook publishing packages without mixing hashtags into the on-screen script.
 
-Stages 8 and 10 created and executed the version-2 suite. Stage 12 extends the specification; execute and record the new version-3 tests during Stage 12.10 after the isolated test plugin is installed.
+Stages 8 and 10 created and executed the version-2 suite. Stage 12 extends the specification. Execute AT-25 through AT-55 during Stage 12.10 on the isolated test plugin. AT-24 is a mandatory post-cutover production smoke test executed in Stage 12.12 only after the PR is merged and the production plugin is updated to v1.1, and before any backfill or production resumption.
 
 ## 2. Test Environment
 
@@ -962,7 +962,19 @@ Pass: legacy records remain readable, and incomplete legacy evidence cannot cros
 
 ### AT-24 — Production runtime profile boundary
 
-Purpose: Verify that the production profile is accepted only for the production repository and branch and that reads never use an implicit ref.
+Classification: MANDATORY POST-CUTOVER SMOKE TEST — Stage 12.12.
+
+Purpose: Verify that the refreshed v1.1 production profile is accepted only for the production repository and branch and that reads never use an implicit ref.
+
+Execution preconditions:
+
+- the reviewed Stage 12 PR has been merged to `main`;
+- the existing production Viral Producer plugin has been updated to version 1.1.0 from merged `main`;
+- a fresh production conversation is using the canonical production runtime profile below;
+- production writers remain paused;
+- no caption/hashtag backfill has started and normal production has not resumed.
+
+Do not classify AT-24 before these preconditions exist. If the installed production plugin or `main` still exposes Stage 10 versions, record AT-24 as `PENDING POST-CUTOVER`, not FAIL.
 
 Profile:
 
@@ -989,7 +1001,7 @@ Repository and trace assertions:
 - No default-branch call occurs.
 - No repository file changes and no commit is created.
 
-Pass: the canonical production profile passes startup validation and all reads remain explicitly scoped.
+Pass: the canonical v1.1 production profile passes startup validation and all reads remain explicitly scoped. This PASS is required before any production backfill or production resumption.
 
 ### AT-25 — Test profile refuses main
 
@@ -1923,54 +1935,57 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-21 Persisted audit metadata | PASS | archive `P-000004` | Candidate accounting, operator variety, weakest review, rationales, and fact validation fields survived publication. |
 | AT-22 Opening and closing | PASS | archive `P-000004` | Both endpoints are strength 2 and use different operators. |
 | AT-23 Legacy compatibility | PASS | snapshot `8c3f5fe` unchanged | Three legacy drafts remained readable and could not bypass upgrade. |
-| AT-24 Production runtime boundary | PENDING | Stage 12.10 | Specification added in Stage 12.2; execute after the version-3 plugin profile is installed. |
-| AT-25 Test profile refuses main | PENDING | Stage 12.10 | Must pass with zero connector calls to main. |
-| AT-26 Production profile refuses test | PENDING | Stage 12.10 | Must pass without research, allocation, or writes. |
-| AT-27 Explicit ref and mismatch rejection | PENDING | Stage 12.10 | Run only with the isolated connector test harness. |
-| AT-28 Incomplete Fast Approval rejection | PENDING | Stage 12.10 | Must fail with zero research and zero writes. |
-| AT-29 Fast Approval SHA conflict restart | PENDING | Stage 12.10 | Must preserve the competing writer and restart from fresh SHAs. |
-| AT-30 Mixed-topic generation | PENDING | Stage 12.10 | Must prove at least four fact topics, at most two per topic, and all ordinary quality gates. |
-| AT-31 Mixed multi-ledger publication | PENDING | Stage 12.10 | Must route each fact by its own topic and never create a mixed ledger. |
-| AT-32 Themed backward compatibility | PENDING | Stage 12.10 | Missing post_format must mean themed without an inspection-time rewrite. |
-| AT-33 Valid performance snapshot | PENDING | Stage 12.10 | Must persist one canonical posted-only snapshot and rebuild the summary. |
-| AT-34 Posted-only performance | PENDING | Stage 12.10 | Active, missing, or non-posted IDs must fail with zero writes. |
-| AT-35 Performance idempotent retry | PENDING | Stage 12.10 | Identical compound-key retry must be a no-op. |
-| AT-36 Performance conflict | PENDING | Stage 12.10 | Different payload on the same compound key must fail before write. |
-| AT-37 Deterministic performance summary | PENDING | Stage 12.10 | Latest snapshot per post and all aggregate buckets must rebuild byte-identically. |
-| AT-38 Small-sample restraint | PENDING | Stage 12.10 | Performance influence must respect the 15/20-post thresholds and remain read-only. |
-| AT-39 Read-only smart recommendation | PENDING | Stage 12.10 | Must deterministically recommend only ready content with zero writes. |
-| AT-40 Seven-day schedule | PENDING | Stage 12.10 | Must create 14 valid WIB slots and exact calendar parity without lifecycle mutation. |
-| AT-41 Ready-only scheduling | PENDING | Stage 12.10 | Non-ready posts and insufficient capacity must fail before write. |
-| AT-42 Schedule conflicts and retry | PENDING | Stage 12.10 | Duplicate posts, occupied times, and identical retries must preserve exact state. |
-| AT-43 Move scheduled post | PENDING | Stage 12.10 | Must normalize WIB and change only plan/calendar state. |
-| AT-44 Scheduled publication cleanup | PENDING | Stage 12.10 | Posting must complete the slot and remove it from the active calendar exactly once. |
-| AT-45 Exact subject cooldown | PENDING | Stage 12.10 | A different claim about a recent or active subject must fail without explicit series override. |
-| AT-46 Semantic cluster limit | PENDING | Stage 12.10 | A narrow cluster must not enter a third distinct post. |
-| AT-47 Legacy subject fallback | PENDING | Stage 12.10 | Missing subject_key must use fallback without rewriting legacy data. |
-| AT-48 Named-series override | PENDING | Stage 12.10 | Explicit override must be narrowly applied, persisted, and unable to bypass duplicate or quality gates. |
-| AT-49 Publishing package generation | PENDING | Stage 12.10 | Must persist a valid caption and 4–6 hashtags and render two separate copy blocks. |
-| AT-50 Publishing package recheck triggers | PENDING | Stage 12.10 | Wording may preserve valid packaging; fact/topic/country/format changes must recheck it. |
-| AT-51 Fast Approval package preservation | PENDING | Stage 12.10 | Must preserve stored caption/hashtags exactly with zero package regeneration. |
-| AT-52 Ready/chat two-block parity | PENDING | Stage 12.10 | Active, queue, and chat surfaces must match exactly with no hashtags in the script. |
-| AT-53 Archive publishing package parity | PENDING | Stage 12.10 | Posted archive must preserve the final caption and ordered hashtags exactly. |
-| AT-54 Legacy publishing-package compatibility | PENDING | Stage 12.10 | Permitted missing package fields must remain readable with zero implicit backfill. |
-| AT-55 Empty additive stores | PENDING | Stage 12.10 | Empty performance and scheduling baselines must be valid and mutation-free. |
+| AT-24 Production runtime boundary | PENDING POST-CUTOVER | Stage 12.12 | Mandatory smoke test after merge and production plugin v1.1 refresh; run before any backfill or production resumption. The pre-cutover Stage 10 production attempt is not a FAIL. |
+| AT-25 Test profile refuses main | PASS | test-branch recovery run 2026-10-02 | Override to main rejected before any main/default-ref/write call; all six tracked test-branch artifact SHAs remained unchanged. |
+| AT-26 Production profile refuses test | PASS | production-profile run 2026-10-02 | Override to `test/viral-producer-v1.1` was rejected at the production configuration boundary before research, repository access, ID allocation, write preparation, or commit; neither `main` nor the test branch was read or changed during the test. |
+| AT-27 Explicit ref and mismatch rejection | PASS | isolated fixture `8938ba9`; read-only harness 2026-10-02 | Explicit repository/ref appeared in both captured requests; wrong-ref and wrong-repository responses were hard-failed before content/SHA trust, no revision was reported, no ref-less fallback or write occurred, fixture SHA `2f85b62`, and all tracked production SHAs stayed unchanged. |
+| AT-28 Incomplete Fast Approval rejection | PASS | fixture `cb4f679`; cleanup `bb98834` | Missing `quality.rationales.shareability` blocked approval with zero active/queue/state writes; revision and counters stayed 145 / 100 / 621; fixture restored byte-exact. |
+| AT-29 Fast Approval SHA conflict restart | PASS | Writer B `83ca414`/`167c746`/`4bdcafe`; Writer A `54d8881`/`f4d9c54`/`12d02cf` | Writer A detected all three stale SHAs, refetched, preserved P-000029, approved P-000028 once, advanced revision 146→147, and preserved counters 100/621. |
+| AT-30 Mixed-topic generation | PASS | independently evidenced P-000099 draft `4335265`; state `58b7e48` | Stored draft was mixed/GLOBAL with four non-mixed topics at counts 2/2/1/1, six operators, five strength-2 facts, quality 12/12, complete audits, IDs F-000615–620, and exact state movement revision 143→144 / post 99→100 / fact 615→621. |
+| AT-31 Mixed multi-ledger publication | PASS | P-000099 publication `997e8da`/`2be9d8d`/`e89b331`/`3abb5fd`; archive `89e4801` | Six facts routed exactly once to four own-topic ledgers, the mixed archive was created once, no mixed ledger exists, and the identical retry made zero writes. |
+| AT-32 Themed backward compatibility | PASS | read-only P-000030 on 2026-10-02 | Missing `post_format` resolved to themed; all six fact topics matched body-science and 13 tracked artifact SHAs remained unchanged. |
+| AT-33 Valid performance snapshot | PASS | raw `4cc9494`; summary `776ad7b` | P-000004 metrics normalized to seven canonical keys at 2026-10-02T02:00:00Z, post_age_hours computed as 37.85, sample_size became 1, and lifecycle/content SHAs stayed unchanged. |
+| AT-34 Posted-only performance | PASS | read-only P-000028 on 2026-10-02 | Active ready post was classified as non-archived and rejected before persistence; raw performance, summary, lifecycle, archive, ledger, queue, and state SHAs remained unchanged. |
+| AT-35 Performance idempotent retry | PASS | key P-000004 + 2026-10-02T02:00:00Z | Canonical retry matched the sole stored record exactly; raw and summary SHAs stayed `f18aab3` and `df5ec8c`, with zero writes. |
+| AT-36 Performance conflict | PASS | key P-000004 + 2026-10-02T02:00:00Z | Attempted views 1,300,000 conflicted with stored 1,200,000; raw/summary and all production artifacts remained unchanged with zero writes. |
+| AT-37 Deterministic performance summary | PASS | fixture `dbd554a`/`629a6ad` and `701d338`/`75ddb6b`; final raw `392b454`, summary `2287746` | Three snapshots across two posts selected the latest P-000004 record, retained null handling, produced sample_size 2 and sorted buckets, and two independent rebuilds matched stored JSON byte-for-byte. |
+| AT-38 Small-sample restraint | PASS | isolated fixture `4f2a07e`; read-only prompt run 2026-10-02 | Valid fixtures at sample sizes 14, 17, and 20 enforced descriptive-only, cautious-directional, and tie-break-only behavior respectively; `post_count` and missing operator coverage were disclosed, both prompts changed zero production files, and fixture SHA remained `9b3fe88`. |
+| AT-39 Read-only smart recommendation | PASS | read-only plan revision 3 on 2026-10-02 | Earliest planned slot deterministically selected ready P-000006 at 2026-10-03T05:00:00Z; all tracked SHAs remained unchanged and zero writes occurred. |
+| AT-40 Seven-day schedule | PASS | independently evidenced plan revision 3; recovery checkpoint | Fourteen planned slots covered seven consecutive WIB dates at 12:00/19:00, all posts/times were unique and ready, calendar rendering was byte-exact, and the identical schedule rerun was a no-op. |
+| AT-41 Ready-only scheduling | PASS | read-only P-000030 and 100-slot capacity attempt | Draft P-000030 and a request exceeding 14 unscheduled ready posts were both rejected before every write; plan, calendar, lifecycle, queue, and state stayed unchanged. |
+| AT-42 Schedule conflicts and retry | PASS | read-only plan revision 3 on 2026-10-02 | Duplicate P-000006, occupied 2026-10-03T12:00:00Z, and the identical 14-slot retry produced conflicts/no-op as required with zero writes or revision churn. |
+| AT-43 Move scheduled post | PASS | setup `9c28a22`/`9589f3e`; move `2be6dc0`/`0e7c26b` | P-000006 moved from 12:00 to 19:00 WIB on 2026-10-03 (12:00Z); only plan/calendar changed, slot identity fields were preserved, plan revision 4→5, and identical retry was a no-op. |
+| AT-44 Scheduled publication cleanup | PASS | schedule `be35201`/`78d800e`; completion `48e1f37`/`56a8a87`; state `f5c314e` | P-000099 slot changed planned→completed with preserved schedule/creation fields and operation-wide published_at; plan revision 2→3, production revision 147→148, calendar removal was exact, and retry was a no-op. |
+| AT-45 Exact subject cooldown | PASS | fixture `28f4536`; cleanup `ee89bd9` | A materially different Grand Canyon candidate passed permanent duplicate screening but matched subject_key `grand_canyon`, was rejected before allocation, used no series override, and the fixture was restored byte-exact. |
+| AT-46 Semantic cluster limit | PASS | fixture `2631345`; cleanup `87ffd80` | Dung-beetle and bombardier-beetle subjects occupied two distinct posts; a non-duplicate tiger-beetle candidate was rejected as repetitive before creating a third cluster post, with zero IDs and byte-exact fixture restoration. |
+| AT-47 Legacy subject fallback | PASS | read-only `P-000001` / `F-000001` on 2026-10-02 | In-memory fallback mapped a non-duplicate Badwater Basin candidate to the legacy subject, rejected it on exact-subject cooldown before allocation, and preserved all 13 tracked artifact SHAs with no subject_key backfill. |
+| AT-48 Named-series override | PASS | P-000100 `7f4d465`; state `d7d104f` | Explicit “Grand Canyon Week” created one verified six-fact draft with subject keys F-000621–626, complete 20-candidate audit, override positions 1–6 and reason, five operators, six strength-2 facts, quality 12/12, revision 148→149, and counters 100/621→101/627; comparable unnamed-series candidate was rejected by cluster cooldown. |
+| AT-49 Publishing package generation | PASS | P-000099 draft `4335265`; state `58b7e48`; queue parity AT-52 | The completed draft operation stored an eight-word factual-claim-free caption plus six unique relevant hashtags after all fact/audit gates; on-screen copy contained no hashtags and later queue/chat verification proved exact two-block rendering. |
+| AT-50 Publishing package recheck triggers | PASS | wording `3c50f2b`/`b3207e4`; replacement `33decfa`/`33db0bc`; harness `908ef1a`/`e9e52cd`/`4d1db96` | Wording preserved caption/hashtags byte-exact; replacement consumed F-000625, allocated only F-000627, preserved caption and replaced only obsolete #LifeZones; SHA-guarded isolated topic/country/format subtests preserved valid captions, regenerated only invalid hashtags, allocated no IDs, and touched no production file. |
+| AT-51 Fast Approval package preservation | PASS | P-000028 approval `54d8881`/`f4d9c54`/`12d02cf`; P-000031 rejection | Caption and ordered hashtags were preserved byte-exact through one active/queue/state write; the package-incomplete draft was rejected with zero writes; counters remained 100/621. |
+| AT-52 Ready/chat two-block parity | PASS | setup `b90f09b`/`459ab67`; restore `ec9dcb3`/`899e955` | Controlled ordering made package-complete P-000028 the oldest ready post; all 3 package-complete ready records had exact active/queue/two-block parity, no on-screen hashtags, and the test itself made zero writes; fixture restored byte-exact. |
+| AT-53 Archive publishing package parity | PASS | P-000099 archive `89e4801`; lifecycle cleanup `7be99e6`/`856e81d` | October archive preserves exact script order, caption bytes, and ordered hashtag array; package fields did not enter fact ledgers, active/queue removal passed, and retry created no duplicate. |
+| AT-54 Legacy publishing-package compatibility | PASS | P-000001 active and P-000004 archive, read-only 2026-10-02 | Missing caption/hashtags, post_format, and subject_key remained compatible and absent; 13 tracked artifact SHAs were unchanged. |
+| AT-55 Empty additive stores | PASS | setup `cfc1371`/`ff59993`; restore `4c1487b`/`9dd0d61` | Isolated fixture accepted sample_size 0, absent raw metrics, revision-0 empty plan, and deterministic empty calendar with zero test-operation writes; prior 14-slot plan restored byte-exact. |
 | Body-science v2 regression | PASS | `P-000008`; `bbb08d7` | 24 candidates, 18 rejected, five operator families, six strength-2 facts, complete rationales, and directly supportive sources; materially stronger than legacy P-000003. |
-| Final consistency audit | PASS | `bbb08d718c89162515ffc09a86d8a47b22c8b289` | 7 active posts, 42 active fact snapshots, 6 published facts, 1 archive, and 1 ready post; counters, rotation, global uniqueness, publication linkage, v2 gates, and deterministic ready-queue parity all passed. |
+| Stage 12.10 isolated final consistency audit | PASS | `test/viral-producer-v1.1`, 2026-10-02 | Final pre-cutover branch audit passed after the 31 Stage 12.10 tests; test-only state remains disposable and must not be merged. |
+| Historical version-2 final consistency audit | PASS | `bbb08d718c89162515ffc09a86d8a47b22c8b289` | Historical Stage 10 evidence: 7 active posts, 42 active fact snapshots, 6 published facts, 1 archive, and 1 ready post; counters, rotation, uniqueness, publication linkage, v2 gates, and ready-queue parity passed. |
 
 ## 8. Acceptance Decision
 
-The version-3 implementation is ready to merge only when:
+The version-3 implementation is ready for the cutover merge when:
 
 - historical AT-01 through AT-23 remain valid or are rerun when affected;
-- AT-24 through AT-55 pass;
+- AT-25 through AT-55 all pass on the isolated test branch;
 - all later Stage 12 feature and regression tests pass;
-- the final consistency audit passes;
+- the isolated test-branch final consistency audit passes;
 - failures are corrected in the instructions, contract, content DNA, or data model;
 - every affected test is rerun after a correction;
 - evidence is recorded in the results table;
 - new and upgraded posts pass every version-2 global gate;
 - legacy baseline records remain unchanged unless explicitly revised through the normal lifecycle;
-- no test-only corruption remains on the branch.
+- no test-only corruption or test data is merged to the feature branch or `main`.
 
-Current result: AT-01 through AT-23, the body-science v2 regression, and the version-2 final consistency audit remain historical passing evidence. AT-24 through AT-55 are specified but not yet executed; the Stage 12 implementation is not acceptance-ready until Stage 12.10 completes.
+AT-24 is deliberately excluded from the pre-merge gate because it validates the refreshed production runtime on merged `main`. It remains mandatory for the Stage 12 Definition of Done and must pass in Stage 12.12 after the production plugin is updated to v1.1 and before backfill or normal production resumes.
+
+Current result: Stage 12.10 is COMPLETE as the pre-cutover gate: AT-25 through AT-55 are PASS (31/31) and the isolated test-branch final consistency audit is PASS. AT-24 remains PENDING POST-CUTOVER and therefore Stage 12 as a whole is not yet complete.

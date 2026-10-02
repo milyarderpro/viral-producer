@@ -700,7 +700,7 @@ Evidence:
 
 ## 5C. Stage 12 — Viral Producer 1.1
 
-Status: IN PROGRESS — STAGE 12.9 COMPLETE
+Status: IN PROGRESS — STAGE 12.10 COMPLETE; AT-24 POST-CUTOVER
 
 Branch implementasi:
 
@@ -979,7 +979,8 @@ Completion evidence:
 - Instruction version is 3.0 — Stage 12 and Test specification version is 3.0 — Stage 12. Editorial version remains 2.0 — Stage 10.2 until later Stage 12 editorial work changes content DNA.
 - Production/test profile mismatches, target-branch mismatches, default-branch fallback, connector response mismatches, and cross-branch SHA reuse are hard failures before write.
 - Static validation passed for all five profile fields, explicit read/write refs, protected-file isolation, JSON/JSONL validity, and whitespace errors.
-- AT-24 through AT-27 are specified but remain pending execution on the isolated test plugin during Stage 12.10.
+- AT-25 through AT-27 are specified for isolated Stage 12.10 execution.
+- AT-24 is a production-runtime smoke test and is intentionally deferred to Stage 12.12 after the PR is merged and the production plugin is updated to v1.1; a Stage 10 production runtime cannot satisfy its version/profile preconditions.
 - Stage 12.3 remains pending and was not started.
 
 ### Stage 12.3 — Update 1: Fast Approval
@@ -1394,20 +1395,22 @@ Completion evidence:
 
 ### Stage 12.10 — Isolated Acceptance Tests
 
-Status: PENDING
+Status: COMPLETE — PRE-CUTOVER GATE PASSED; AT-24 DEFERRED TO STAGE 12.12
 
 Create test/viral-producer-v1.1 from the current feature branch. Configure a new private plugin named Viral Producer v1.1 Test with the test runtime profile.
 
 Never use the feature branch directly for mutative tests. Never merge test data.
 
+Stage 12.10 is the isolated pre-cutover gate. It covers AT-25 through AT-55 (31 tests) plus the final full consistency audit on the test branch. AT-24 is excluded from this stage because it validates the installed production profile on merged `main`; it is a mandatory post-cutover smoke test in Stage 12.12.
+
 Required test groups:
 
 Runtime isolation:
 
-- test plugin reads and writes only the test branch;
-- test plugin refuses main;
-- production profile refuses test;
-- no implicit default ref.
+- AT-25: test plugin reads and writes only the test branch and refuses `main`;
+- AT-26: production profile refuses the test branch;
+- AT-27: all repository calls use explicit repository/ref and reject mismatched responses;
+- AT-24 is not executed here; it runs against the refreshed production plugin during Stage 12.12.
 
 Fast Approval:
 
@@ -1474,6 +1477,14 @@ Regression:
 
 - rerun every affected create, revise, replace, approve, ready, posted, persistence, conflict, recovery, legacy, and final consistency test.
 
+Completion evidence:
+
+- `test/viral-producer-v1.1` recorded PASS for AT-25 through AT-55: 31 of 31 pre-cutover Stage 12 tests.
+- The final full consistency audit on the isolated test branch passed after the Stage 12.10 test run, with no unresolved partial state accepted as complete.
+- The production-side AT-24 attempt remained unclassified because the installed production plugin and `main` still exposed Stage 10 versions; this is the expected pre-cutover state, not an acceptance failure.
+- AT-24 remains mandatory for the Stage 12 Definition of Done and must pass after merge plus production plugin v1.1 refresh, before any backfill or production resumption.
+- Test fixtures, counters, snapshots, and commits remain confined to the disposable test branch and are never merged or copied into the feature branch or `main`.
+
 ### Stage 12.11 — Documentation and Plugin Guide
 
 Status: PENDING
@@ -1504,20 +1515,22 @@ Before PR:
 4. Run final read-only consistency and compatibility audit.
 5. Open PR only from upgrade/viral-producer-v1.1 to main.
 6. Attach the PR to the task.
-7. Do not merge until acceptance results pass and the user approves cutover.
+7. Do not merge until the Stage 12.10 pre-cutover gate passes (AT-25 through AT-55 plus the isolated test-branch final consistency audit) and the user approves cutover. AT-24 is intentionally not a pre-merge gate.
 
 Cutover requires a short production-write pause:
 
 1. Pause production writers.
 2. Merge the reviewed PR.
 3. Update the existing production Viral Producer plugin to version 1.1.0.
-4. Use the production runtime profile pointing to main.
+4. Use the production runtime profile pointing to `main`.
 5. Start a fresh conversation.
 6. Run version and branch verification read-only.
-7. Confirm the production plugin refuses test branch writes.
-8. Run controlled active caption/hashtag backfill.
-9. Run final full consistency audit.
-10. Resume production.
+7. Run AT-24 as the mandatory post-cutover production smoke test and record PASS.
+8. If AT-24 does not pass, keep production paused; do not start backfill and do not resume production.
+9. Confirm the refreshed production plugin still refuses test-branch overrides.
+10. Run controlled active caption/hashtag backfill.
+11. Run final full consistency audit on production.
+12. Resume production.
 
 Caption/hashtag backfill:
 
@@ -1547,8 +1560,9 @@ Stage 12 is complete only when:
 - active, queue, chat, and archive parity pass;
 - old records remain readable;
 - IDs and counters remain monotonic;
-- all new and affected regression tests pass;
-- final consistency audit passes;
+- all Stage 12.10 pre-cutover tests (AT-25 through AT-55) and the isolated test-branch final consistency audit pass;
+- AT-24 passes as the mandatory Stage 12.12 post-cutover smoke test before backfill or production resumption;
+- final production consistency audit passes;
 - documentation and plugin guides are complete;
 - production backfill completes successfully;
 - production resumes on main.

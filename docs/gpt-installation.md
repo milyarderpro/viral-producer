@@ -14,11 +14,11 @@ Panduan utama ini memasang profile produksi berikut:
     ALLOW_WRITES=true
     ALLOW_MAIN_WRITES=true
 
-Acceptance suite versi 2 telah lulus. Runtime isolation versi 3 diuji terpisah pada configured test branch selama Stage 12.10. `main` tetap menjadi satu-satunya branch produksi.
+Acceptance suite versi 2 telah lulus. Stage 12.10 menguji AT-25 sampai AT-55 pada configured test branch. AT-24 tidak dijalankan sebagai pre-merge acceptance test: AT-24 adalah mandatory post-cutover smoke test setelah PR Stage 12 digabung dan plugin produksi diperbarui ke v1.1, tetapi sebelum backfill atau produksi dilanjutkan. `main` tetap menjadi satu-satunya branch produksi.
 
 ## 2. Catatan Produk Terkini
 
-Dokumentasi ini diperbarui pada 2026-09-30.
+Dokumentasi ini diperbarui pada 2026-10-02.
 
 OpenAI sedang memindahkan workflow Custom GPT ke Plugin. Plugin menggabungkan skill sebagai instruksi workflow dan app sebagai koneksi ke layanan seperti GitHub. Ketersediaan pembuatan, instalasi, dan migrasi bergantung pada akun, workspace, serta izin administrator.
 
@@ -575,6 +575,8 @@ Periksa GitHub setelah prompt. Lulus hanya jika:
 - ready-to-post.md tidak berubah.
 
 Jika satu versi salah atau tidak dapat disebutkan, anggap plugin belum ter-refresh dan jangan menjalankan test tulis.
+
+Pada cutover Stage 12, version check ini adalah preflight langsung untuk AT-24. Setelah PR sudah digabung ke `main`, plugin produksi sudah diperbarui ke v1.1.0, dan percakapan baru sudah dimulai, jalankan AT-24 dari `tests/acceptance-tests.md`. AT-24 harus PASS sebelum caption/hashtag backfill dimulai atau produksi normal dilanjutkan. Jika AT-24 belum PASS, pertahankan production-write pause dan perbaiki/refresh plugin terlebih dahulu.
 
 ### 16.6 Saved regression prompts
 

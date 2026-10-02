@@ -142,7 +142,7 @@ Kegagalan check ini menghentikan seluruh mutative acceptance run.
 Saat Stage 12.10 dimulai:
 
 1. Catat starting SHAs, revision, counters, active IDs, dan ready IDs.
-2. Jalankan runtime-isolation tests terlebih dahulu.
+2. Jalankan AT-25 sampai AT-27 untuk runtime isolation. Jangan jalankan AT-24 dengan plugin test; AT-24 adalah smoke test produksi pasca-cutover di Stage 12.12.
 3. Lanjutkan Fast Approval.
 4. Lanjutkan mixed-topic tests.
 5. Lanjutkan performance tests.
@@ -215,6 +215,8 @@ Jika test membutuhkan fixture mutatif:
 
 Stage 12.10 belum selesai hanya karena plugin berhasil terpasang.
 
-Acceptance dianggap selesai hanya setelah test specification yang diwajibkan lulus, evidence dicatat, final consistency audit lulus, dan tidak ada unresolved partial state pada test branch.
+Stage 12.10 selesai ketika AT-25 sampai AT-55 seluruhnya PASS (31/31), evidence dicatat, final full consistency audit pada test branch PASS, dan tidak ada unresolved partial state pada test branch. AT-24 tidak memblokir penutupan Stage 12.10 karena hanya dapat dijalankan setelah merge dan refresh plugin produksi v1.1.
+
+AT-24 tetap wajib untuk Definition of Done Stage 12. Jalankan sebagai mandatory post-cutover smoke test di Stage 12.12 setelah PR digabung dan plugin produksi diperbarui, tetapi sebelum backfill atau produksi dilanjutkan.
 
 Test branch tetap disposable evidence dan tidak pernah di-merge.
