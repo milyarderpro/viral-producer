@@ -1983,3 +1983,35 @@ Everyday science feels more fascinating when viewed from another angle.
 ```
 
 ---
+
+## P-000078 — Inventions, Firsts, and Records
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Stanley’s first all-steel vacuum bottle grew from experiments while he was developing an electric oven.
+
+Birdseye realized rapid freezing protected food texture because slower freezing formed large ice crystals.
+
+Flexible Flyer sleds steer because their T-shaped runners flex instead of staying rigid.
+
+Biro’s ballpoint solved smudging by using a rotating ball to deliver fast-drying ink.
+
+Spangler’s first portable vacuum prototype used a fan motor, soapbox, broom handle, and pillowcase.
+
+Crayola’s first box held eight colors and sold for just five cents in 1903.
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Innovation and record stories become memorable through unexpected perspectives.
+
+#InventionFacts #WorldRecords #InnovationHistory #CuriousMinds #DidYouKnow
+```
+
+---
