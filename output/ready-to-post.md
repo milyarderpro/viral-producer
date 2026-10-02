@@ -2,6 +2,9 @@
 
 ## P-000006 — Animals and Nature
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 Greater short-horned lizards can squirt blood from their eyes up to three feet
@@ -17,11 +20,23 @@ Kākāpō are the only known parrot species that use lek breeding to attract mat
 Wood frogs can spend up to eight months frozen, with no heartbeat or breathing
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature becomes even more engaging through an unexpected perspective.
+
+#AnimalFacts #NatureFacts #WildlifeKnowledge #CuriousMinds #DidYouKnow
+```
 
 ---
 
 ## P-000009 — Geography and History
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 The United States’ easternmost and westernmost points around the 180° meridian are 63 miles apart in Alaska
@@ -37,11 +52,23 @@ Texas’s highest point, Guadalupe Peak, is part of a 260-to-270-million-year-ol
 Mount Whitney, the lower 48’s tallest mountain, sits within 85 miles of North America’s lowest place
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #USA
+```
 
 ---
 
 ## P-000001 — Geography and History
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 An 1812 earthquake temporarily forced the Mississippi River to flow backward near New Madrid
@@ -57,11 +84,23 @@ The Everglades’ sheet-flow river can slow to just 100 feet per day in winter
 Badwater Basin sits 282 feet below sea level, North America’s lowest point
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #USA
+```
 
 ---
 
 ## P-000002 — Animals and Nature
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 A narwhal's unicorn-like tusk is actually an upper-jaw tooth that can grow nearly ten feet
@@ -77,11 +116,23 @@ Sharks have skeletons made of cartilage, the flexible material in human noses an
 Spinner dolphins can sleep with half their brain while the other half stays alert
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature becomes even more engaging through an unexpected perspective.
+
+#AnimalFacts #NatureFacts #WildlifeKnowledge #CuriousMinds #DidYouKnow
+```
 
 ---
 
 ## P-000003 — Body and Everyday Science
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 Goosebumps happen when tiny smooth muscles in your skin pull individual hairs upright
@@ -97,11 +148,23 @@ Your ears can produce measurable sounds of their own that are normally inaudible
 Smell and taste receptor cells are continually replaced throughout life, unlike other known mammalian sensory cells
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Everyday science feels more fascinating when viewed from another angle.
+
+#ScienceFacts #HumanBody #EverydayScience #CuriousMinds #DidYouKnow
+```
 
 ---
 
 ## P-000005 — Geography and History
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 The Great Barrier Reef Marine Park covers 344,400 square kilometres, roughly the size of Japan
@@ -117,11 +180,23 @@ Australia contains rare zircon crystals dated to 4.4 billion years, among its ol
 Shark Bay's 4,800-square-kilometre seagrass beds are the world's largest and richest
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #Australia
+```
 
 ---
 
 ## P-000007 — Inventions, Firsts, and Records
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 Bubble Wrap began as wallpaper before becoming greenhouse insulation and protective packaging
@@ -137,11 +212,23 @@ The microwave oven began after Percy Spencer noticed a candy bar melting near a 
 E Ink Carta displays use electric fields to move black and white particles inside millions of microcapsules
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Innovation and record stories become memorable through unexpected perspectives.
+
+#InventionFacts #WorldRecords #InnovationHistory #CuriousMinds #DidYouKnow
+```
 
 ---
 
 ## P-000008 — Body and Everyday Science
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 Your body emits ultraweak light, but it is about 1,000 times too dim to see
@@ -157,11 +244,23 @@ A single human cell can contain enough DNA to stretch into a six-foot strand
 A knuckle crack happens as a cavity forms inside the joint, not from a bubble collapsing
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Everyday science feels more fascinating when viewed from another angle.
+
+#ScienceFacts #HumanBody #EverydayScience #CuriousMinds #DidYouKnow
+```
 
 ---
 
 ## P-000010 — Food and Household Knowledge
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 Refrigerating bread can make it stale six times faster than keeping it at room temperature
@@ -177,11 +276,23 @@ Crystallized honey is still safe because its sugar naturally separates into tiny
 Gray-white bloom on chocolate can be fat or sugar crystals without making it unsafe
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Food and home knowledge can make familiar moments feel fresh.
+
+#FoodFacts #HomeKnowledge #EverydayLearning #CuriousMinds #DidYouKnow
+```
 
 ---
 
 ## P-000011 — Inventions, Firsts, and Records
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 The first atomic clock used ammonia yet was no more accurate than existing clocks
@@ -197,11 +308,23 @@ NASA’s abrasion-resistant coating for aerospace equipment was later adapted to
 JPL’s CMOS image-sensor work helped make tiny battery-friendly phone cameras practical
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Innovation and record stories become memorable through unexpected perspectives.
+
+#InventionFacts #WorldRecords #InnovationHistory #CuriousMinds #DidYouKnow
+```
 
 ---
 
 ## P-000012 — Safe Practical Knowledge
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 Microwaves do not cook thick food inside-out; the center heats mainly by conduction
@@ -217,11 +340,23 @@ Incandescent bulbs release about 90 percent of their energy as heat instead of l
 Heat pumps can move heat from cold outdoor air into a warmer home
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Practical knowledge can make everyday choices feel more approachable.
+
+#PracticalKnowledge #EverydayTips #SmartLearning #CuriousMinds #DidYouKnow
+```
 
 ---
 
 ## P-000013 — Geography and History
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 Canada’s coastline links three oceans and is the longest coastline in the world
@@ -237,11 +372,23 @@ Great Slave Lake plunges about 615 metres, making it North America’s deepest l
 Georges Island is home to one of Canada’s first fully automated lighthouses
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #Canada
+```
 
 ---
 
 ## P-000014 — Animals and Nature
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 Opah are the only known fish that circulate heated blood throughout their entire bodies
@@ -257,11 +404,23 @@ Threatened vampire squid release sticky bioluminescent mucus instead of the ink 
 Some egg-laying caecilian babies peel off their mother’s skin and drink her milk-like fluid
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature becomes even more engaging through an unexpected perspective.
+
+#AnimalFacts #NatureFacts #WildlifeKnowledge #CuriousMinds #DidYouKnow
+```
 
 ---
 
 ## P-000015 — Body and Everyday Science
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 Your kidneys filter about 150 quarts of blood each day, but only 1 to 2 become urine
@@ -277,11 +436,23 @@ Your left lung is smaller than your right because your heart takes up space besi
 Without smell, familiar foods can lose so much flavor that chocolate and oranges become harder to distinguish
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Everyday science feels more fascinating when viewed from another angle.
+
+#ScienceFacts #HumanBody #EverydayScience #CuriousMinds #DidYouKnow
+```
 
 ---
 
 ## P-000016 — Inventions, Firsts, and Records
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 Thomas Edison did not invent the first light bulb; he made the first practical incandescent light
@@ -297,11 +468,23 @@ In 1947, a computer bug was literally a moth found in Harvard’s Mark II
 The world’s first webcam watched a Cambridge coffee pot to show researchers when coffee was ready
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Innovation and record stories become memorable through unexpected perspectives.
+
+#InventionFacts #WorldRecords #InnovationHistory #CuriousMinds #DidYouKnow
+```
 
 ---
 
 ## P-000017 — Geography and History
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 London’s Underground became the world’s first underground railway when passenger service began in 1863
@@ -317,11 +500,23 @@ The pound traces to Anglo-Saxon Britain and is the oldest currency still in use 
 Romans abandoned Hadrian’s Wall for about twenty years, then returned when the Antonine Wall was abandoned
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #UnitedKingdom
+```
 
 ---
 
 ## P-000018 — Animals and Nature
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 Some deep-sea anglerfish males fuse into females until they become permanent appendages
@@ -337,11 +532,23 @@ Naked mole-rats can move each front tooth separately, almost like using chopstic
 Vampire bats regurgitate blood to feed hungry social partners, even unrelated adults
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature becomes even more engaging through an unexpected perspective.
+
+#AnimalFacts #NatureFacts #WildlifeKnowledge #CuriousMinds #DidYouKnow
+```
 
 ---
 
 ## P-000019 — Food and Household Knowledge
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 Broccoli, cabbage, cauliflower, kale, and Brussels sprouts are all varieties of the same species
@@ -357,11 +564,23 @@ Capers are pickled flower buds, harvested before Capparis spinosa gets the chanc
 UV-B light can make mushrooms richer in vitamin D by converting their natural ergosterol
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Food and home knowledge can make familiar moments feel fresh.
+
+#FoodFacts #HomeKnowledge #EverydayLearning #CuriousMinds #DidYouKnow
+```
 
 ---
 
 ## P-000020 — Geography and History
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 Death Valley's sailing stones move when wind drives thin floating ice panels against them
@@ -377,11 +596,23 @@ Lassen Volcanic National Park contains all four primary types of volcanoes
 Great Basin bristlecone pines are the oldest known non-clonal tree species on Earth
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #USA
+```
 
 ---
 
 ## P-000021 — Body and Everyday Science
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 A 1,500-gram brain effectively weighs about 50 grams because surrounding fluid helps float it
@@ -397,11 +628,23 @@ Unlike birds and amphibians, humans can't regrow damaged inner-ear hair cells
 Cells lining your stomach and intestines are continually replaced in a week or less
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Everyday science feels more fascinating when viewed from another angle.
+
+#ScienceFacts #HumanBody #EverydayScience #CuriousMinds #DidYouKnow
+```
 
 ---
 
 ## P-000022 — Animals and Nature
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 Sleeping glassfrogs hide nearly 90 percent of their red blood cells inside their liver
@@ -417,11 +660,23 @@ Green turtles can use Earth's magnetic field as a positional map while navigatin
 Sperm whales have the largest absolute brain size of any living animal
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature becomes even more engaging through an unexpected perspective.
+
+#AnimalFacts #NatureFacts #WildlifeKnowledge #CuriousMinds #DidYouKnow
+```
 
 ---
 
 ## P-000023 — Inventions, Firsts, and Records
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 Play-Doh began as wallpaper cleaner before teachers helped turn it into a children's toy
@@ -437,11 +692,23 @@ The first UPC-scanned supermarket purchase was a package of Wrigley's chewing gu
 Volvo immediately made its three-point seatbelt patent available to other car manufacturers
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Innovation and record stories become memorable through unexpected perspectives.
+
+#InventionFacts #WorldRecords #InnovationHistory #CuriousMinds #DidYouKnow
+```
 
 ---
 
 ## P-000024 — Safe Practical Knowledge
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 Frozen food can stay safe indefinitely; freezer time limits mainly protect quality
@@ -457,11 +724,23 @@ Some plugged-in devices still use electricity even when they appear switched off
 About 90% of a clothes washer's energy goes into heating the water
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Practical knowledge can make everyday choices feel more approachable.
+
+#PracticalKnowledge #EverydayTips #SmartLearning #CuriousMinds #DidYouKnow
+```
 
 ---
 
 ## P-000025 — Geography and History
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 Hot Springs water can spend over 4,000 years underground before reaching the surface
@@ -477,11 +756,23 @@ Arches National Park preserves over 2,000 natural arches, the world's greatest c
 Great Salt Lake has no outlet, so evaporation leaves dissolved salts behind
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #USA
+```
 
 ---
 
 ## P-000026 — Food and Household Knowledge
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 A strawberry's visible 'seeds' are actually tiny fruits, while the red flesh isn't a true berry
@@ -497,11 +788,23 @@ Refrigeration can dull ripe tomato flavor and give the flesh a mealy texture
 Most food 'use-by' dates signal best quality, not safety; infant formula is an exception
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Food and home knowledge can make familiar moments feel fresh.
+
+#FoodFacts #HomeKnowledge #EverydayLearning #CuriousMinds #DidYouKnow
+```
 
 ---
 
 ## P-000027 — Geography and History
 
+### ON-SCREEN SCRIPT
+
+```text
 Did you know?
 
 Near Tuktoyaktuk, pingos are ice-cored hills pushed upward by freezing groundwater
@@ -517,5 +820,14 @@ Norse explorers were smelting iron at L'Anse aux Meadows around AD 1000
 Gros Morne's Tablelands expose Earth's mantle, normally hidden far beneath the crust
 
 Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+History and geography feel richer through an unexpected perspective.
+
+#GeographyFacts #HistoryFacts #WorldKnowledge #CuriousMinds #DidYouKnow #Canada
+```
 
 ---
