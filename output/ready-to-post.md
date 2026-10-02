@@ -519,3 +519,33 @@ Gros Morne's Tablelands expose Earth's mantle, normally hidden far beneath the c
 Enjoyed these facts? Like the video and follow for more!
 
 ---
+
+## P-000029 — Geography and History
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Cape Hatteras Lighthouse was moved 2,900 feet in just 23 days to escape erosion
+
+The Statue of Liberty was brown in 1886 and took about 30 years to turn green
+
+James Smithson funded the Smithsonian's founding despite never once setting foot on American soil
+
+Biscayne National Park in Florida is 95 percent water across its protected area
+
+St. Louis's Gateway Arch is 630 feet tall and exactly 630 feet wide
+
+Yellowstone has more than 500 geysers, representing more than half of the world's total
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+American landmarks hide stories that make familiar places feel new.
+
+#DidYouKnow #AmazingFacts #USHistory #AmericanLandmarks #LearnSomethingNew
+```
