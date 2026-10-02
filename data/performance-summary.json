@@ -1,9 +1,293 @@
 {
   "schema_version": 1,
-  "updated_at": null,
-  "sample_size": 0,
-  "by_topic": {},
-  "by_country": {},
-  "by_post_format": {},
-  "by_operator": {}
+  "updated_at": "2026-10-02T02:00:00Z",
+  "sample_size": 1,
+  "by_topic": {
+    "food-home": {
+      "post_count": 1,
+      "metrics": {
+        "views": {
+          "measured_count": 1,
+          "total": 1200000,
+          "average": 1200000
+        },
+        "reactions": {
+          "measured_count": 1,
+          "total": 84000,
+          "average": 84000
+        },
+        "comments": {
+          "measured_count": 1,
+          "total": 2300,
+          "average": 2300
+        },
+        "shares": {
+          "measured_count": 1,
+          "total": 15000,
+          "average": 15000
+        },
+        "average_watch_time_seconds": {
+          "measured_count": 1,
+          "total": 8.4,
+          "average": 8.4
+        },
+        "retention_percent": {
+          "measured_count": 0,
+          "total": 0,
+          "average": null
+        },
+        "followers_gained": {
+          "measured_count": 1,
+          "total": 3200,
+          "average": 3200
+        }
+      }
+    }
+  },
+  "by_country": {
+    "GLOBAL": {
+      "post_count": 1,
+      "metrics": {
+        "views": {
+          "measured_count": 1,
+          "total": 1200000,
+          "average": 1200000
+        },
+        "reactions": {
+          "measured_count": 1,
+          "total": 84000,
+          "average": 84000
+        },
+        "comments": {
+          "measured_count": 1,
+          "total": 2300,
+          "average": 2300
+        },
+        "shares": {
+          "measured_count": 1,
+          "total": 15000,
+          "average": 15000
+        },
+        "average_watch_time_seconds": {
+          "measured_count": 1,
+          "total": 8.4,
+          "average": 8.4
+        },
+        "retention_percent": {
+          "measured_count": 0,
+          "total": 0,
+          "average": null
+        },
+        "followers_gained": {
+          "measured_count": 1,
+          "total": 3200,
+          "average": 3200
+        }
+      }
+    }
+  },
+  "by_post_format": {
+    "themed": {
+      "post_count": 1,
+      "metrics": {
+        "views": {
+          "measured_count": 1,
+          "total": 1200000,
+          "average": 1200000
+        },
+        "reactions": {
+          "measured_count": 1,
+          "total": 84000,
+          "average": 84000
+        },
+        "comments": {
+          "measured_count": 1,
+          "total": 2300,
+          "average": 2300
+        },
+        "shares": {
+          "measured_count": 1,
+          "total": 15000,
+          "average": 15000
+        },
+        "average_watch_time_seconds": {
+          "measured_count": 1,
+          "total": 8.4,
+          "average": 8.4
+        },
+        "retention_percent": {
+          "measured_count": 0,
+          "total": 0,
+          "average": null
+        },
+        "followers_gained": {
+          "measured_count": 1,
+          "total": 3200,
+          "average": 3200
+        }
+      }
+    }
+  },
+  "by_operator": {
+    "belief_reversal": {
+      "post_count": 1,
+      "metrics": {
+        "views": {
+          "measured_count": 1,
+          "total": 1200000,
+          "average": 1200000
+        },
+        "reactions": {
+          "measured_count": 1,
+          "total": 84000,
+          "average": 84000
+        },
+        "comments": {
+          "measured_count": 1,
+          "total": 2300,
+          "average": 2300
+        },
+        "shares": {
+          "measured_count": 1,
+          "total": 15000,
+          "average": 15000
+        },
+        "average_watch_time_seconds": {
+          "measured_count": 1,
+          "total": 8.4,
+          "average": 8.4
+        },
+        "retention_percent": {
+          "measured_count": 0,
+          "total": 0,
+          "average": null
+        },
+        "followers_gained": {
+          "measured_count": 1,
+          "total": 3200,
+          "average": 3200
+        }
+      }
+    },
+    "hidden_mechanism": {
+      "post_count": 1,
+      "metrics": {
+        "views": {
+          "measured_count": 1,
+          "total": 1200000,
+          "average": 1200000
+        },
+        "reactions": {
+          "measured_count": 1,
+          "total": 84000,
+          "average": 84000
+        },
+        "comments": {
+          "measured_count": 1,
+          "total": 2300,
+          "average": 2300
+        },
+        "shares": {
+          "measured_count": 1,
+          "total": 15000,
+          "average": 15000
+        },
+        "average_watch_time_seconds": {
+          "measured_count": 1,
+          "total": 8.4,
+          "average": 8.4
+        },
+        "retention_percent": {
+          "measured_count": 0,
+          "total": 0,
+          "average": null
+        },
+        "followers_gained": {
+          "measured_count": 1,
+          "total": 3200,
+          "average": 3200
+        }
+      }
+    },
+    "scale_number": {
+      "post_count": 1,
+      "metrics": {
+        "views": {
+          "measured_count": 1,
+          "total": 1200000,
+          "average": 1200000
+        },
+        "reactions": {
+          "measured_count": 1,
+          "total": 84000,
+          "average": 84000
+        },
+        "comments": {
+          "measured_count": 1,
+          "total": 2300,
+          "average": 2300
+        },
+        "shares": {
+          "measured_count": 1,
+          "total": 15000,
+          "average": 15000
+        },
+        "average_watch_time_seconds": {
+          "measured_count": 1,
+          "total": 8.4,
+          "average": 8.4
+        },
+        "retention_percent": {
+          "measured_count": 0,
+          "total": 0,
+          "average": null
+        },
+        "followers_gained": {
+          "measured_count": 1,
+          "total": 3200,
+          "average": 3200
+        }
+      }
+    },
+    "visual_biology": {
+      "post_count": 1,
+      "metrics": {
+        "views": {
+          "measured_count": 1,
+          "total": 1200000,
+          "average": 1200000
+        },
+        "reactions": {
+          "measured_count": 1,
+          "total": 84000,
+          "average": 84000
+        },
+        "comments": {
+          "measured_count": 1,
+          "total": 2300,
+          "average": 2300
+        },
+        "shares": {
+          "measured_count": 1,
+          "total": 15000,
+          "average": 15000
+        },
+        "average_watch_time_seconds": {
+          "measured_count": 1,
+          "total": 8.4,
+          "average": 8.4
+        },
+        "retention_percent": {
+          "measured_count": 0,
+          "total": 0,
+          "average": null
+        },
+        "followers_gained": {
+          "measured_count": 1,
+          "total": 3200,
+          "average": 3200
+        }
+      }
+    }
+  }
 }
