@@ -2559,3 +2559,35 @@ Reality gets stranger when familiar things reveal their hidden side.
 ```
 
 ---
+
+## P-000102 — Mixed Trivia
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Nintendo began in 1889 by manufacturing Hanafuda playing cards in Kyoto, Japan
+
+Gallium melts at about 29.8°C, unusually close to ordinary room temperature
+
+Captive common ravens can imitate human words, including one taught to say “nevermore”
+
+Masking tape began after 3M’s Richard Drew watched car painters struggle to mask parts
+
+Apple warns that putting a wet iPhone in rice can let particles damage it
+
+Point Nemo sits about 2,688 kilometers from the nearest land, farther than any ocean point
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+The ordinary world has stranger origins and rules than it seems.
+
+#DidYouKnow #AmazingFacts #UnexpectedFacts #CuriousFacts #LearnSomethingNew
+```
+
+---
