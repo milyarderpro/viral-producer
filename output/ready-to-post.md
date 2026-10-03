@@ -2943,3 +2943,35 @@ The world gets stranger when maps, borders, and history collide.
 ```
 
 ---
+
+## P-000134 — Animals and Nature
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Arctic terns make the longest known animal migration, flying about 15,000 miles from Alaska to Antarctica
+
+Male leafy seadragons carry 250–300 eggs under their tails for about five to six weeks
+
+Thorny devils channel water across their skin through tiny grooves that deliver it to the mouth
+
+Secretary birds are raptors that hunt on foot, stomping prey including venomous snakes
+
+Aye-ayes tap tree bark, listen for hidden larvae, then hook them out with a skeletal middle finger
+
+Shoebills stand up to 4.5 feet tall, with bills longer than seven inches
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature keeps hiding its wildest designs in plain sight.
+
+#DidYouKnow #AnimalFacts #NatureFacts #WildlifeFacts #LearnSomethingNew
+```
+
+---
