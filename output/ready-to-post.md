@@ -2815,3 +2815,35 @@ Everyday reality gets stranger when you look at the physics.
 ```
 
 ---
+
+## P-000112 — Inventions, Firsts, and Records
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Gillette's 1901 safety razor used disposable blades, eliminating the need to sharpen them
+
+Singer's 1851 sewing machine traveled in a packing crate that doubled as its stand
+
+Nylon reached toothbrush bristles in 1938 before stockings were sold nationwide in 1940
+
+Rohwedder's first automatic bread slicer fell apart after about six months of heavy use
+
+Early internal pacemakers were four times today's size and had to be implanted in the abdomen
+
+Edison's first phonograph played Mary Had a Little Lamb back on its very first test
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Everyday inventions have stranger origin stories than their familiar designs suggest.
+
+#DidYouKnow #InventionFacts #TechHistory #HistoryFacts #LearnSomethingNew
+```
+
+---
