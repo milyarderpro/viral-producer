@@ -2879,3 +2879,35 @@ Reality gets stranger when science, history, and nature share the same page.
 ```
 
 ---
+
+## P-000132 — Mixed Trivia
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Measured from its ocean-floor base, Hawaii’s Mauna Kea is Earth’s tallest mountain
+
+Tardigrades have survived exposure to the vacuum of space outside a spacecraft
+
+Brain tissue itself lacks pain-sensitive nerves, even though the brain processes pain
+
+In 1960, the first working laser used synthetic ruby and produced brief light pulses
+
+Apollo 13 astronauts used duct tape and a cue card to fit square CO2 filters into round plumbing
+
+Dragonflies have existed for 300 million years, and some prehistoric forms had wingspans over two feet
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Reality gets stranger when science, history, nature, and invention collide.
+
+#DidYouKnow #AmazingFacts #ScienceFacts #HistoryFacts #NatureFacts #LearnSomethingNew
+```
+
+---
