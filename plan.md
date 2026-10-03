@@ -1644,7 +1644,7 @@ Suggested first prompt for the new chat:
 
 ## 5D. Stage 12.13 — Active-Drafts Large-File Safety Hotfix
 
-Status: IMPLEMENTED — VALIDATION PENDING
+Status: COMPLETE
 
 ### Incident
 
@@ -1673,7 +1673,15 @@ Recovery commit: `4eb5833bfb1a9fbc7b6edbcc66d80d456ca58458`.
 6. Run a final production consistency audit read-only.
 7. Resume production only after the applicable gates pass.
 
-Production remains paused while validation is pending.
+### Validation result
+
+- Plugin 1.1.1 passed AT-56 read-only on production: exact-SHA fallback recovered the complete 1,222,003-byte active blob with 129 records and P-000101–P-000130 present.
+- AT-57 through AT-60 passed on `test/viral-producer-v1.1`, including fail-closed incomplete reads, active-record continuity, large-file Git Data writes, and stale-head restart behavior.
+- Fixture cleanup completed; no test data was copied to `main`.
+- The only pre-existing audit finding, `P-000045 / F-000293 country_scope: ["FR"]`, was normalized to the valid code `["OTHER"]` on both production and test data with all IDs, content, counters, and ready queues preserved.
+- Final production consistency audit passed at revision 216 with counters 131/807, 129 active posts, 79 ready posts, and no invalid country scopes, duplicate IDs/signatures, orphan records, or queue-parity failures.
+
+Stage 12.13 release gates are complete. Normal production may resume.
 
 ## 6. Definition of Done
 
