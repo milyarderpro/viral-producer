@@ -2623,3 +2623,35 @@ Earth gets stranger when borders, rivers, and landmarks ignore our expectations.
 ```
 
 ---
+
+## P-000104 — Animals and Nature
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Emperor penguin huddles can reach 24°C inside, helping males survive brutal Antarctic incubation fasts
+
+In deep snow, red foxes can align hunting leaps with Earth’s magnetic field
+
+Limpet teeth were found to be the strongest biological material tested, outperforming spider silk
+
+Honey bees use waggle dances to tell nestmates both direction and distance to food
+
+Leafcutter ants don’t eat their leaf harvest; they use it to farm edible fungus
+
+Most woodpeckers have tongue-supporting bones that wrap behind the skull to above the eyes
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature keeps its best engineering hidden in plain sight.
+
+#DidYouKnow #AnimalFacts #NatureFacts #WildlifeFacts #LearnSomethingNew
+```
+
+---
