@@ -2591,3 +2591,35 @@ The ordinary world has stranger origins and rules than it seems.
 ```
 
 ---
+
+## P-000103 — Geography and History
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Panama Canal locks lift ships 85 feet using gravity-fed water, without any pumps
+
+The Danube flows through ten countries and four capital cities on its journey across Europe
+
+Four Corners is the only place in the U.S. where four states meet at one point
+
+The International Date Line zigzags around political borders instead of following 180° longitude straight
+
+Chile’s Atacama Desert is the world’s driest non-polar desert and a Mars research analog
+
+Big and Little Diomede are roughly four kilometers apart but separated by an international border
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Earth gets stranger when borders, rivers, and landmarks ignore our expectations.
+
+#DidYouKnow #GeographyFacts #HistoryFacts #WorldFacts #LearnSomethingNew
+```
+
+---
