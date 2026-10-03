@@ -2783,3 +2783,35 @@ Nature keeps hiding clever engineering in plain sight.
 ```
 
 ---
+
+## P-000110 — Body and Everyday Science
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Real raindrops are not teardrops; larger ones flatten into shapes like hamburger buns
+
+Eye floaters are shadows cast on your retina by tiny strands inside the vitreous
+
+Contrails behind jets are mostly ice crystals, formed when exhaust water vapor freezes high overhead
+
+Stars twinkle because Earth's moving atmosphere distorts their point-like light before it reaches you
+
+The ocean looks blue because water absorbs red wavelengths and leaves more blue light visible
+
+At sea level, air presses on your body with about 14.7 pounds per square inch
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Everyday reality gets stranger when you look at the physics.
+
+#DidYouKnow #ScienceFacts #EverydayScience #AmazingFacts #LearnSomethingNew
+```
+
+---
