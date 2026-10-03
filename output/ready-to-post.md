@@ -581,3 +581,35 @@ Nature keeps turning familiar creatures into surprising engineering lessons.
 
 #DidYouKnow #AmazingFacts #AnimalFacts #NatureFacts #LearnSomethingNew
 ```
+
+---
+
+## P-000100 — Geography and History
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Grand Canyon's rims sit 10 miles apart on average, but driving between them takes 212 miles
+
+Grand Canyon's coolest, wettest station lies under eight miles from its hottest and one of its driest
+
+The Grand Canyon is famous for depth, yet it is not the world's deepest canyon
+
+The Colorado River drops about 2,000 feet across 277 miles through Grand Canyon
+
+Ancient lava flows dammed the Colorado River at least 13 times inside Grand Canyon
+
+Grand Canyon formed about six million years ago, while its oldest rocks are 1.8 billion years old
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+One canyon can feel like several different worlds at once.
+
+#DidYouKnow #AmazingFacts #GrandCanyonWeek #GrandCanyon #USGeography
+```
