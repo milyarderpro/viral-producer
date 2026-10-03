@@ -700,7 +700,7 @@ Evidence:
 
 ## 5C. Stage 12 — Viral Producer 1.1
 
-Status: IN PROGRESS — STAGE 12.9 COMPLETE
+Status: COMPLETE
 
 Branch implementasi:
 
@@ -979,7 +979,8 @@ Completion evidence:
 - Instruction version is 3.0 — Stage 12 and Test specification version is 3.0 — Stage 12. Editorial version remains 2.0 — Stage 10.2 until later Stage 12 editorial work changes content DNA.
 - Production/test profile mismatches, target-branch mismatches, default-branch fallback, connector response mismatches, and cross-branch SHA reuse are hard failures before write.
 - Static validation passed for all five profile fields, explicit read/write refs, protected-file isolation, JSON/JSONL validity, and whitespace errors.
-- AT-24 through AT-27 are specified but remain pending execution on the isolated test plugin during Stage 12.10.
+- AT-25 through AT-27 are specified for isolated Stage 12.10 execution.
+- AT-24 is a production-runtime smoke test and is intentionally deferred to Stage 12.12 after the PR is merged and the production plugin is updated to v1.1; a Stage 10 production runtime cannot satisfy its version/profile preconditions.
 - Stage 12.3 remains pending and was not started.
 
 ### Stage 12.3 — Update 1: Fast Approval
@@ -1394,20 +1395,22 @@ Completion evidence:
 
 ### Stage 12.10 — Isolated Acceptance Tests
 
-Status: PENDING
+Status: COMPLETE — PRE-CUTOVER GATE PASSED; AT-24 DEFERRED TO STAGE 12.12
 
 Create test/viral-producer-v1.1 from the current feature branch. Configure a new private plugin named Viral Producer v1.1 Test with the test runtime profile.
 
 Never use the feature branch directly for mutative tests. Never merge test data.
 
+Stage 12.10 is the isolated pre-cutover gate. It covers AT-25 through AT-55 (31 tests) plus the final full consistency audit on the test branch. AT-24 is excluded from this stage because it validates the installed production profile on merged `main`; it is a mandatory post-cutover smoke test in Stage 12.12.
+
 Required test groups:
 
 Runtime isolation:
 
-- test plugin reads and writes only the test branch;
-- test plugin refuses main;
-- production profile refuses test;
-- no implicit default ref.
+- AT-25: test plugin reads and writes only the test branch and refuses `main`;
+- AT-26: production profile refuses the test branch;
+- AT-27: all repository calls use explicit repository/ref and reject mismatched responses;
+- AT-24 is not executed here; it runs against the refreshed production plugin during Stage 12.12.
 
 Fast Approval:
 
@@ -1474,9 +1477,17 @@ Regression:
 
 - rerun every affected create, revise, replace, approve, ready, posted, persistence, conflict, recovery, legacy, and final consistency test.
 
+Completion evidence:
+
+- `test/viral-producer-v1.1` recorded PASS for AT-25 through AT-55: 31 of 31 pre-cutover Stage 12 tests.
+- The final full consistency audit on the isolated test branch passed after the Stage 12.10 test run, with no unresolved partial state accepted as complete.
+- The production-side AT-24 attempt remained unclassified because the installed production plugin and `main` still exposed Stage 10 versions; this is the expected pre-cutover state, not an acceptance failure.
+- AT-24 remains mandatory for the Stage 12 Definition of Done and must pass after merge plus production plugin v1.1 refresh, before any backfill or production resumption.
+- Test fixtures, counters, snapshots, and commits remain confined to the disposable test branch and are never merged or copied into the feature branch or `main`.
+
 ### Stage 12.11 — Documentation and Plugin Guide
 
-Status: PENDING
+Status: COMPLETE
 
 Update README, user guide, prompt library, production installation guide, and plan. Add docs/test-plugin-installation.md with:
 
@@ -1492,9 +1503,22 @@ Update README, user guide, prompt library, production installation guide, and pl
 
 Documentation language is concise natural Indonesian except technical identifiers.
 
+Completion evidence:
+
+- `c691969d5edb6b55063c9f2bbc67663238db8ddd` updates all Stage 12.11 documentation deliverables: `README.md`, `docs/user-guide.md`, `docs/prompt-library.md`, `docs/gpt-installation.md`, and `docs/test-plugin-installation.md`.
+- README, user guide, and prompt library now document the Version 1.1 production workflow: themed/mixed generation, Fast Approval, subject/angle cooldown, two-surface publishing package, smart recommendation, content calendar, performance feedback, legacy compatibility, and serialized write safety.
+- Production documentation clearly targets **Viral Producer** on `main`; test documentation clearly targets **Viral Producer v1.1 Test** on `test/viral-producer-v1.1`. Mutative acceptance testing is explicitly excluded from the production plugin.
+- Production installation guidance now reports Instruction, Editorial, and Test Specification versions as `3.0 — Stage 12`, keeps the production runtime profile on `main`, and points test-plugin setup to the separate test guide.
+- Test-plugin guidance is updated to Stage 12.11, records the completed Stage 12.10 result of AT-25 through AT-55 PASS (31/31), preserves the never-merge test-data boundary, and treats future test activity as an isolated authorized rerun.
+- AT-24 remains consistently classified as the mandatory Stage 12.12 post-cutover production smoke test: merge reviewed PR → refresh production plugin to v1.1 → new chat/version check → AT-24 PASS → controlled backfill → final production audit → resume production.
+- Documentation validation passed for balanced Markdown fences, final newlines, no trailing whitespace, production/test runtime separation, current Editorial version, Stage 12.10 evidence wording, and AT-24 ordering.
+- The documentation commit changes only the five documentation files above. No `data/**`, `output/**`, `system/**`, or acceptance-test file changed in Stage 12.11.
+- During validation, `main` remained at `af68f8db2d54e6c9d555e66a7c38045cf5f46501` and `test/viral-producer-v1.1` remained at `07eeb5831a852ff6df384c230f3a14ed85aa5c18`; neither branch was modified.
+- Stage 12.12 remains PENDING and was not started.
+
 ### Stage 12.12 — Pull Request, Cutover, and Backfill
 
-Status: PENDING
+Status: COMPLETE
 
 Before PR:
 
@@ -1504,20 +1528,52 @@ Before PR:
 4. Run final read-only consistency and compatibility audit.
 5. Open PR only from upgrade/viral-producer-v1.1 to main.
 6. Attach the PR to the task.
-7. Do not merge until acceptance results pass and the user approves cutover.
+7. Do not merge until the Stage 12.10 pre-cutover gate passes (AT-25 through AT-55 plus the isolated test-branch final consistency audit) and the user approves cutover. AT-24 is intentionally not a pre-merge gate.
+
+Pre-PR checkpoint — 2026-10-02:
+
+- Feature checkpoint before this plan update: `1f931b92d66e92e8cf7987a60b5418798cd3dbfa`.
+- Latest production `main`: `af68f8db2d54e6c9d555e66a7c38045cf5f46501`.
+- Latest isolated test branch observed read-only: `07eeb5831a852ff6df384c230f3a14ed85aa5c18`.
+- Git compare reports the feature branch 66 commits ahead and 0 behind `main`; `main` is the exact merge base, so no synchronization commit is required.
+- Full feature core files were re-read: `plan.md`, `system/gpt-instructions.md`, `system/content-dna.md`, `system/data-contract.md`, and `tests/acceptance-tests.md`.
+- The feature diff contains 13 implementation/documentation paths only: `README.md`, `data/performance-summary.json`, `data/publishing-plan.json`, `docs/gpt-installation.md`, `docs/prompt-library.md`, `docs/test-plugin-installation.md`, `docs/user-guide.md`, `output/content-calendar.md`, `plan.md`, `system/content-dna.md`, `system/data-contract.md`, `system/gpt-instructions.md`, and `tests/acceptance-tests.md`.
+- Protected production snapshots are absent from the diff: no changes to `data/production-state.json`, `data/active-drafts.jsonl`, `data/facts/**`, `data/posts/**`, or `output/ready-to-post.md`.
+- The three additive Stage 12 initial stores are canonical empty values: performance summary schema version 1 with sample_size 0, publishing plan schema version 1 with Asia/Jakarta/revision 0/no slots, and an empty deterministic content calendar.
+- No test fixture, test counter, test performance snapshot, test publishing plan, or test lifecycle data is present in the feature diff.
+- Latest `main` read-only consistency audit passed: revision 139, next_post_number 98, next_fact_number 609, single_writer_mode true, 96 active records, 26 ready records, 6 published facts, and 1 archive.
+- Main JSON/JSONL parsing, unique Post IDs, unique Fact IDs, unique claim signatures, six-fact active/archive records, counter monotonicity, and exact 26-post ready-queue ID parity all passed.
+- Compatibility audit passed with the current legacy baseline: 96 active records may omit post_format and publishing package fields pending controlled backfill, 576 active fact snapshots may omit subject_key, and the legacy archive/published facts remain readable without implicit migration.
+- Static merge audit passed for current Stage 12 versions, balanced Markdown fences, final newlines, no trailing whitespace, runtime-profile explicit-ref rules, production/test-plugin separation, and no operational `ref: main` hardcoding in active runtime instructions.
+- Stage 12.10 remains COMPLETE: AT-25 through AT-55 are PASS (31/31) and the isolated test-branch final consistency audit is PASS.
+- Stage 12.11 remains COMPLETE.
+- AT-24 status remains **PENDING POST-CUTOVER**. It must run only after the PR is merged and the production plugin is refreshed to v1.1, and it must PASS before controlled backfill or production resumption.
+- Neither `main` nor `test/viral-producer-v1.1` was modified during the pre-PR audit.
+- Cutover, production-plugin refresh, AT-24 execution, backfill, final production audit, and production resumption have not started.
+
+Post-cutover checkpoint — 2026-10-02:
+
+- The reviewed PR #6 was merged to `main` with merge commit `6de76713d62056970c026feb153ba024f3344571`.
+- Protected production data remained unchanged through the merge: revision 139, counters 98/609, 96 active records, and 26 ready records with exact queue parity.
+- The existing private **Viral Producer** plugin was refreshed in place to version 1.1.0 with its GitHub binding and permissions preserved.
+- The production runtime profile was verified as `milyarderpro/viral-producer@main`, mode `production`, `ALLOW_WRITES=true`, and `ALLOW_MAIN_WRITES=true`.
+- AT-24 passed read-only: all GitHub requests used the explicit repository and `ref: main`, canonical response URLs matched the configured ref, tracked state/active SHAs were unchanged, and no write or commit call occurred.
+- Production remains paused. Controlled active caption/hashtag backfill, final production consistency audit, and production resumption are still pending.
 
 Cutover requires a short production-write pause:
 
 1. Pause production writers.
 2. Merge the reviewed PR.
 3. Update the existing production Viral Producer plugin to version 1.1.0.
-4. Use the production runtime profile pointing to main.
+4. Use the production runtime profile pointing to `main`.
 5. Start a fresh conversation.
 6. Run version and branch verification read-only.
-7. Confirm the production plugin refuses test branch writes.
-8. Run controlled active caption/hashtag backfill.
-9. Run final full consistency audit.
-10. Resume production.
+7. Run AT-24 as the mandatory post-cutover production smoke test and record PASS.
+8. If AT-24 does not pass, keep production paused; do not start backfill and do not resume production.
+9. Confirm the refreshed production plugin still refuses test-branch overrides.
+10. Run controlled active caption/hashtag backfill.
+11. Run final full consistency audit on production.
+12. Resume production.
 
 Caption/hashtag backfill:
 
@@ -1529,6 +1585,16 @@ Caption/hashtag backfill:
 - treats missing post_format as themed without requiring a bulk format rewrite;
 - prepares and validates all captions/hashtags before the first write;
 - writes active records, rebuilds ready queue, increments revision once, and verifies parity.
+
+Completion checkpoint — 2026-10-02:
+
+- Controlled backfill completed for all 96 active posts: 70 draft and 26 ready.
+- The operation wrote each authoritative target exactly once: active drafts commit `52721a1eb8b58c0aca2e9d8debee9f0e234234b4`, ready queue commit `00af2764ebd5ef650c02a64a8118b03b1500f5ca`, and production state commit `1cdc7aa78de5350e1b81a0ce36a4c5e0dd2e08a8`.
+- Production revision advanced exactly once from 139 to 140; next Post/Fact counters remained 98/609 and all other protected state fields remained unchanged.
+- All 96 active posts now have valid captions and 4–6 hashtags. All 26 ready posts have exact active-to-queue parity with one ON-SCREEN SCRIPT block and one FACEBOOK CAPTION block; no on-screen script contains a hashtag.
+- Facts, IDs, statuses, sources, quality metadata, generation audits, historical timestamps, active-record order, archives, fact ledgers, and missing legacy post_format fields were preserved.
+- The final production consistency audit passed 17/17 checks read-only with zero writes, zero Web Search/source calls, valid empty additive stores, and no duplicate, orphan, malformed, parity, counter, or partial-failure finding.
+- Stage 12 Definition of Done is satisfied. Production resumed on `main` with Viral Producer v1.1.0.
 
 ### Definition of Done for Stage 12
 
@@ -1547,11 +1613,14 @@ Stage 12 is complete only when:
 - active, queue, chat, and archive parity pass;
 - old records remain readable;
 - IDs and counters remain monotonic;
-- all new and affected regression tests pass;
-- final consistency audit passes;
+- all Stage 12.10 pre-cutover tests (AT-25 through AT-55) and the isolated test-branch final consistency audit pass;
+- AT-24 passes as the mandatory Stage 12.12 post-cutover smoke test before backfill or production resumption;
+- final production consistency audit passes;
 - documentation and plugin guides are complete;
 - production backfill completes successfully;
 - production resumes on main.
+
+Completion result: **PASS — Stage 12 COMPLETE on 2026-10-02.**
 
 ### Execution Protocol for a New Chat
 
@@ -1572,6 +1641,39 @@ The implementation chat must:
 Suggested first prompt for the new chat:
 
     Implementasikan Stage 12.1 dari plan.md pada repository milyarderpro/viral-producer. Main masih aktif digunakan untuk produksi. Baca core files terbaru dari main, baca seluruh Stage 12 pada branch upgrade/viral-producer-v1.1, refresh baseline, sinkronkan feature branch secara aman jika diperlukan, pastikan production data tidak berubah, update plan.md, commit hasilnya, lalu berhenti. Jangan mengerjakan Stage 12.2 sebelum saya mengatakan "lanjutkan".
+
+## 5D. Stage 12.13 — Active-Drafts Large-File Safety Hotfix
+
+Status: IMPLEMENTED — VALIDATION PENDING
+
+### Incident
+
+On 2026-10-03, the normal GitHub file read returned an empty body for a non-empty `data/active-drafts.jsonl` blob larger than 1 MB. The P-000114 operation trusted that body and replaced the authoritative file with a single record. Recovery restored P-000101–P-000113 and merged P-000114–P-000130 without changing state or the ready queue.
+
+Recovery commit: `4eb5833bfb1a9fbc7b6edbcc66d80d456ca58458`.
+
+### Scope
+
+- No record migration, repartitioning, ID change, counter change, or content rewrite.
+- Add exact-SHA blob fallback for omitted/truncated authoritative bodies.
+- Treat empty content under a non-zero-byte SHA as a hard transport warning.
+- Add complete preflight Post ID/Fact ID continuity checks for every active mutation.
+- Require Git Data API writes for active data at or above 900,000 UTF-8 bytes or whenever blob fallback was required.
+- Require latest-head recheck and non-forced fast-forward; stale prepared commits remain unattached.
+- Add AT-56 through AT-60.
+- Release the same private production plugin identity as version 1.1.1.
+
+### Release gate
+
+1. Commit the specification hotfix without changing production data.
+2. Update the existing private plugin in place to 1.1.1.
+3. Start a new conversation.
+4. Run AT-56 read-only on production.
+5. Run AT-57 through AT-60 only on an isolated test runtime.
+6. Run a final production consistency audit read-only.
+7. Resume production only after the applicable gates pass.
+
+Production remains paused while validation is pending.
 
 ## 6. Definition of Done
 
