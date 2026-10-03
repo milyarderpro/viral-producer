@@ -1,14 +1,13 @@
 {
   "schema_version": 1,
-  "revision": 221,
-  "next_post_number": 135,
-  "next_fact_number": 831,
+  "revision": 222,
+  "next_post_number": 136,
+  "next_fact_number": 837,
   "operational_timezone": "Asia/Jakarta",
   "single_writer_mode": true,
-  "last_topic": "animals-nature",
+  "last_topic": "body-science",
   "last_country_focus": "GLOBAL",
   "recent_topics": [
-    "mixed",
     "geography-history",
     "animals-nature",
     "body-science",
@@ -17,10 +16,10 @@
     "geography-history",
     "mixed",
     "geography-history",
-    "animals-nature"
+    "animals-nature",
+    "body-science"
   ],
   "recent_country_focuses": [
-    "GLOBAL",
     "GLOBAL",
     "GLOBAL",
     "GLOBAL",
@@ -29,7 +28,8 @@
     "US",
     "GLOBAL",
     "GLOBAL",
+    "GLOBAL",
     "GLOBAL"
   ],
-  "updated_at": "2026-10-03T11:50:12.765Z"
+  "updated_at": "2026-10-03T11:59:03.120Z"
 }
