@@ -2655,3 +2655,35 @@ Nature keeps its best engineering hidden in plain sight.
 ```
 
 ---
+
+## P-000105 — Body and Everyday Science
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Astronauts can grow up to three percent taller in space as their spines expand
+
+At water’s triple point, solid ice, liquid water, and vapor coexist in equilibrium
+
+A one-cubic-kilometer cumulus cloud can contain about 1.1 million pounds of water droplets
+
+Room-temperature metal feels colder than wood because it pulls heat from your skin faster
+
+Water outside a cold glass comes from water vapor in the surrounding air
+
+Human blood is always red; oxygen-poor blood is simply a darker shade of red
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Everyday science gets stranger when familiar things stop behaving the way we expect.
+
+#DidYouKnow #ScienceFacts #BodyFacts #EverydayScience #LearnSomethingNew
+```
+
+---
