@@ -2751,3 +2751,35 @@ The map gets stranger the closer you look.
 ```
 
 ---
+
+## P-000109 — Animals and Nature
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Mountain goats grip steep cliffs with split hooves and soft, rubbery inner pads
+
+An alligator hatchling's sex is determined by the temperature inside its nest
+
+Muskox qiviut underfur is eight times warmer than sheep's wool yet finer than cashmere
+
+Giraffe calves drop to the ground at birth, triggering their first big breath
+
+Porcupette quills are soft at birth but harden within minutes after air exposure
+
+The wandering albatross has the greatest wingspan of any bird alive today
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Nature keeps hiding clever engineering in plain sight.
+
+#DidYouKnow #AnimalFacts #NatureFacts #WildlifeFacts #LearnSomethingNew
+```
+
+---
