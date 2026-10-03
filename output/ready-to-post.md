@@ -2687,3 +2687,35 @@ Everyday science gets stranger when familiar things stop behaving the way we exp
 ```
 
 ---
+
+## P-000107 — Inventions, Firsts, and Records
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Edwin Land pursued instant photography after his three-year-old daughter asked why photos couldn’t appear immediately
+
+The world’s first parking meter charged five cents an hour in Oklahoma City in 1935
+
+Revolving doors act as airlocks, blocking cold drafts and easing pressure problems in skyscrapers
+
+TI’s 1967 handheld calculator prototype was just 6.25 inches long and printed answers on paper
+
+A 1938 ice storm sparked Jack Kilby’s electronics interest; two decades later he unveiled the first integrated circuit
+
+Martin Cooper made the first mobile phone call in downtown Manhattan on April 3, 1973
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Everyday technology has stranger origin stories than most people realize.
+
+#DidYouKnow #InventionFacts #TechHistory #AmericanHistory #LearnSomethingNew
+```
+
+---
