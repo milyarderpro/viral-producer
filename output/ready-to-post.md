@@ -2527,3 +2527,35 @@ Innovation and record stories become memorable through unexpected perspectives.
 ```
 
 ---
+
+## P-000101 — Mixed Trivia
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Venus takes 243 Earth days to rotate once, longer than its 225-day year
+
+Lobsters chew food with three tooth-like grinding surfaces inside their stomachs, called a gastric mill
+
+Summer heat can make the Eiffel Tower a few millimeters taller through thermal expansion
+
+Bumblebees repeatedly rolled wooden balls without food rewards, a behavior researchers classified as play
+
+Washing raw chicken can spread germs to your sink, counters, and other foods
+
+Martian sunsets are typically blue because fine dust keeps blue light concentrated near the Sun
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Reality gets stranger when familiar things reveal their hidden side.
+
+#DidYouKnow #AmazingFacts #ScienceFacts #HistoryFacts #LearnSomethingNew
+```
+
+---
