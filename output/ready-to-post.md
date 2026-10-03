@@ -2847,3 +2847,35 @@ Everyday inventions have stranger origin stories than their familiar designs sug
 ```
 
 ---
+
+## P-000113 — Mixed Trivia
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Mount Everest keeps rising about one centimeter each year as tectonic plates continue converging
+
+Koalas have human-like fingerprints, even though they are marsupials rather than primates
+
+Normal stomach acid sits around pH one to two, near the scale's acidic extreme
+
+Bluetooth was a temporary codename inspired by Harald Bluetooth, a king who united Scandinavia
+
+During a home fire, closed and open rooms can differ by 900 degrees Fahrenheit
+
+Even a 272-year estimate makes the Greenland shark the longest-lived vertebrate known
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Reality gets stranger when science, history, and nature share the same page.
+
+#DidYouKnow #AmazingFacts #ScienceFacts #HistoryFacts #LearnSomethingNew
+```
+
+---
