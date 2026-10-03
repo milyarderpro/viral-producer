@@ -2975,3 +2975,35 @@ Nature keeps hiding its wildest designs in plain sight.
 ```
 
 ---
+
+## P-000136 — Mixed Trivia
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+Below about 2.2 kelvin, helium-4 becomes a superfluid that can climb walls and overflow containers
+
+Kiribati straddles both the Equator and 180th meridian, placing it in all four hemispheres
+
+Some smoke detectors use americium-241 to ionize air; smoke interrupts that ion flow, triggering the alarm
+
+Superb lyrebirds can mimic sounds from other birds to the click of a camera shutter
+
+Liquid oxygen gets pulled toward magnets because its molecules contain two unpaired electrons
+
+Baby hoatzins have wing claws they use to climb back into trees after swimming
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+Reality gets stranger at the edges of science and nature.
+
+#DidYouKnow #AmazingFacts #ScienceFacts #NatureFacts #WorldFacts #LearnSomethingNew
+```
+
+---
