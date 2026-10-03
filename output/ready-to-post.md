@@ -2719,3 +2719,35 @@ Everyday technology has stranger origin stories than most people realize.
 ```
 
 ---
+
+## P-000108 — Geography and History
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+In Baarle, 30 enclaves make international borders run through streets, houses, and even bedrooms
+
+Switzerland technically has no official capital; Bern is its federal city and de facto capital
+
+Some Valletta staircases used unusual dimensions so knights in heavy armor could climb the steps
+
+Greenland has no roads between towns, so boats and aircraft connect communities instead
+
+South Africa splits its capital functions among Cape Town, Bloemfontein, and Pretoria
+
+Uzbekistan is one of only two double-landlocked countries, surrounded entirely by landlocked neighbors
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+The map gets stranger the closer you look.
+
+#DidYouKnow #GeographyFacts #HistoryFacts #WorldFacts #LearnSomethingNew
+```
+
+---
