@@ -2911,3 +2911,35 @@ Reality gets stranger when science, history, nature, and invention collide.
 ```
 
 ---
+
+## P-000133 — Geography and History
+
+### ON-SCREEN SCRIPT
+
+```text
+Did you know?
+
+The Gambia stretches 200 miles inland, yet Senegal surrounds it on all three landward sides
+
+Bolivia’s Salar de Uyuni is Earth’s largest salt flat, covering roughly 3,100 square miles
+
+The Dead Sea depression sits about 1,300 feet below sea level, Earth’s lowest dry-land spot
+
+The Suez Canal is a sea-level waterway that physically separates Africa from Asia
+
+San Marino is one of the world’s oldest republics and the only surviving Italian city-state
+
+Bonaire, St Eustatius, and Saba are Caribbean islands that function as special municipalities of the Netherlands
+
+Enjoyed these facts? Like the video and follow for more!
+```
+
+### FACEBOOK CAPTION
+
+```text
+The world gets stranger when maps, borders, and history collide.
+
+#DidYouKnow #GeographyFacts #HistoryFacts #WorldFacts #LearnSomethingNew
+```
+
+---
