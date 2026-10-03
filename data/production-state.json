@@ -1,14 +1,13 @@
 {
   "schema_version": 1,
-  "revision": 205,
-  "next_post_number": 121,
-  "next_fact_number": 747,
+  "revision": 206,
+  "next_post_number": 122,
+  "next_fact_number": 753,
   "operational_timezone": "Asia/Jakarta",
   "single_writer_mode": true,
-  "last_topic": "mixed",
+  "last_topic": "geography-history",
   "last_country_focus": "GLOBAL",
   "recent_topics": [
-    "food-home",
     "inventions-records",
     "mixed",
     "geography-history",
@@ -17,11 +16,12 @@
     "body-science",
     "food-home",
     "inventions-records",
-    "mixed"
+    "mixed",
+    "geography-history"
   ],
   "recent_country_focuses": [
-    "GLOBAL",
     "US",
+    "GLOBAL",
     "GLOBAL",
     "GLOBAL",
     "GLOBAL",
@@ -31,5 +31,5 @@
     "GLOBAL",
     "GLOBAL"
   ],
-  "updated_at": "2026-10-03T07:06:54Z"
+  "updated_at": "2026-10-03T07:16:00Z"
 }
