@@ -81,6 +81,8 @@ AT-24 bukan pre-merge gate, tetapi tetap wajib untuk Definition of Done Stage 12
 - Jangan mengedit JSON/JSONL produksi secara manual.
 - Repository dan runtime profile adalah sumber kebenaran; jangan mengandalkan state dari percakapan lama.
 - Setiap GitHub operation harus memakai repository/ref eksplisit sesuai runtime profile.
+- Body kosong dengan SHA non-empty tidak boleh dianggap sebagai database kosong; plugin wajib mengambil blob lengkap.
+- Active file besar memakai continuity guard dan Git Data API non-forced agar record lama tidak terhapus.
 
 ## Referensi Teknis
 

@@ -1,5 +1,7 @@
 # Viral Producer Data Contract
 
+Contract revision: 3.1 — Stage 12.13
+
 ## 1. Purpose
 
 This document defines the machine-readable data model, file ownership rules, identifiers, lifecycle transitions, validation requirements, and recovery behavior for Viral Producer.
@@ -107,6 +109,19 @@ Rules:
 - profile permissions and production-versus-test branch restrictions are validated by the runtime instructions before this contract permits a write.
 
 Repository files may describe profiles for documentation, but they cannot change the active runtime tuple.
+
+### Complete-read requirement for authoritative files
+
+A connector response is usable only when its body is complete.
+
+- Read every path with explicit RUNTIME_REPOSITORY and `ref: RUNTIME_BRANCH`, and bind the returned blob SHA to that exact repository, ref, and path.
+- Canonical empty JSONL is a zero-byte file whose Git blob SHA is `e69de29bb2d1d6434b8b29ae775ad8c2e48c5391`.
+- Empty content paired with any other SHA means the body was omitted or not returned completely. Fetch the full blob by that exact SHA before parsing.
+- Also use exact-SHA blob retrieval when a response is truncated, partially paginated, or otherwise cannot prove complete bytes.
+- If complete retrieval fails, perform zero writes and zero ID allocation. Never replace an authoritative file from conversation memory, a derived Markdown view, a prior response, or a partial body.
+- After complete retrieval, parse every record and validate uniqueness, counters, lifecycle links, and operation-specific invariants before mutation.
+
+This rule applies even when the connector reports success.
 
 ## 3. Repository Data Map
 
@@ -962,6 +977,10 @@ If a published post exists without corresponding fact-index records, treat it as
 
 All lifecycle reads, preflight checks, writes, verification reads, and recovery steps below operate only inside the current RUNTIME_REPOSITORY and RUNTIME_BRANCH. Never use state or a SHA from another branch to complete a transition.
 
+The large-active-file protocol in Section 20 is mandatory whenever `data/active-drafts.jsonl` reaches its threshold or requires blob fallback. The lifecycle steps below describe logical ordering; the active-file write itself must use the Git Data API path when that protocol applies.
+
+Before any active-file mutation, compute and validate the complete operation-specific Post ID and Fact ID delta. An operation may change only its documented target records and fields.
+
 ### Create draft
 
 1. Read current production state and its Git blob SHA.
@@ -1093,6 +1112,54 @@ Scheduling writes are serialized. Replace publishing-plan.json first, verify it,
 
 Read-only research and fact collection may run in parallel, but final allocation and persistence must be serialized.
 
+### Large active-file protocol
+
+Apply this protocol to every operation that reads or changes `data/active-drafts.jsonl`.
+
+#### Complete preflight read
+
+1. Read the path with explicit repository/ref and record its path-bound blob SHA.
+2. Accept an empty body as truly empty only when the SHA is the canonical zero-byte Git blob SHA.
+3. If the body is empty with another SHA, omitted, truncated, or incomplete, fetch the full blob by that exact SHA.
+4. Parse every JSONL line and capture: ordered Post IDs, per-post Fact IDs, claim signatures, record count, ready subset, and UTF-8 byte length.
+5. Verify global uniqueness and production-state counter bounds.
+6. Stop with zero writes and zero allocations if any complete-read or parse check fails.
+
+#### Continuity guard
+
+Compare the complete preflight snapshot with the complete proposed replacement:
+
+- create adds only the requested post or batch and preserves every pre-existing record;
+- approval and wording revision keep the Post ID set unchanged and modify only documented fields on explicit targets;
+- fact replacement keeps the Post ID set unchanged and changes only the explicit target fact position plus its permitted post metadata;
+- rejection and publication remove only explicit target posts;
+- recovery applies only a separately authorized exact recovery set.
+
+Every unrelated record must remain byte-equivalent as an object. Unexpected loss, addition, reorder where order is protected, duplicate, or ready-subset drift is a hard failure.
+
+#### Large write path
+
+Use the Git Data API instead of the ordinary contents update when either condition is true:
+
+- the complete preflight body or replacement is at least 900,000 UTF-8 bytes; or
+- the preflight file read required exact-SHA blob fallback.
+
+Procedure:
+
+1. Fetch the current branch head commit and tree.
+2. Confirm the active path still has the validated preflight blob SHA.
+3. Create one complete UTF-8 replacement blob.
+4. Create a tree based on the current head tree that changes only `data/active-drafts.jsonl`.
+5. Create a commit with the current head as its sole parent.
+6. Re-read the branch head immediately before ref movement.
+7. If the head differs, do not attach the prepared commit; fetch complete current state and restart.
+8. Move the configured branch ref by non-forced fast-forward only.
+9. Read back the resulting active path through its blob SHA and verify bytes, parse, uniqueness, continuity delta, and that the commit changed only the intended path.
+
+A prepared but unattached commit after a conflict is not a production mutation. Never use `force: true`.
+
+Later queue and state writes continue in the lifecycle's documented order. If one fails after the active commit succeeds, report the exact partial state and perform only the deterministic recovery already permitted by this contract.
+
 ## 21. Consistency Audit
 
 Run a consistency audit before production when:
@@ -1170,7 +1237,9 @@ Repair existing records when the intended state is unambiguous. Otherwise stop a
 
 ## 22. File Size and Partitioning
 
-- Active drafts should remain small because posted and rejected records are removed.
+- Active drafts remove posted and rejected records, but the file may still exceed connector content limits when many records remain active.
+- Do not interpret an omitted body as an empty active database. Use the complete-read and exact-SHA blob fallback rules above.
+- At or above 900,000 UTF-8 bytes, use the large active-file Git Data write path; this operational hotfix does not migrate or repartition existing records.
 - Ready-to-post.md should contain only the current queue.
 - Published posts are partitioned monthly.
 - Published facts are partitioned by topic.
@@ -1204,7 +1273,10 @@ Do not save or publish any record when:
 - a country-specific mixed post has any fact whose country_scope does not explicitly include country_focus;
 - a write would create or use data/facts/mixed.jsonl;
 - an unsafe high-risk fact is present;
-- the current Git SHA changed during the write operation.
+- the current Git SHA changed during the write operation;
+- an authoritative body is empty under a non-empty blob SHA, truncated, omitted, or cannot be fetched completely;
+- an active-drafts replacement loses or changes any record outside the operation-specific allowed delta;
+- a large active-file write would use ordinary contents replacement, a stale head, or a forced ref update.
 
 For every newly created or editorial-version-2-upgraded draft, also do not save, approve, ready, or publish when:
 

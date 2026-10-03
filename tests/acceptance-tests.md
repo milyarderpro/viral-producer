@@ -1,6 +1,6 @@
 # Viral Producer — Acceptance Tests
 
-Test specification version: 3.0 — Stage 12
+Test specification version: 3.1 — Stage 12.13
 
 ## 1. Purpose
 
@@ -22,7 +22,8 @@ It verifies that the GPT:
 - persists compact generation audit evidence;
 - keeps legacy drafts readable while blocking unverified approval;
 - performs Fast Approval only from complete stored evidence with no fresh research, rescoring, or ID allocation;
-- persists, renders, preserves, rechecks, and archives complete Facebook publishing packages without mixing hashtags into the on-screen script.
+- persists, renders, preserves, rechecks, and archives complete Facebook publishing packages without mixing hashtags into the on-screen script;
+- reads oversized authoritative JSONL through exact-SHA blob fallback and prevents destructive partial-file replacement.
 
 Stages 8 and 10 created and executed the version-2 suite. Stage 12 extends the specification. Execute AT-25 through AT-55 during Stage 12.10 on the isolated test plugin. AT-24 is a mandatory post-cutover production smoke test executed in Stage 12.12 only after the PR is merged and the production plugin is updated to v1.1, and before any backfill or production resumption.
 
@@ -1843,6 +1844,89 @@ Repository assertions:
 
 Pass: the additive stores may begin empty without mutating or invalidating production state.
 
+### AT-56 — Oversized active-drafts blob fallback
+
+Purpose: Verify that a successful file-read response with empty content and a non-empty blob SHA is not treated as an empty database.
+
+Classification: MANDATORY POST-HOTFIX READ-ONLY SMOKE TEST on production in a new conversation.
+
+Prompt:
+
+    Jalankan AT-56 secara read-only. Baca data/active-drafts.jsonl dari repository dan ref runtime eksplisit. Jika file read biasa mengembalikan body kosong dengan SHA non-empty, gunakan exact-SHA blob fetch. Laporkan SHA, byte count, record count, status counts, dan apakah P-000101 sampai P-000130 tersedia. Jangan mengubah apa pun.
+
+Expected behavior:
+
+- Detects empty normal content paired with a non-zero-byte SHA.
+- Fetches the complete body by that exact SHA from the same repository.
+- Parses all records and reports the verified current counts.
+- Does not use the ready queue, conversation memory, or historical blob as a substitute.
+
+Repository assertions:
+
+- Zero writes, zero commits, zero ID allocation, and unchanged production state, active blob SHA, and ready queue.
+
+Pass: the installed plugin proves complete active-data retrieval without mutation.
+
+### AT-57 — Incomplete-read fail closed
+
+Purpose: Verify zero mutation when exact-SHA blob retrieval is unavailable or incomplete.
+
+Environment: Isolated test plugin or deterministic connector fixture only.
+
+Expected behavior:
+
+- Stops before research completion, allocation, replacement construction, or write.
+- Reports the path, SHA, and complete-read blocker.
+- Does not interpret empty content as zero active records.
+
+Pass: every production artifact and counter remains unchanged.
+
+### AT-58 — Active-record continuity guard
+
+Purpose: Regress the P-000114 failure pattern without touching production.
+
+Environment: Isolated test plugin with a large active fixture whose ordinary read returns empty while its blob contains multiple posts.
+
+Expected behavior:
+
+- A proposed replacement containing only the new post is rejected.
+- The diagnostic lists unexpected missing Post IDs.
+- A correct proposal preserves every preflight Post ID and adds only the requested post and six facts.
+- No write occurs for the destructive proposal.
+
+Pass: unrelated records cannot disappear from an active-file mutation.
+
+### AT-59 — Large active-file Git Data write
+
+Purpose: Verify safe persistence above the large-file threshold.
+
+Environment: Isolated test plugin only.
+
+Expected behavior:
+
+- Uses exact-SHA blob input, complete parsing, and continuity validation.
+- Creates a complete replacement blob, one-path tree, and commit based on the latest head.
+- Rechecks the branch head and moves the ref with a non-forced fast-forward.
+- Readback proves the allowed delta and shows that only data/active-drafts.jsonl changed in the active-file commit.
+- Subsequent lifecycle files follow their documented order and final parity passes.
+
+Pass: a valid large-file operation completes without Content API truncation or unrelated record loss.
+
+### AT-60 — Large-file stale-head rejection
+
+Purpose: Verify optimistic concurrency immediately before branch-ref movement.
+
+Environment: Isolated test plugin only.
+
+Expected behavior:
+
+- Another writer advances the branch after the candidate commit is prepared.
+- The plugin detects the changed head and does not attach its stale commit.
+- It never uses force, never reuses the stale payload, and restarts from complete current state.
+- The other writer's records remain intact.
+
+Pass: stale large-file commits cannot overwrite newer branch state.
+
 ## 6. Final Consistency Audit
 
 After all applicable tests, prompt:
@@ -1900,7 +1984,10 @@ The final result passes only when:
 - scheduling and moving did not mutate lifecycle content or production state;
 - an empty performance summary, absent raw performance files, revision-0 empty publishing plan, and deterministic empty calendar are accepted as valid initial states;
 - compatibility handling preserved existing IDs, counters, facts, sources, quality, audits, timestamps, ledgers, archives, and production snapshots;
-- no unresolved partial failure remains.
+- no unresolved partial failure remains;
+- every authoritative non-empty blob was read completely even when the normal file body was omitted;
+- every active-file mutation passed its operation-specific Post ID and Fact ID continuity guard;
+- every threshold-sized active-file write used a non-forced, latest-head Git Data path.
 
 Reject any remaining temporary draft through the GPT if cleanup is desired. Do not manually decrement counters, reuse test IDs, fabricate audit evidence, or rewrite legacy records merely to make the audit green.
 
@@ -1967,6 +2054,11 @@ Production state at final audit: revision 15, next post 9, next fact 51.
 | AT-53 Archive publishing package parity | PASS | P-000099 archive `89e4801`; lifecycle cleanup `7be99e6`/`856e81d` | October archive preserves exact script order, caption bytes, and ordered hashtag array; package fields did not enter fact ledgers, active/queue removal passed, and retry created no duplicate. |
 | AT-54 Legacy publishing-package compatibility | PASS | P-000001 active and P-000004 archive, read-only 2026-10-02 | Missing caption/hashtags, post_format, and subject_key remained compatible and absent; 13 tracked artifact SHAs were unchanged. |
 | AT-55 Empty additive stores | PASS | setup `cfc1371`/`ff59993`; restore `4c1487b`/`9dd0d61` | Isolated fixture accepted sample_size 0, absent raw metrics, revision-0 empty plan, and deterministic empty calendar with zero test-operation writes; prior 14-slot plan restored byte-exact. |
+| AT-56 Oversized active blob fallback | PENDING | Post-hotfix production smoke test | Must run read-only in a new conversation after plugin 1.1.1 is installed. |
+| AT-57 Incomplete-read fail closed | PENDING | Isolated test required | Must prove zero writes when blob fallback fails. |
+| AT-58 Active continuity guard | PENDING | Isolated test required | Regression for the P-000114 destructive-overwrite pattern. |
+| AT-59 Large active Git Data write | PENDING | Isolated test required | Must use latest-head, non-forced fast-forward and verify one-path active commit. |
+| AT-60 Large-file stale head | PENDING | Isolated test required | Must preserve the competing writer and abandon the stale commit. |
 | Body-science v2 regression | PASS | `P-000008`; `bbb08d7` | 24 candidates, 18 rejected, five operator families, six strength-2 facts, complete rationales, and directly supportive sources; materially stronger than legacy P-000003. |
 | Stage 12.10 isolated final consistency audit | PASS | `test/viral-producer-v1.1`, 2026-10-02 | Final pre-cutover branch audit passed after the 31 Stage 12.10 tests; test-only state remains disposable and must not be merged. |
 | Stage 12.12 final production consistency audit | PASS | `main`, revision 140, 2026-10-02 | Read-only audit passed 17/17 checks with zero writes: 97 unique posts, 582 unique facts/signatures, counters 98/609, 96 package-complete active posts, exact 26-post two-block queue parity, unchanged archive/ledgers, valid empty additive stores, and no partial failure or orphan record. |
@@ -1989,4 +2081,4 @@ The version-3 implementation is ready for the cutover merge when:
 
 AT-24 was deliberately excluded from the pre-merge gate because it validates the refreshed production runtime on merged `main`. It passed in Stage 12.12 with production plugin v1.1.0 before backfill or normal production resumed.
 
-Current result: Stage 12 is COMPLETE. Stage 12.10 pre-cutover evidence is PASS, AT-25 through AT-55 are PASS (31/31), the isolated test-branch audit is PASS, post-cutover AT-24 is PASS, controlled production backfill completed at revision 140, the final production consistency audit passed 17/17 checks with zero writes, and production resumed on `main`.
+Current result: Stage 12 remains historically COMPLETE. Stage 12.13 large-file safety implementation is pending installed-plugin validation: AT-56 must pass read-only on production and AT-57 through AT-60 must pass on an isolated test runtime before normal production resumes.

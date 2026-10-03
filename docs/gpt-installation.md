@@ -1,6 +1,6 @@
 # Instalasi Viral Producer di ChatGPT
 
-Documentation version: 3.0 — Stage 12.11
+Documentation version: 3.1 — Stage 12.13
 
 ## 1. Tujuan
 
@@ -656,3 +656,23 @@ Runtime produksi menggunakan `main`. Test plugin tetap terpisah pada `test/viral
 - Buat perubahan sistem pada feature branch, review melalui pull request, lalu merge.
 - Setelah perubahan sistem, refresh plugin dan jalankan version check read-only.
 - Jangan mengubah data produksi secara manual.
+
+## 18. Hotfix Large-File 1.1.1
+
+Hotfix ini diperlukan ketika `data/active-drafts.jsonl` melewati batas body connector.
+
+Urutan update:
+
+1. Hentikan sementara produksi.
+2. Perbarui plugin **Viral Producer** yang sama ke versi 1.1.1; jangan membuat plugin baru.
+3. Pertahankan runtime profile, visibility, GitHub binding, permission, dan audience.
+4. Pastikan plugin memuat Instruction 3.1 — Stage 12.13, Editorial 3.0 — Stage 12, dan Test Specification 3.1 — Stage 12.13.
+5. Mulai chat baru.
+6. Jalankan AT-56 dari `tests/acceptance-tests.md` secara read-only.
+7. Jangan melanjutkan produksi apabila body blob lengkap tidak dapat dibaca atau AT-56 gagal.
+8. Jalankan AT-57 sampai AT-60 hanya pada test runtime terisolasi.
+
+Prompt update singkat:
+
+    Perbarui plugin Viral Producer yang sama ke versi 1.1.1 menggunakan file terbaru dari milyarderpro/viral-producer@main. Pertahankan identitas, private visibility, GitHub connection, permission, audience, dan runtime profile. Terapkan exact-SHA blob fallback untuk authoritative file yang body normalnya kosong atau terpotong, continuity guard Post ID/Fact ID sebelum active-drafts write, Git Data API untuk active file besar, latest-head recheck, dan non-forced fast-forward. Jangan menyentuh data produksi.
+

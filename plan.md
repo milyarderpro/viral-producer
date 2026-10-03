@@ -1642,6 +1642,39 @@ Suggested first prompt for the new chat:
 
     Implementasikan Stage 12.1 dari plan.md pada repository milyarderpro/viral-producer. Main masih aktif digunakan untuk produksi. Baca core files terbaru dari main, baca seluruh Stage 12 pada branch upgrade/viral-producer-v1.1, refresh baseline, sinkronkan feature branch secara aman jika diperlukan, pastikan production data tidak berubah, update plan.md, commit hasilnya, lalu berhenti. Jangan mengerjakan Stage 12.2 sebelum saya mengatakan "lanjutkan".
 
+## 5D. Stage 12.13 — Active-Drafts Large-File Safety Hotfix
+
+Status: IMPLEMENTED — VALIDATION PENDING
+
+### Incident
+
+On 2026-10-03, the normal GitHub file read returned an empty body for a non-empty `data/active-drafts.jsonl` blob larger than 1 MB. The P-000114 operation trusted that body and replaced the authoritative file with a single record. Recovery restored P-000101–P-000113 and merged P-000114–P-000130 without changing state or the ready queue.
+
+Recovery commit: `4eb5833bfb1a9fbc7b6edbcc66d80d456ca58458`.
+
+### Scope
+
+- No record migration, repartitioning, ID change, counter change, or content rewrite.
+- Add exact-SHA blob fallback for omitted/truncated authoritative bodies.
+- Treat empty content under a non-zero-byte SHA as a hard transport warning.
+- Add complete preflight Post ID/Fact ID continuity checks for every active mutation.
+- Require Git Data API writes for active data at or above 900,000 UTF-8 bytes or whenever blob fallback was required.
+- Require latest-head recheck and non-forced fast-forward; stale prepared commits remain unattached.
+- Add AT-56 through AT-60.
+- Release the same private production plugin identity as version 1.1.1.
+
+### Release gate
+
+1. Commit the specification hotfix without changing production data.
+2. Update the existing private plugin in place to 1.1.1.
+3. Start a new conversation.
+4. Run AT-56 read-only on production.
+5. Run AT-57 through AT-60 only on an isolated test runtime.
+6. Run a final production consistency audit read-only.
+7. Resume production only after the applicable gates pass.
+
+Production remains paused while validation is pending.
+
 ## 6. Definition of Done
 
 The implementation is complete when:
