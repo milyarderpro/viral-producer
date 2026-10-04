@@ -1,14 +1,13 @@
 {
   "schema_version": 1,
-  "revision": 267,
-  "next_post_number": 166,
-  "next_fact_number": 1017,
+  "revision": 268,
+  "next_post_number": 167,
+  "next_fact_number": 1023,
   "operational_timezone": "Asia/Jakarta",
   "single_writer_mode": true,
-  "last_topic": "food-home",
+  "last_topic": "mixed",
   "last_country_focus": "GLOBAL",
   "recent_topics": [
-    "animals-nature",
     "geography-history",
     "mixed",
     "food-home",
@@ -17,7 +16,8 @@
     "mixed",
     "animals-nature",
     "geography-history",
-    "food-home"
+    "food-home",
+    "mixed"
   ],
   "recent_country_focuses": [
     "GLOBAL",
@@ -31,5 +31,5 @@
     "GLOBAL",
     "GLOBAL"
   ],
-  "updated_at": "2026-10-04T03:55:00Z"
+  "updated_at": "2026-10-04T06:20:00Z"
 }
