@@ -1,14 +1,13 @@
 {
   "schema_version": 1,
-  "revision": 244,
-  "next_post_number": 143,
-  "next_fact_number": 879,
+  "revision": 245,
+  "next_post_number": 144,
+  "next_fact_number": 885,
   "operational_timezone": "Asia/Jakarta",
   "single_writer_mode": true,
-  "last_topic": "mixed",
+  "last_topic": "geography-history",
   "last_country_focus": "GLOBAL",
   "recent_topics": [
-    "geography-history",
     "animals-nature",
     "body-science",
     "mixed",
@@ -17,7 +16,8 @@
     "practical",
     "inventions-records",
     "animals-nature",
-    "mixed"
+    "mixed",
+    "geography-history"
   ],
   "recent_country_focuses": [
     "GLOBAL",
@@ -31,5 +31,5 @@
     "GLOBAL",
     "GLOBAL"
   ],
-  "updated_at": "2026-10-04T00:00:19Z"
+  "updated_at": "2026-10-04T00:04:00Z"
 }
